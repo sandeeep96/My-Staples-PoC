@@ -1,7 +1,7 @@
 """S9 Outputs: PNG figures, CSV tables, and one self-contained static HTML report (§9, §14). Phase-1 S11.
 
 Phase-2 report rules (Sai, 2026-10-01): every focus node is in the dropdown (no node filter); "node", never
-"shelf"; every archetype is shown as "Archetype (Attributes combo)"; every metric abbreviation carries its full
+"shelf"; every archetype is shown as "Archetype (Attributes Combination)"; every metric abbreviation carries its full
 name, e.g. "TG (Total Gap)"; in Tab 2 the final recommendations follow the attribute-level gaps and the Method 1 /
 Method 2 detail sits at the bottom; price is its own section, outside the archetypes.
 """
@@ -18,9 +18,12 @@ from jinja2 import Environment, FileSystemLoader
 
 from . import figures as F
 from .common import METRICS, ROOT, cfg, display_name, hash_text, load, load_json, m, money, out, slug
+from .cards import tier2_attrs
 from .s4_archetypes import facet_label, pretty_value
 from .s5_vector import APPROVE
 
+TIER1_ATTRS = {"colour_family", "colour_tone", "material_class", "size_class"}
+TIER_NAMES = {1: "Tier 1 · universal", 2: "Tier 2 · functional", 3: "Tier 3 · lifestyle"}
 STATUS_LABEL = {"scored": "scored", "thin": "thin: descriptive only", "staples_only": "competitor data pending"}
 
 
@@ -51,7 +54,7 @@ def node_display(node_id: str) -> str:
 
 
 def arch(name: str, combo: str) -> dict:
-    """Archetype (Attributes combo): rendered as bold name + muted combo in brackets."""
+    """Archetype (Attributes Combination): rendered as bold name + muted combo in brackets."""
     return {"name": name, "combo": combo or ""}
 
 
@@ -135,7 +138,7 @@ def build_gates(qm, qx, qa6, qv, qi) -> list[dict]:
                    f"top-5 kept: TG {_pct(tgs)}, VOS {_pct(vos)}; CRS calibration AUC {min(aucs):.2f}–{max(aucs):.2f}" if aucs else "–",
                    f"≥ {q['g7_topn_stability']:.0%}; AUC ≥ {q['g7_auc']}", "G7 Scores",
                    f"Weight sensitivity (Dirichlet) of {m('TG')} and {m('VOS')}; weak-supervision calibration of {m('CRS')}",
-                   "AUC is on Staples-only weak pairs; Pat's calibration session replaces it."))
+                   "AUC is on Staples-only weak pairs; the business calibration session replaces it."))
     de = qv["data_error_share"]
     gs.append(gate("PASS" if de <= q["g8_data_error"] else "FAIL", f"DATA-ERROR share {de:.1%}",
                    f"≤ {q['g8_data_error']:.0%}", "G8 Sanity", f"Low {m('AAS')} + high {m('CRS')} (should be rare)",
@@ -173,7 +176,7 @@ def build_safety_gates(qm, mp, cand, fa, recs, se, qv) -> list[dict]:
           "S2 · s2_mapping.py run(). Removed products go to the backlog; most are pages of other Staples categories."),
         G("Common", "FILTER", f"{len(va)} of {len(a)} archetypes valid",
           f"≥ 4 attributes AND no “other (mixed)” value AND ≥ {gc['min_competitor_families']} competitor families",
-          "C2 Valid archetype (S4)", "Nameable archetype with enough competitor products to judge",
+          "C2 Valid archetype (attributes combination) (S4)", "Nameable archetype with enough competitor products to judge",
           "S4 · s4_archetypes.py run()."),
         G("Method 1 · vector view", "FILTER",
           f"{safe:,} safe ({pct(safe, n_c)}) · {int(lc.get('REVIEW', 0)):,} REVIEW · {rej:,} reject ({pct(rej, n_c)}) of {n_c:,} products",
@@ -185,7 +188,7 @@ def build_safety_gates(qm, mp, cand, fa, recs, se, qv) -> list[dict]:
           "S5 · s5_vector.py label(). Safe = CURATE, STYLE-EXTENSION, TRADE-UP, LEAN-APPROVE."),
         G("Method 1 · vector view", "FILTER", f"{int(va['m1_gate'].sum())} of {len(va)} valid archetypes pass",
           f"≥ {g1['min_safe_products']} safe products AND safe share ≥ {g1['min_safe_share']:.0%} of decided AND "
-          f"substitute + undercut < {g1['max_reject_share']:.0%}", "M1-b Archetype gate (S5)",
+          f"substitute + undercut < {g1['max_reject_share']:.0%}", "M1-b Archetype (attributes combination) gate (S5)",
           "Method 1's own cannibalisation check on the archetype's products",
           "S5 · s5_vector.py run(). Reason per archetype in the node tables."),
         G("Method 1 · vector view", "PICK", f"{int(a['m1_list'].sum())} archetypes on the Method 1 list",
@@ -200,7 +203,7 @@ def build_safety_gates(qm, mp, cand, fa, recs, se, qv) -> list[dict]:
           "S6 · s6_gaps.py m2_labels(). Uses attributes and price only, no Method 1 scores."),
         G("Method 2 · attribute view", "FILTER", f"{int(va['m2_gate'].sum())} of {len(va)} valid archetypes pass",
           f"(LSR credibility ≥ {g2['min_credibility']:.0%} OR absent at Staples) AND ACR < {g2['max_acr']:.0%} AND "
-          f"≥ {g2['min_ok_products']} non-cannibalising products", "M2-b Archetype gate (S6)",
+          f"≥ {g2['min_ok_products']} non-cannibalising products", "M2-b Archetype (attributes combination) gate (S6)",
           f"The competitor credibly over-indexes, and its products rarely have a cheaper or same-look Staples twin "
           f"({m('ACR')} = attribute undercuts + substitutes ÷ products)", "S6 · s6_gaps.py run(). Reason per archetype in the node tables."),
         G("Method 2 · attribute view", "PICK", f"{int(a['m2_list'].sum())} archetypes on the Method 2 list",
@@ -226,7 +229,7 @@ def attr_label(nid: str, a: str) -> str:
     return facet_label(nid, a)
 
 
-def node_insights(nid, ns_row, bands, gaps, fa, cand, vend, comp) -> list[dict]:
+def node_insights(nid, ns_row, bands, gaps, fa, cand, vend, comp, price_lines=()) -> list[dict]:
     """Insights grouped for the report: [{'group': title, 'lines': [text, ...]}], empty groups dropped."""
     groups: dict[str, list[str]] = {}
 
@@ -241,8 +244,9 @@ def node_insights(nid, ns_row, bands, gaps, fa, cand, vend, comp) -> list[dict]:
     for r in st.nsmallest(2, "delta").itertuples():
         add("Where Staples is deeper (not a gap)",
             f"{attr_label(nid, r.attribute)} “{pretty_value(r.value)}”: Staples {r.share_staples:.0%} vs {comp} {r.share_competitor:.0%}.")
-    add("Price", f"Median price: {comp} {_money(ns_row['price_median_competitor'])} vs Staples {_money(ns_row['price_median_staples'])} "
-                 "(see Price insights).")
+    add("Price", f"Median price: {comp} {_money(ns_row['price_median_competitor'])} vs Staples {_money(ns_row['price_median_staples'])}.")
+    for line in price_lines:
+        add("Price", line)
     if not _nan(ns_row["design_forward_share_competitor"]):
         add("Design", f"Design-forward share ({m('DFI')} ≥ {cfg()['gaps']['dfi_forward']}): {comp} "
                       f"{ns_row['design_forward_share_competitor']:.0%} vs Staples {ns_row['design_forward_share_staples']:.0%}.")
@@ -377,7 +381,7 @@ def run() -> dict:
                 "planned": ", ".join(planned) or "–", "ns": int(nd["n_staples"]), "nc": int(nd["n_competitor"]),
                 "provisional": not nd["node_config_reviewed"], "acc_img": acc_img,
                 "parity": qn.get("parity_chars")}
-        node_list.append({"id": sid, "label": f"{int(nd['rank'])}. {node_display(nid)}", "status": nd["status"],
+        node_list.append({"id": sid, "label": node_display(nid), "l1": nid.split(" > ")[0], "status": nd["status"],
                           "status_label": STATUS_LABEL[nd["status"]]})
         if nd["status"] == "staples_only":
             sb = nft["price_band"].value_counts(normalize=True)
@@ -411,8 +415,8 @@ def run() -> dict:
             figs["tg"] = _b64(F.tg_components(nfa, gp["tg_weights"], gp["credible"], gp["noncredible_shrink"],
                                               d / "tg_components.png"))
         ns_row = nsum.loc[nid]
-        ins = node_insights(nid, ns_row, nb, ng, nfa if scored else None, ncand if scored else None, nvend, comp)
         p_lines, ladder = price_insights(nb, nfa if scored else None, comp, v["ppr_tradeup"], v["ppr_undercut"])
+        ins = node_insights(nid, ns_row, nb, ng, nfa if scored else None, ncand if scored else None, nvend, comp, p_lines)
         nfa = nfa.sort_values(["final", "tg"], ascending=False)
         m1 = [{"a": arch(r.name, r.combo), "ns": r.n_staples, "nc": r.n_competitor, "vw": _num(r.vw, 2),
                "aas": _num(r.aas), "ad": _num(r.ad, 2), "crs": _num(r.crs), "ppr": _num(r.ppr, 2),
@@ -446,9 +450,13 @@ def run() -> dict:
                       "on": r.brand_on_staples, "house": r.house_brand} for r in nvend.head(25).itertuples()]
         gsel = ng[(ng["credibility"] >= 0.9) | (ng["credibility"] <= 0.1)].assign(a=lambda x: x["delta"].abs()).nlargest(30, "a")
         gap_rows = []
-        for attr in gsel.groupby("attribute")["a"].max().sort_values(ascending=False).index:
+        t2 = set(tier2_attrs(nid))
+        tier_of = lambda a: (1 if a in TIER1_ATTRS else 2 if a in t2 else 3)
+        amax = gsel.groupby("attribute")["a"].max()
+        for attr in sorted(amax.index, key=lambda a: (tier_of(a), -amax[a])):
             gg = gsel[gsel["attribute"] == attr].sort_values("delta", ascending=False)
             gap_rows.append({"attr": attr_label(nid, attr), "desc": bool(gg["descriptive_only"].any()),
+                             "tier": TIER_NAMES[tier_of(attr)],
                              "rows": [{"val": pretty_value(r.value), "sc": _pct(r.share_competitor), "ss": _pct(r.share_staples),
                                        "delta": f"{r.delta:+.0%}", "cred": _pct(r.credibility), "pos": r.delta > 0}
                                       for r in gg.itertuples()]})
@@ -472,6 +480,7 @@ def run() -> dict:
         })
         sections.append(base)
 
+    node_list = sorted(node_list, key=lambda n: (n["l1"], n["label"]))
     st_counts = nodes["status"].value_counts().to_dict()
     ctx = {
         "title": cfg()["report"]["title"], "date": dt.date.today().isoformat(),
@@ -479,7 +488,8 @@ def run() -> dict:
         "gates": build_gates(qm, qx, qa6, qv, qi), "nodes": node_list, "sections": sections,
         "safety_gates": build_safety_gates(qm, mp, cand, fa, recs, se, qv),
         "focus": [{"rank": s["rank"], "segment": s["segment"], "label": s["label"], "status": s["status"],
-                   "status_label": s["status_label"], "ns": s["ns"], "nc": s["nc"]} for s in sections],
+                   "status_label": s["status_label"], "comp": s["planned"].split(",")[0].strip() if s["status"] == "staples_only" else s["comp"]}
+                  for s in sections],
         "n_scored": st_counts.get("scored", 0), "n_thin": st_counts.get("thin", 0), "n_pending": st_counts.get("staples_only", 0),
         "n_st_fam": int(nodes["n_staples"].sum()), "n_comp_fam": int(nodes["n_competitor"].sum()),
         "n_backlog": int(len(backlog)),

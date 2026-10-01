@@ -4,7 +4,7 @@
     <a class="t" href="{{ c.url }}" target="_blank" rel="noopener">{{ c.title }}</a>
     <div class="meta"><b>{{ c.price }}</b> · {{ c.brand }}{% if c.on %} <span class="chip st-PASS">sells on Staples</span>{% endif %}{% if c.house %} <span class="chip">house brand</span>{% endif %}</div>
     <div class="meta">{{ c.colour }} · {{ c.material }} · {{ c.style }} · DFI (Design-Forward Index) {{ c.dfi }}</div>
-    {% if c.arch %}<div class="meta">Archetype: <b>{{ c.arch.name }}</b> <span class="combo">({{ c.arch.combo }})</span></div>{% endif %}
+    {% if c.arch %}<div class="meta">Archetype (Attributes Combination): <b>{{ c.arch.name }}</b> <span class="combo">({{ c.arch.combo }})</span></div>{% endif %}
   </div>
   <div>
     <div class="who"><span class="dot" style="background:#2a78d6"></span>Nearest Staples product</div>

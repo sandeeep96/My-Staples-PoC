@@ -204,7 +204,7 @@ def label_mix(fa: pd.DataFrame, path, n=12):
     ax.set_yticks(y, names, fontsize=6.8)
     _pct_axis(ax, "x")
     ax.set_xlim(0, 1)
-    ax.set_title("Method 1 label mix of competitor products per archetype")
+    ax.set_title("Method 1 label mix per archetype (attributes combination)")
     ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.08), ncols=3, fontsize=8)
     return _save(fig, path)
 
@@ -290,7 +290,7 @@ def vos_components(fa: pd.DataFrame, w: dict, gamma: float, path, n: int = 15):
     note = pre.map(lambda x: f"({x:.0f} before risk)")
     return _component_bars(d, [("c_vw", COMP_COL["vw"], m("VW")), ("c_aas", COMP_COL["aas"], m("AAS")),
                                ("c_ad", COMP_COL["ad"], m("AD"))],
-                           "vos", f"Method 1: {m('VOS')} by archetype (top {len(d)})",
+                           "vos", f"Method 1: {m('VOS')} by archetype (attributes combination), top {len(d)}",
                            f"VOS (0–100) = segments after the {m('CRS')} discount", path, note=note.iloc[::-1])
 
 
@@ -306,4 +306,4 @@ def tg_components(fa: pd.DataFrame, w: dict, credible: float, shrink: float, pat
     return _component_bars(d, [("c_lsr", COMP_COL["lsr"], m("LSR")), ("c_ppg", COMP_COL["ppg"], m("PPG")),
                                ("c_cg", COMP_COL["cg"], m("CG")), ("c_msg", COMP_COL["msg"], m("MSG")),
                                ("c_dfg", COMP_COL["dfg"], m("DFG"))],
-                           "tg", f"Method 2: {m('TG')} by archetype (top {len(d)})", "TG (0–100); bar length = score", path)
+                           "tg", f"Method 2: {m('TG')} by archetype (attributes combination), top {len(d)}", "TG (0–100); bar length = score", path)

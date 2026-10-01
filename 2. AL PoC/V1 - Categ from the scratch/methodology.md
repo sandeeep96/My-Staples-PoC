@@ -513,30 +513,31 @@ No Excel workbook or deck for now. Intermediate tables (CSV or parquet) are pipe
 - The page is generated from the pipeline outputs by a template (Jinja2), so a re-run on new data rebuilds it with no manual editing.
 - Must work in light and dark mode and at laptop and phone widths. Must print cleanly (each node section prints on its own).
 
-**Wording (Sai, Phase 2).** "Node", never "shelf". Every archetype is shown as **Archetype (Attributes combo)**. Every metric abbreviation carries its full name, e.g. "TG (Total Gap)", "ACR (Attribute Cannibalisation Risk)". Tab 1 says "competitor", never a retailer name; Tab 2 names the node's competitor.
+**Wording (Sai, Phase 2).** "Node", never "shelf". Archetypes are labelled **Archetype (Attributes Combination)**, each shown as its name followed by its attribute combination. Every metric abbreviation carries its full name, e.g. "TG (Total Gap)", "ACR (Attribute Cannibalisation Risk)". No person's name appears in the report.
 
 **Tab 1: Approach & Methodology.**
-- The business question and Pat's mandate; the **12 focus nodes** (segment · play, Staples path, family counts, status; no retailer names).
-- A flow chart of S0 → S9 (one box per stage: purpose, steps, outputs, gate, tech).
-- Archetype rules (4–6 attributes, three tiers, no price); the two methods side by side (VOS and TG components, ACR); Method 1 and Method 2 label tables; "from two scores to one list" (the gates of §7).
-- **Quality gates** (§10) as a scorecard, and a separate **Safety gates** table grouped Common / Method 1 / Method 2 / Final with this run's counts; encoder bake-off and calibration.
+- The business question; the **12 focus nodes** (segment · play, Staples path, Primary 1 competitor, status).
+- A flow chart of S0 → S8 (one box per stage: purpose, steps, outputs, gate, tech); the report itself (S9) is not shown as a method step.
+- Archetypes (Attributes Combinations): the three tiers, each with examples; the two methods side by side (VOS and TG components, ACR); Method 1 and Method 2 label tables; "from two scores to one list" (the gates of §7).
+- **Safety gates** first (grouped Common / Method 1 / Method 2 / Final with this run's counts), then **Quality gates** (§10) as a scorecard; encoder bake-off and calibration.
 - Assumptions and caveats (columns used, convenience samples, text parity, provisional vocabularies).
 
-**Tab 2: Gaps & Recommendations.** A single-select dropdown lists all focus nodes in focus order (thin and Staples-only nodes marked). Choosing a node shows, in this order:
+**Tab 2: Gaps & Recommendations.** A single-select dropdown groups the focus nodes by L1, ordered by path inside each L1 (Staples-only nodes marked). Choosing a node shows, in this order (Sai, 2026-10-01):
 
 | Section | Content |
 |---|---|
-| **Node header** | Path; segment · play; competitor; family counts; mapping confidence and products set aside; archetype attributes with tiers; number of archetypes and long-tail share; provisional flag |
-| **Key insights** | Plain-English findings grouped (where the competitor is deeper, where Staples is deeper, price, design, recommendations by tier, Method 1 and Method 2 cannibalisation counts) |
-| **Coverage** | DFI density, attribute divergence (JSD), largest credible attribute-value gaps |
-| **Attribute-level gaps** | Credible value-level gaps grouped by attribute |
-| **Price insights** | Price-band coverage chart, price lines, and the archetype price ladder |
-| **Final recommendations** | Ranked archetypes with tier, whether each method listed it, VOS, TG, Method 1 safe products and ACR; TG-vs-VOS chart and Method 1 label mix |
+| **Node header** | Path; segment · play; competitor; family counts; mapping confidence and products set aside; archetype (attributes combination) definition; number of archetypes and long-tail share |
+| **Key insights** | Plain-English findings grouped: where the competitor is deeper, where Staples is deeper, price (median prices, credible price-band gaps, premium and cheaper archetypes), design, recommendations by tier, Method 1 and Method 2 cannibalisation counts |
+| **Coverage** | One 2 × 2 grid: price-band coverage, DFI density, attribute divergence (JSD), largest credible attribute-value gaps |
+| **Attribute level gaps (detailed)** | Collapsed by default. Credible value-level gaps with a Tier column, ordered Tier 1 → Tier 2 → Tier 3, then by each attribute's largest gap |
+| **Final recommendations** | Method agreement (Spearman ρ) with a one-line reading; table of Rank, Archetype (Attributes Combination), Tier, Final score, VOS, TG, Staples / competitor families; TG-vs-VOS chart |
 | **SKU recommendations** | Evidence cards per recommended archetype (competitor product beside its nearest Staples product: price, link, label, CRS, PPR, AD, Method 2 label, safe-under basis), then style extensions |
 | **Vendor / seller view** | Display brands of the products shown: already on Staples (quick win), competitor house brand (source the archetype), independent seller |
-| **Excluded archetypes** | Every non-recommended archetype with its reason from each method's gate |
-| **Method 1 results** (bottom) | VOS components chart, decision scatter, and per archetype VW, AAS, AD, CRS, PPR, safe products, safe share, substitute + undercut, M1 gate and reason |
-| **Method 2 results** (bottom) | TG components chart, and per archetype shares, LSR and credibility, PPG, CG, MSG, DFG, ACR, non-cannibalising products, M2 gate and reason |
+| **Excluded archetypes** | Collapsed. Every non-recommended archetype with its reason from each method's gate |
+| **Method 1 results** | Collapsed. VOS components chart, decision scatter, and per archetype VW, AAS, AD, CRS, PPR, safe products, safe share, substitute + undercut, M1 gate and reason |
+| **Method 2 results** | Collapsed. TG components chart, and per archetype shares, LSR and credibility, PPG, CG, MSG, DFG, ACR, non-cannibalising products, M2 gate and reason |
+
+No provisional or tier-relaxation badges are shown in the node header (both stay recorded in the QA files). The separate price section (price ladder) was dropped from the report; its findings appear in Key insights and the price ladder stays in `outputs/tables/final_archetypes.csv` (median prices per side).
 
 Staples-only nodes show a Staples profile (price bands and top attribute values) until competitor data arrives. The Phase-1 "shelf filter" (capping the dropdown) was removed in Phase 2.
 
