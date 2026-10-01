@@ -1,6 +1,6 @@
 # Competitor house (private-label) brands: the display brand is not a recruitable seller.
 # Extend per retailer as new data arrives.
-generated_by: "claude-opus-5-5 session draft, 2026-09-28"
+generated_by: "claude-opus-5-5 session draft, 2026-09-28; Amazon + extra Wayfair decor labels 2026-10-01"
 reviewed_by: null
 wayfair:
   - Latitude Run
@@ -64,3 +64,31 @@ wayfair:
   - Willa Arlo Interiors
   - House of Hampton
   - Astoria Grand
+  - Dakota Fields
+  - Bloomsbury Market
+  - Ophelia & Co.
+  - Rosalind Wheeler
+  - August Grove
+  - World Menagerie
+  - Longshore Tides
+  - Hashtag Home
+  - Fleur De Lis Living
+  - Bay Isle Home
+  - Dovecove
+  - Rebrilliant
+  - The Twillery Co.
+  - Trent Austin Design
+  - Upper Square
+  - Marta Home
+  - Latitude Run Kids
+amazon:
+  - Amazon Basics
+  - AmazonBasics
+  - Amazon Commercial
+  - AmazonCommercial
+  - Amazon Brand
+  - Amazon Brand - Solimo
+  - Solimo
+  - Amazon Essentials
+  - Stone & Beam
+  - Rivet

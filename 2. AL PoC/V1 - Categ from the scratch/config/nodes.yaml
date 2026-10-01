@@ -1,0 +1,19 @@
+# Phase 2 focus nodes (Sai, 2026-10-01): the exact Staples L3/L4 paths and their competitors.
+# `competitors` is ordered: Primary 1 first. The first competitor with mapped products on the node is used;
+# nodes whose competitors have no data yet run as Staples-only profiles.
+# Any Staples leaf not listed here is still analysed, against whichever competitor maps the most products to it.
+generated_by: "Sai's Phase-2 selection (Staples_L3L4_Path_Selection), entered 2026-10-01"
+reviewed_by: Sai
+focus_nodes:
+  - {rank: 1, path: "Office Supplies > Calendars & Planners > Planners & Personal Organizers", segment: "Hero · EXTEND", competitors: [amazon]}
+  - {rank: 2, path: "Office Supplies > Desk Organizers & Accessories > Desk Organizers", segment: "Hero · EXTEND", competitors: [amazon]}
+  - {rank: 3, path: "Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks", segment: "Hero · EXTEND", competitors: [amazon]}
+  - {rank: 4, path: "Furniture > Desks > Office Desks", segment: "Hero · EXTEND", competitors: [wayfair]}
+  - {rank: 5, path: "Coffee, Water & Snacks > Water & Beverages > Water Bottles, Tumblers & Travel Mugs", segment: "Probable Hero · BUILD", competitors: [scheels, amazon]}
+  - {rank: 6, path: "Furniture > Chairs & Seating > Accent & Waiting Room Chairs", segment: "Probable Hero · BUILD", competitors: [wayfair]}
+  - {rank: 7, path: "Furniture > Lamps & Lighting > Desk Lamps", segment: "Probable Hero · BUILD", competitors: [wayfair]}
+  - {rank: 8, path: "Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes", segment: "Probable Hero · BUILD", competitors: [amazon]}
+  - {rank: 9, path: "Furniture > Decor > Clocks & Timers", segment: "Non-Hero · EXPLORE", competitors: [wayfair]}
+  - {rank: 10, path: "Office Supplies > Desk Organizers & Accessories > Desk Pads", segment: "Non-Hero · EXPLORE", competitors: [amazon]}
+  - {rank: 11, path: "Coffee, Water & Snacks > Coffee, Coffee Makers & Supplies > Coffee Organizers & Dispensers", segment: "Non-Hero · EXPLORE", competitors: [amazon]}
+  - {rank: 12, path: "Furniture > Cubicle & Panel Systems > Office Partitions & Dividers", segment: "Non-Hero · EXPLORE", competitors: [wayfair]}

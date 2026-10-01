@@ -1,0 +1,553 @@
+[    3.1s] === s3: attribute extraction + validation
+[   14.6s] encoding 2 new texts with BAAI/bge-small-en-v1.5
+[   28.9s] loading encoder BAAI/bge-small-en-v1.5
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights:  24%|██▍       | 48/199 [00:00<00:00, 431.87it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 1137.14it/s]
+[   37.8s] encoding 2 new texts with BAAI/bge-small-en-v1.5
+[   39.6s] encoding 1,291 new texts with BAAI/bge-small-en-v1.5
+[   58.8s] S3 Backpacks: 2453 families (parity 111 chars); G2 pass ['capacity_band', 'capacity_l', 'height', 'laptop_in']; fail ['colour_family', 'depth', 'laptop_fit', 'material_class', 'water_resistant']
+[   70.4s] encoding 2 new texts with BAAI/bge-small-en-v1.5
+[   72.4s] encoding 2 new texts with BAAI/bge-small-en-v1.5
+[   75.5s] encoding 1,479 new texts with BAAI/bge-small-en-v1.5
+[  104.5s] S3 Lunch Bags & Boxes: 2104 families (parity 117 chars); G2 pass ['insulated', 'material_class']; fail ['colour_family', 'depth']
+[  107.7s] encoding 10 new texts with BAAI/bge-small-en-v1.5
+[  109.2s] encoding 2 new texts with BAAI/bge-small-en-v1.5
+[  110.6s] encoding 2 new texts with BAAI/bge-small-en-v1.5
+[  112.4s] encoding 981 new texts with BAAI/bge-small-en-v1.5
+[  131.4s] S3 Coffee Organizers & Dispensers: 1235 families (parity 113 chars); G2 pass ['capacity_band', 'colour_family', 'material_class', 'pod_capacity']; fail []
+[  138.7s] encoding 2 new texts with BAAI/bge-small-en-v1.5
+[  140.9s] encoding 2 new texts with BAAI/bge-small-en-v1.5
+[  143.0s] encoding 242 new texts with BAAI/bge-small-en-v1.5
+[  148.7s] S3 Water Bottles, Tumblers & Travel Mugs: 344 families (parity 400 chars); G2 pass ['capacity_band', 'capacity_oz', 'material_class']; fail ['colour_family']
+[  177.0s] encoding 3 new texts with BAAI/bge-small-en-v1.5
+[  179.3s] encoding 3 new texts with BAAI/bge-small-en-v1.5
+[  182.5s] encoding 2,820 new texts with BAAI/bge-small-en-v1.5
+[  236.5s] S3 Accent & Waiting Room Chairs: 3095 families (parity 466 chars); G2 pass ['arm_type', 'base_type', 'colour_family', 'stackable', 'swivel']; fail ['depth', 'height', 'material_class', 'size_class', 'width']
+[  246.9s] encoding 2 new texts with BAAI/bge-small-en-v1.5
+[  249.1s] encoding 2 new texts with BAAI/bge-small-en-v1.5
+[  251.3s] encoding 745 new texts with BAAI/bge-small-en-v1.5
+[  266.5s] S3 Office Partitions & Dividers: 880 families (parity 426 chars); G2 pass ['colour_family', 'depth', 'height', 'panel_band', 'size_class', 'width']; fail ['material_class', 'panels', 'sound_absorbing', 'wheels']
+[  296.1s] encoding 2 new texts with BAAI/bge-small-en-v1.5
+[  298.7s] encoding 2 new texts with BAAI/bge-small-en-v1.5
+[  301.8s] encoding 2,137 new texts with BAAI/bge-small-en-v1.5
+[  334.8s] S3 Clocks & Timers: 2758 families (parity 472 chars); G2 pass ['atomic', 'display', 'height', 'material_class', 'size_class']; fail ['colour_family', 'depth', 'diameter', 'width']
+[  379.2s] encoding 3 new texts with BAAI/bge-small-en-v1.5
+[  381.7s] encoding 3 new texts with BAAI/bge-small-en-v1.5
+[  385.6s] encoding 3,150 new texts with BAAI/bge-small-en-v1.5
+[  443.1s] S3 Office Desks: 3455 families (parity 854 chars); G2 pass ['depth', 'height', 'shape', 'width', 'width_band']; fail ['colour_family', 'desk_type', 'material_class']
+[  449.5s] encoding 2 new texts with BAAI/bge-small-en-v1.5
+[  451.7s] encoding 2 new texts with BAAI/bge-small-en-v1.5
+[  453.9s] encoding 852 new texts with BAAI/bge-small-en-v1.5
+[  474.2s] S3 Desk Lamps: 939 families (parity 469 chars); G2 pass ['bulb', 'colour_family', 'cordless', 'depth', 'height', 'material_class', 'size_class', 'usb_port', 'wireless_charging']; fail ['dimmable', 'width']
+[  486.6s] encoding 2 new texts with BAAI/bge-small-en-v1.5
+[  489.5s] encoding 2 new texts with BAAI/bge-small-en-v1.5
+[  491.8s] encoding 1,378 new texts with BAAI/bge-small-en-v1.5
+[  513.3s] S3 Planners & Personal Organizers: 1894 families (parity 114 chars); G2 pass ['date_format', 'height', 'material_class', 'planner_size', 'size_class', 'width']; fail ['colour_family']
+[  516.4s] encoding 2 new texts with BAAI/bge-small-en-v1.5
+[  518.2s] encoding 2 new texts with BAAI/bge-small-en-v1.5
+[  520.8s] encoding 223 new texts with BAAI/bge-small-en-v1.5
+[  525.8s] S3 Desk Organizers: 239 families (parity 400 chars); G2 pass ['colour_family', 'material_class', 'rotating', 'stackable']; fail ['depth', 'height', 'width']
+[  527.1s] encoding 2 new texts with BAAI/bge-small-en-v1.5
+[  530.1s] encoding 2 new texts with BAAI/bge-small-en-v1.5
+[  532.1s] encoding 41 new texts with BAAI/bge-small-en-v1.5
+[  533.9s] S3 Desk Pads: 55 families (parity 400 chars); G2 pass ['colour_family', 'material_class']; fail ['size_class', 'width']
+[  534.2s] === s4: archetypes (4-6 attributes)
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+[  584.9s] S4 Planners & Personal Organizers: 52 archetypes; core ['planner_type', 'design_theme', 'audience', 'vibe'] + ['planner_size', 'date_format']; long tail 17%; ARI=0.038362015288976314
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+[  619.7s] S4 Backpacks: 40 archetypes; core ['usb_port', 'anti_theft', 'pattern', 'vibe'] + ['audience', 'pack_type']; long tail 2%; ARI=0.15058017380000785
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+[  648.0s] S4 Office Desks: 122 archetypes; core ['colour_tone', 'drawers', 'storage', 'vibe'] + ['style_family']; long tail 21%; ARI=0.11534554872115507
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+[  690.6s] S4 Accent & Waiting Room Chairs: 102 archetypes; core ['colour_tone', 'colour_family', 'swivel', 'vibe'] + ['form_factor']; long tail 30%; ARI=0.059170166237985905
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+[  702.5s] S4 Desk Lamps: 23 archetypes; core ['colour_tone', 'colour_family', 'cordless', 'vibe'] + ['usb_port', 'lamp_form']; long tail 46%; ARI=0.06727132483076508
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+[  723.1s] S4 Lunch Bags & Boxes: 53 archetypes; core ['insulated', 'leakproof', 'dishwasher_safe', 'audience'] + ['lunch_type', 'vibe']; long tail 2%; ARI=0.09235961785795763
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+[  764.8s] S4 Clocks & Timers: 75 archetypes; core ['colour_tone', 'atomic', 'silent', 'theme'] + ['vibe', 'material_class']; long tail 29%; ARI=0.028994075702463012
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+[  771.6s] S4 Coffee Organizers & Dispensers: 38 archetypes; core ['colour_tone', 'colour_family', 'organizer_type', 'vibe'] + ['pod_system', 'material_class']; long tail 17%; ARI=0.22836211499496928
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\cluster\_hdbscan\hdbscan.py:722: FutureWarning: The default value of `copy` will change from False to True in 1.10. Explicitly set a value for `copy` to silence this warning.
+  warn(
+[  777.3s] S4 Office Partitions & Dividers: 27 archetypes; core ['colour_tone', 'colour_family', 'tackable', 'design'] + ['vibe', 'divider_type']; long tail 37%; ARI=0.1165606764579205
+[  777.5s] === s5: method 1: vector view (VOS)
+[  779.6s] encoding 206 new texts with BAAI/bge-small-en-v1.5
+[  783.9s] encoding 2,450 new texts with BAAI/bge-small-en-v1.5
+[  925.2s] S7 Bags, Backpacks & Luggage > Backpacks & Laptop Bags: calibration fallback-percentile AUC=None, T_AAS={'aas_low': 29.234828496042216, 'aas_high': 72.13720316622691}
+[  926.8s] encoding 111 new texts with BAAI/bge-small-en-v1.5
+[  930.9s] encoding 2,101 new texts with BAAI/bge-small-en-v1.5
+[ 1071.1s] S7 Bags, Backpacks & Luggage > Totes & Handbags: calibration logistic AUC=0.9770554298930033, T_AAS={'aas_low': 28.056603773584907, 'aas_high': 50.36477987421384}
+[ 1072.8s] encoding 80 new texts with BAAI/bge-small-en-v1.5
+[ 1076.6s] encoding 1,234 new texts with BAAI/bge-small-en-v1.5
+[ 1156.8s] S7 Coffee, Water & Snacks > Coffee, Coffee Makers & Supplies: calibration fallback-percentile AUC=None, T_AAS={'aas_low': 37.88, 'aas_high': 48.400000000000006}
+[ 1158.3s] encoding 70 new texts with BAAI/bge-small-en-v1.5
+[ 1161.4s] encoding 344 new texts with BAAI/bge-small-en-v1.5
+[ 1172.3s] encoding 238 new texts with BAAI/bge-small-en-v1.5
+[ 1178.0s] encoding 3,071 new texts with BAAI/bge-small-en-v1.5
+[ 1351.3s] S7 Furniture > Chairs & Seating: calibration logistic AUC=0.9851811345435204, T_AAS={'aas_low': 38.96551724137932, 'aas_high': 50.94827586206896}
+[ 1352.5s] encoding 88 new texts with BAAI/bge-small-en-v1.5
+[ 1355.8s] encoding 862 new texts with BAAI/bge-small-en-v1.5
+[ 1409.5s] S7 Furniture > Cubicle & Panel Systems: calibration logistic AUC=0.9986099706744868, T_AAS={'aas_low': 26.666666666666668, 'aas_high': 58.18181818181818}
+[ 1412.3s] encoding 95 new texts with BAAI/bge-small-en-v1.5
+[ 1417.6s] encoding 2,692 new texts with BAAI/bge-small-en-v1.5
+[ 1546.1s] S7 Furniture > Decor: calibration logistic AUC=0.9827902695595003, T_AAS={'aas_low': 30.758620689655174, 'aas_high': 45.706896551724135}
+[ 1548.2s] encoding 483 new texts with BAAI/bge-small-en-v1.5
+[ 1557.0s] encoding 3,443 new texts with BAAI/bge-small-en-v1.5
+[ 1724.8s] S7 Furniture > Desks: calibration logistic AUC=0.8548388520971303, T_AAS={'aas_low': 37.362275449101794, 'aas_high': 55.80838323353294}
+[ 1726.8s] encoding 182 new texts with BAAI/bge-small-en-v1.5
+[ 1731.9s] encoding 934 new texts with BAAI/bge-small-en-v1.5
+[ 1799.5s] S7 Furniture > Lamps & Lighting: calibration logistic AUC=0.8937547539285656, T_AAS={'aas_low': 27.7396449704142, 'aas_high': 44.35502958579882}
+[ 1802.5s] encoding 336 new texts with BAAI/bge-small-en-v1.5
+[ 1809.3s] encoding 1,890 new texts with BAAI/bge-small-en-v1.5
+[ 1894.0s] S7 Office Supplies > Calendars & Planners: calibration logistic AUC=0.9814969574036512, T_AAS={'aas_low': 26.335403726708073, 'aas_high': 41.44596273291924}
+[ 1895.4s] encoding 32 new texts with BAAI/bge-small-en-v1.5
+[ 1898.7s] encoding 294 new texts with BAAI/bge-small-en-v1.5
+[ 1909.7s] S7 labels: {'OFF-BRAND': 6001, 'UNDERCUT': 3235, 'REVIEW': 3017, 'TRADE-UP': 1362, 'SUBSTITUTE': 1248, 'STYLE-EXTENSION': 801, 'CURATE': 220, 'EDGE': 126, 'EXCLUDE': 25}
+[ 1909.7s] === s6: method 2: attribute gaps (TG) + price view
+D:\Testing\My-Staples-PoC\2. AL PoC\V2 - Categ from the scratch\src\alpoc\s6_gaps.py:105: RuntimeWarning: Mean of empty slice
+  msg = np.nanmean([dist_jsd(mc[a], ref[a]) for a in msg_attrs]) if msg_attrs else np.nan
+D:\Testing\My-Staples-PoC\2. AL PoC\V2 - Categ from the scratch\src\alpoc\s6_gaps.py:105: RuntimeWarning: Mean of empty slice
+  msg = np.nanmean([dist_jsd(mc[a], ref[a]) for a in msg_attrs]) if msg_attrs else np.nan
+D:\Testing\My-Staples-PoC\2. AL PoC\V2 - Categ from the scratch\src\alpoc\s6_gaps.py:105: RuntimeWarning: Mean of empty slice
+  msg = np.nanmean([dist_jsd(mc[a], ref[a]) for a in msg_attrs]) if msg_attrs else np.nan
+D:\Testing\My-Staples-PoC\2. AL PoC\V2 - Categ from the scratch\src\alpoc\s6_gaps.py:105: RuntimeWarning: Mean of empty slice
+  msg = np.nanmean([dist_jsd(mc[a], ref[a]) for a in msg_attrs]) if msg_attrs else np.nan
+D:\Testing\My-Staples-PoC\2. AL PoC\V2 - Categ from the scratch\src\alpoc\s6_gaps.py:105: RuntimeWarning: Mean of empty slice
+  msg = np.nanmean([dist_jsd(mc[a], ref[a]) for a in msg_attrs]) if msg_attrs else np.nan
+D:\Testing\My-Staples-PoC\2. AL PoC\V2 - Categ from the scratch\src\alpoc\s6_gaps.py:105: RuntimeWarning: Mean of empty slice
+  msg = np.nanmean([dist_jsd(mc[a], ref[a]) for a in msg_attrs]) if msg_attrs else np.nan
+D:\Testing\My-Staples-PoC\2. AL PoC\V2 - Categ from the scratch\src\alpoc\s6_gaps.py:105: RuntimeWarning: Mean of empty slice
+  msg = np.nanmean([dist_jsd(mc[a], ref[a]) for a in msg_attrs]) if msg_attrs else np.nan
+D:\Testing\My-Staples-PoC\2. AL PoC\V2 - Categ from the scratch\src\alpoc\s6_gaps.py:105: RuntimeWarning: Mean of empty slice
+  msg = np.nanmean([dist_jsd(mc[a], ref[a]) for a in msg_attrs]) if msg_attrs else np.nan
+D:\Testing\My-Staples-PoC\2. AL PoC\V2 - Categ from the scratch\src\alpoc\s6_gaps.py:105: RuntimeWarning: Mean of empty slice
+  msg = np.nanmean([dist_jsd(mc[a], ref[a]) for a in msg_attrs]) if msg_attrs else np.nan
+D:\Testing\My-Staples-PoC\2. AL PoC\V2 - Categ from the scratch\src\alpoc\s6_gaps.py:105: RuntimeWarning: Mean of empty slice
+  msg = np.nanmean([dist_jsd(mc[a], ref[a]) for a in msg_attrs]) if msg_attrs else np.nan
+D:\Testing\My-Staples-PoC\2. AL PoC\V2 - Categ from the scratch\src\alpoc\s6_gaps.py:105: RuntimeWarning: Mean of empty slice
+  msg = np.nanmean([dist_jsd(mc[a], ref[a]) for a in msg_attrs]) if msg_attrs else np.nan
+D:\Testing\My-Staples-PoC\2. AL PoC\V2 - Categ from the scratch\src\alpoc\s6_gaps.py:105: RuntimeWarning: Mean of empty slice
+  msg = np.nanmean([dist_jsd(mc[a], ref[a]) for a in msg_attrs]) if msg_attrs else np.nan
+D:\Testing\My-Staples-PoC\2. AL PoC\V2 - Categ from the scratch\src\alpoc\s6_gaps.py:105: RuntimeWarning: Mean of empty slice
+  msg = np.nanmean([dist_jsd(mc[a], ref[a]) for a in msg_attrs]) if msg_attrs else np.nan
+D:\Testing\My-Staples-PoC\2. AL PoC\V2 - Categ from the scratch\src\alpoc\s6_gaps.py:105: RuntimeWarning: Mean of empty slice
+  msg = np.nanmean([dist_jsd(mc[a], ref[a]) for a in msg_attrs]) if msg_attrs else np.nan
+D:\Testing\My-Staples-PoC\2. AL PoC\V2 - Categ from the scratch\src\alpoc\s6_gaps.py:105: RuntimeWarning: Mean of empty slice
+  msg = np.nanmean([dist_jsd(mc[a], ref[a]) for a in msg_attrs]) if msg_attrs else np.nan
+D:\Testing\My-Staples-PoC\2. AL PoC\V2 - Categ from the scratch\src\alpoc\s6_gaps.py:105: RuntimeWarning: Mean of empty slice
+  msg = np.nanmean([dist_jsd(mc[a], ref[a]) for a in msg_attrs]) if msg_attrs else np.nan
+D:\Testing\My-Staples-PoC\2. AL PoC\V2 - Categ from the scratch\src\alpoc\s6_gaps.py:105: RuntimeWarning: Mean of empty slice
+  msg = np.nanmean([dist_jsd(mc[a], ref[a]) for a in msg_attrs]) if msg_attrs else np.nan
+D:\Testing\My-Staples-PoC\2. AL PoC\V2 - Categ from the scratch\src\alpoc\s6_gaps.py:105: RuntimeWarning: Mean of empty slice
+  msg = np.nanmean([dist_jsd(mc[a], ref[a]) for a in msg_attrs]) if msg_attrs else np.nan
+D:\Testing\My-Staples-PoC\2. AL PoC\V2 - Categ from the scratch\src\alpoc\s6_gaps.py:105: RuntimeWarning: Mean of empty slice
+  msg = np.nanmean([dist_jsd(mc[a], ref[a]) for a in msg_attrs]) if msg_attrs else np.nan
+D:\Testing\My-Staples-PoC\2. AL PoC\V2 - Categ from the scratch\src\alpoc\s6_gaps.py:105: RuntimeWarning: Mean of empty slice
+  msg = np.nanmean([dist_jsd(mc[a], ref[a]) for a in msg_attrs]) if msg_attrs else np.nan
+D:\Testing\My-Staples-PoC\2. AL PoC\V2 - Categ from the scratch\src\alpoc\s6_gaps.py:105: RuntimeWarning: Mean of empty slice
+  msg = np.nanmean([dist_jsd(mc[a], ref[a]) for a in msg_attrs]) if msg_attrs else np.nan
+D:\Testing\My-Staples-PoC\2. AL PoC\V2 - Categ from the scratch\src\alpoc\s6_gaps.py:105: RuntimeWarning: Mean of empty slice
+  msg = np.nanmean([dist_jsd(mc[a], ref[a]) for a in msg_attrs]) if msg_attrs else np.nan
+D:\Testing\My-Staples-PoC\2. AL PoC\V2 - Categ from the scratch\src\alpoc\s6_gaps.py:105: RuntimeWarning: Mean of empty slice
+  msg = np.nanmean([dist_jsd(mc[a], ref[a]) for a in msg_attrs]) if msg_attrs else np.nan
+D:\Testing\My-Staples-PoC\2. AL PoC\V2 - Categ from the scratch\src\alpoc\s6_gaps.py:105: RuntimeWarning: Mean of empty slice
+  msg = np.nanmean([dist_jsd(mc[a], ref[a]) for a in msg_attrs]) if msg_attrs else np.nan
+D:\Testing\My-Staples-PoC\2. AL PoC\V2 - Categ from the scratch\src\alpoc\s6_gaps.py:105: RuntimeWarning: Mean of empty slice
+  msg = np.nanmean([dist_jsd(mc[a], ref[a]) for a in msg_attrs]) if msg_attrs else np.nan
+D:\Testing\My-Staples-PoC\2. AL PoC\V2 - Categ from the scratch\src\alpoc\s6_gaps.py:105: RuntimeWarning: Mean of empty slice
+  msg = np.nanmean([dist_jsd(mc[a], ref[a]) for a in msg_attrs]) if msg_attrs else np.nan
+D:\Testing\My-Staples-PoC\2. AL PoC\V2 - Categ from the scratch\src\alpoc\s6_gaps.py:105: RuntimeWarning: Mean of empty slice
+  msg = np.nanmean([dist_jsd(mc[a], ref[a]) for a in msg_attrs]) if msg_attrs else np.nan
+D:\Testing\My-Staples-PoC\2. AL PoC\V2 - Categ from the scratch\src\alpoc\s6_gaps.py:105: RuntimeWarning: Mean of empty slice
+  msg = np.nanmean([dist_jsd(mc[a], ref[a]) for a in msg_attrs]) if msg_attrs else np.nan
+D:\Testing\My-Staples-PoC\2. AL PoC\V2 - Categ from the scratch\src\alpoc\s6_gaps.py:105: RuntimeWarning: Mean of empty slice
+  msg = np.nanmean([dist_jsd(mc[a], ref[a]) for a in msg_attrs]) if msg_attrs else np.nan
+D:\Testing\My-Staples-PoC\2. AL PoC\V2 - Categ from the scratch\src\alpoc\s6_gaps.py:105: RuntimeWarning: Mean of empty slice
+  msg = np.nanmean([dist_jsd(mc[a], ref[a]) for a in msg_attrs]) if msg_attrs else np.nan
+D:\Testing\My-Staples-PoC\2. AL PoC\V2 - Categ from the scratch\src\alpoc\s6_gaps.py:105: RuntimeWarning: Mean of empty slice
+  msg = np.nanmean([dist_jsd(mc[a], ref[a]) for a in msg_attrs]) if msg_attrs else np.nan
+D:\Testing\My-Staples-PoC\2. AL PoC\V2 - Categ from the scratch\src\alpoc\s6_gaps.py:105: RuntimeWarning: Mean of empty slice
+  msg = np.nanmean([dist_jsd(mc[a], ref[a]) for a in msg_attrs]) if msg_attrs else np.nan
+D:\Testing\My-Staples-PoC\2. AL PoC\V2 - Categ from the scratch\src\alpoc\s6_gaps.py:105: RuntimeWarning: Mean of empty slice
+  msg = np.nanmean([dist_jsd(mc[a], ref[a]) for a in msg_attrs]) if msg_attrs else np.nan
+D:\Testing\My-Staples-PoC\2. AL PoC\V2 - Categ from the scratch\src\alpoc\s6_gaps.py:105: RuntimeWarning: Mean of empty slice
+  msg = np.nanmean([dist_jsd(mc[a], ref[a]) for a in msg_attrs]) if msg_attrs else np.nan
+D:\Testing\My-Staples-PoC\2. AL PoC\V2 - Categ from the scratch\src\alpoc\s6_gaps.py:105: RuntimeWarning: Mean of empty slice
+  msg = np.nanmean([dist_jsd(mc[a], ref[a]) for a in msg_attrs]) if msg_attrs else np.nan
+D:\Testing\My-Staples-PoC\2. AL PoC\V2 - Categ from the scratch\src\alpoc\s6_gaps.py:105: RuntimeWarning: Mean of empty slice
+  msg = np.nanmean([dist_jsd(mc[a], ref[a]) for a in msg_attrs]) if msg_attrs else np.nan
+[ 1933.5s] S8: 541 archetypes scored, 1088 attribute-value gaps
+[ 1933.5s] === s7: integration: gate + fused re-rank
+[ 1962.8s] S7: 40 eligible, 11 shortlisted; stability TG=0.98408, VOS=0.99992
+[ 1962.8s] === s8: SKU exemplars & sellers
+[ 1975.6s] S8: 33 exemplar SKUs, 45 style-extension SKUs, 36 vendor rows
+[ 1975.7s] done

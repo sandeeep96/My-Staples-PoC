@@ -1,0 +1,54 @@
+node: "Office Supplies > Desk Organizers & Accessories > Desk Pads"
+noun: desk pad
+generated_by: "claude-opus-5-5 session draft from Staples spec keys, 2026-10-01 (no competitor data yet: Amazon file has no desk-pad pages)"
+reviewed_by: null
+
+material_spec_keys: ['Desk Pad Material']
+style_zero_shot: false
+vocab_overrides:
+  material_class:
+    mode: position
+    values:
+      faux leather: ['faux leather', 'pu leather', 'vegan leather', 'leatherette', 'polyurethane', 'pu', 'leather']
+      felt/wool: ['felt', 'wool']
+      cork: ['cork']
+      glass: ['glass']
+      rubber: ['rubber', 'neoprene']
+      clear plastic: ['clear', 'polycarbonate', 'plastic', 'krystal view', 'acrylic']
+      vinyl/pvc: ['vinyl', 'pvc', 'rhinolin']
+      paper: ['paper', 'refill', 'sheets']
+      fabric/cloth: ['fabric', 'cloth', 'microfiber', 'polyester']
+
+tier2:
+  wireless_charging:
+    mode: priority
+    values: {"yes": ['wireless charg\w+']}
+  side_rails:
+    mode: priority
+    values: {"yes": ['side rails?', 'rails?']}
+  anti_slip:
+    mode: priority
+    values: {"yes": ['anti[- ]slip', 'non[- ]slip', 'skid[- ]resistant', 'non[- ]skid']}
+  dual_sided:
+    mode: priority
+    values: {"yes": ['dual[- ]sided', 'double[- ]sided', 'reversible']}
+
+size_bands: {source: width, bands: {"small (<20 in)": ['0', '20'], "standard (20-30 in)": ['20', '30.5'], "large (30-36 in)": ['30.5', '36.5'], "extra large (36 in+)": ['36.5', '1000']}}
+
+archetype_facets:
+  tier1: [material_class, colour_tone, colour_family, size_class]
+  tier2: [wireless_charging, side_rails, anti_slip, dual_sided]
+  tier3: [vibe, style_family]
+name_order: [vibe, material_class, size_class]
+type_attrs: []
+functional_core: [wireless_charging, side_rails, anti_slip, dual_sided, size_class]
+facet_labels: {wireless_charging: Wireless charging, side_rails: Side rails, anti_slip: Anti-slip, dual_sided: Dual-sided, size_class: Size}
+material_tiers: {paper: 0, vinyl/pvc: 1, clear plastic: 1, rubber: 1, fabric/cloth: 1, cork: 2, felt/wool: 2, faux leather: 2, glass: 3}
+
+dfi_anchors:
+  design:
+    - "a stylish felt and vegan leather desk mat in a warm neutral tone for a curated home office"
+    - "a designer desk pad with a minimalist aesthetic and premium materials"
+  utility:
+    - "a basic clear plastic desk pad for an office desk"
+    - "a plain black vinyl desk pad, functional"

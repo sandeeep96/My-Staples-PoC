@@ -1,0 +1,22 @@
+[    2.2s] === s5: method 1: vector view (VOS)
+[   66.9s] S7 Bags, Backpacks & Luggage > Backpacks & Laptop Bags: calibration fallback-percentile AUC=None, T_AAS={'aas_low': 27.598944591029024, 'aas_high': 62.80103563550079}
+[  132.5s] S7 Bags, Backpacks & Luggage > Totes & Handbags: calibration logistic AUC=0.9770554298930033, T_AAS={'aas_low': 39.62264150943396, 'aas_high': 52.45283018867924}
+[  187.7s] S7 Coffee, Water & Snacks > Coffee, Coffee Makers & Supplies: calibration fallback-percentile AUC=None, T_AAS={'aas_low': 17.3864168618267, 'aas_high': 35.446416861826684}
+[  282.3s] S7 Furniture > Chairs & Seating: calibration logistic AUC=0.9851811345435204, T_AAS={'aas_low': 19.734515060970686, 'aas_high': 42.19827586206897}
+[  320.4s] S7 Furniture > Cubicle & Panel Systems: calibration logistic AUC=0.9986099706744868, T_AAS={'aas_low': 26.545454545454547, 'aas_high': 53.333333333333336}
+[  379.1s] S7 Furniture > Decor: calibration logistic AUC=0.9827902695595003, T_AAS={'aas_low': 21.434547363320686, 'aas_high': 45.01724137931035}
+[  470.3s] S7 Furniture > Desks: calibration logistic AUC=0.8548388520971303, T_AAS={'aas_low': 33.203592814371255, 'aas_high': 53.95553155983116}
+[  511.7s] S7 Furniture > Lamps & Lighting: calibration logistic AUC=0.8937547539285656, T_AAS={'aas_low': 26.532544378698226, 'aas_high': 44.35502958579882}
+[  554.3s] S7 Office Supplies > Calendars & Planners: calibration logistic AUC=0.9814969574036512, T_AAS={'aas_low': 26.91670909276041, 'aas_high': 45.267080745341616}
+[  559.0s] S7 labels: {'REVIEW': 4296, 'UNDERCUT': 3825, 'OFF-BRAND': 3546, 'TRADE-UP': 1565, 'SUBSTITUTE': 1437, 'STYLE-EXTENSION': 984, 'EDGE': 180, 'CURATE': 177, 'EXCLUDE': 25}
+[  559.0s] === s6: method 2: attribute gaps (TG) + price view
+[  569.7s] S8: 307 archetypes scored, 1083 attribute-value gaps
+[  569.7s] === s7: integration: gate + fused re-rank
+[  589.8s] S7: 19 eligible, 8 shortlisted; stability TG=0.9672499999999999, VOS=0.99365
+[  589.8s] === s8: SKU exemplars & sellers
+[  599.4s] S8: 24 exemplar SKUs, 45 style-extension SKUs, 40 vendor rows
+[  599.4s] === s9: figures + HTML report
+findfont: Failed to find font weight semibold for DejaVu Sans, now using 700.
+findfont: Failed to find font weight semibold for DejaVu Sans, now using 700.
+[  658.4s] S9 report: D:\Testing\My-Staples-PoC\2. AL PoC\V2 - Categ from the scratch\outputs\report\Staples_Assortment_Report_v7.html (8.4 MB), 12 node sections
+[  658.4s] done

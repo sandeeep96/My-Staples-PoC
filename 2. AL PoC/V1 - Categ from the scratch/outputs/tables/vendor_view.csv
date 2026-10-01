@@ -1,162 +1,335 @@
 node_id,brand,products,archetypes,house_brand,brand_on_staples,recruit_path
-Furniture > Chairs & Seating > Accent & Waiting Room Chairs,AllModern,6,3,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Latitude Run,6,3,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Accent & Waiting Room Chairs,George Oliver,5,3,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Lesro,5,1,False,True,Quick win: already a Staples supplier
-Furniture > Chairs & Seating > Accent & Waiting Room Chairs,sohoConcept,5,2,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Joss & Main,4,2,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Wade Logan,4,4,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Bernhardt,3,2,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Ebern Designs,3,3,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Hokku Designs,3,2,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Sand & Stable,3,2,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Birch Lane,2,2,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Fairfield Chair,2,2,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Chairs & Seating > Accent & Waiting Room Chairs,KFI Studios,2,2,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Lark Manor,2,2,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Laurel Foundry Modern Farmhouse,2,2,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Mercer41,2,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Modway,2,2,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Chairs & Seating > Accent & Waiting Room Chairs,One Allium Way,2,2,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Red Barrel Studio,2,2,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Williston Forge,2,2,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Accent & Waiting Room Chairs,AA Importing,1,1,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Bayou Breeze,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",,244,10,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",Disney,29,1,False,True,Quick win: already a Staples supplier
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",LOVEVOOK,27,6,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",SKYSPER,10,3,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",15L,9,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",20L,9,2,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",WATERFLY,9,4,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",10L,5,3,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",ECOHUB,5,3,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",CROSSGEAR,4,3,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",IX,4,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",MATEIN,4,3,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",MOSISO,4,2,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",25L,3,2,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",BECOJADDE,3,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",18L,2,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",40L,2,2,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",BAGSMART,2,2,False,True,Quick win: already a Staples supplier
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",FENGDONG,2,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",GO,2,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",HOTOR,2,2,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",LIGHT,2,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",SEAFEW,2,2,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",SHRRADOO,2,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",TILYMOL,2,2,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",TSA,2,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",11L,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",12L,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",13L,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",14L,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",22L,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",35L,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",3F,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",5L,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",60L,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",9L,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",9L/20L,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",AI,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",AONIJIE,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",CROSS,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",DEYACE,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",DISNEY,1,1,False,True,Quick win: already a Staples supplier
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",DOJUNS,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",DUSLANG,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",EMPSIGN,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",EXP28,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",EZUOLA,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",FIORETTO,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",FOCDOD,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",GAGAKU,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",GOLF,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",GOX,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",HOLYLUCK,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",HOMIEE,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",IKYWT,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",KEEP,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",KEOFID,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",LEFF,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",MOKURA,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",MOMUVO,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",MOUNTAINTOP,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",PIJUSHI,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",PLAY-KING,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",Polare,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",QT&QY,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",RUCYEN,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",SwissGear,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",Tactical,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",Targus,1,1,False,True,Quick win: already a Staples supplier
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",VECKUSON,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",VGCUB,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",VPBAGE,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",YAMTION,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",YFREAL,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",Z-MGKISS,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",ZOMAKE,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",ZOMFELT,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",,170,10,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",LOVEVOOK,18,2,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",HOMEKOL,4,2,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",MIER,4,3,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",BAGSMART,3,1,False,True,Quick win: already a Staples supplier
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",EAST,3,2,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",GLORIEROO,3,2,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",GYEUKHAM,3,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",HOTOR,3,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",TENKIST,3,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",Tactical,3,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",2X1.2L,2,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",AIJIEKE,2,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",Bentgo,2,2,False,True,Quick win: already a Staples supplier
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",GLENKEY,2,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",HOMESPON,2,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",HSHRISH,2,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",JOYHILL,2,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",JXXM,2,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",LOIDOU,2,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",LOKASS,2,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",PackIt Freezable,2,1,False,True,Quick win: already a Staples supplier
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",TELLUMO,2,2,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",1.8L,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",1L,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",80W,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",AMZCHEF,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",AO,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",APP,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",ASEBBO,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",Arctic Zone,1,1,False,True,Quick win: already a Staples supplier
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",BEIMILY,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",DALINDA,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",EASYA,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",EASYFUN,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",FORABEST,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",FYY,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",Fit & Fresh,1,1,False,True,Quick win: already a Staples supplier
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",GASSDA,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",HILOMON,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",IDEATECH,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",IKNOE,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",JanSport,1,1,False,True,Quick win: already a Staples supplier
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",KOOMADE,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",LEDAOU,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",LOHASOK,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",LONICERA,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",MAPLELILY,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",MAXTOP,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",MIYCOO,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",MOZETO,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",NOL,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",ODSD,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",OLEEK,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",ONFAON,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",OPUX,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",PASMAN,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",QT&QY,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",REDSHELL,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",RHCPFOVR,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",SIMPLYKLEEN,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",SMRITI,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",SODEER,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",SUNNY,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",TESAFNG,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",TOURIT,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",VZZNN,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",WFJINGHAN,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",ZEEMO,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",ZOMFELT,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",iknoe,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",opux,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Coffee, Water & Snacks > Coffee, Coffee Makers & Supplies > Coffee Organizers & Dispensers",,119,7,False,False,Independent brand: recruit as a marketplace seller
+"Coffee, Water & Snacks > Coffee, Coffee Makers & Supplies > Coffee Organizers & Dispensers",INSAGO,2,1,False,False,Independent brand: recruit as a marketplace seller
+"Coffee, Water & Snacks > Coffee, Coffee Makers & Supplies > Coffee Organizers & Dispensers",SICHEER,2,2,False,False,Independent brand: recruit as a marketplace seller
+"Coffee, Water & Snacks > Coffee, Coffee Makers & Supplies > Coffee Organizers & Dispensers",3Pcs,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Coffee, Water & Snacks > Coffee, Coffee Makers & Supplies > Coffee Organizers & Dispensers",ALELION,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Coffee, Water & Snacks > Coffee, Coffee Makers & Supplies > Coffee Organizers & Dispensers",ELLDOO,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Coffee, Water & Snacks > Coffee, Coffee Makers & Supplies > Coffee Organizers & Dispensers",EVERIE,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Coffee, Water & Snacks > Coffee, Coffee Makers & Supplies > Coffee Organizers & Dispensers",HFHOME,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Coffee, Water & Snacks > Coffee, Coffee Makers & Supplies > Coffee Organizers & Dispensers",KIRIGEN,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Coffee, Water & Snacks > Coffee, Coffee Makers & Supplies > Coffee Organizers & Dispensers",MINCORD,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Coffee, Water & Snacks > Coffee, Coffee Makers & Supplies > Coffee Organizers & Dispensers",QUALLON,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Coffee, Water & Snacks > Coffee, Coffee Makers & Supplies > Coffee Organizers & Dispensers",SARUFO,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Coffee, Water & Snacks > Coffee, Coffee Makers & Supplies > Coffee Organizers & Dispensers",SOUJOY,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Coffee, Water & Snacks > Coffee, Coffee Makers & Supplies > Coffee Organizers & Dispensers",WADORN,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Coffee, Water & Snacks > Coffee, Coffee Makers & Supplies > Coffee Organizers & Dispensers",YATINEY,1,1,False,False,Independent brand: recruit as a marketplace seller
+"Coffee, Water & Snacks > Coffee, Coffee Makers & Supplies > Coffee Organizers & Dispensers",YINMIT,1,1,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Latitude Run,34,8,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Chairs & Seating > Accent & Waiting Room Chairs,George Oliver,14,7,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Mercer41,13,5,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Wade Logan,11,4,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Ebern Designs,10,5,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Everly Quinn,8,4,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Red Barrel Studio,8,5,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Hokku Designs,5,4,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Lark Manor,4,3,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Joss & Main,3,2,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Wrought Studio,3,2,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Chairs & Seating > Accent & Waiting Room Chairs,17 Stories,2,2,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Astoria Grand,2,1,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Chairs & Seating > Accent & Waiting Room Chairs,A&J Homes Studio,1,1,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Alcott Hill,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Chairs & Seating > Accent & Waiting Room Chairs,All-in furniture,1,1,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Benjara,1,1,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Brayden Studio,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
 Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Canora Grey,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Accent & Waiting Room Chairs,CoyNet Sofa Boutique,1,1,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Craft'd,1,1,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Caracole,1,1,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Corrigan Studio,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Darby Home Co,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
 Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Dovetail Furniture,1,1,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Finch,1,1,False,True,Quick win: already a Staples supplier
-Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Gus* Modern,1,1,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Chairs & Seating > Accent & Waiting Room Chairs,HUAlin,1,1,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Harriet Bee,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Hooker Furniture,1,1,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Inbox Zero,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Industrial Style Sofa,1,1,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Jennifer Taylor Home,1,1,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Jonathan Charles Fine Furniture,1,1,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Dreamsidea,1,1,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Gracie Oaks,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Highland Dunes,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Ivy Bronx,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
 Furniture > Chairs & Seating > Accent & Waiting Room Chairs,NFusion,1,1,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Ophelia & Co.,1,1,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Ophelia & Co.,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
 Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Orren Ellis,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Reprise Designs,1,1,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Tommy Bahama Home,1,1,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Trent Austin Design,1,1,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Poly & Bark,1,1,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Rosdorf Park,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Rosecliff Heights,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Three Posts,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Wildon Home,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
 Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Willa Arlo Interiors,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Accent & Waiting Room Chairs,World Menagerie,1,1,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Wrought Studio,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Breakroom & Dining Chairs,Mercer41,5,4,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Breakroom & Dining Chairs,Red Barrel Studio,5,3,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Breakroom & Dining Chairs,George Oliver,4,3,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Breakroom & Dining Chairs,Wade Logan,4,3,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Breakroom & Dining Chairs,Corrigan Studio,3,2,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Breakroom & Dining Chairs,Everly Quinn,3,3,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Breakroom & Dining Chairs,Ivy Bronx,3,2,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Breakroom & Dining Chairs,Lark Manor,3,3,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Breakroom & Dining Chairs,Orren Ellis,3,2,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Breakroom & Dining Chairs,Rosdorf Park,3,3,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Breakroom & Dining Chairs,August Grove,2,2,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Chairs & Seating > Breakroom & Dining Chairs,Bayou Breeze,2,1,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Chairs & Seating > Breakroom & Dining Chairs,Birch Lane,2,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Breakroom & Dining Chairs,Gracie Oaks,2,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Breakroom & Dining Chairs,Hokku Designs,2,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Breakroom & Dining Chairs,Latitude Run,2,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Breakroom & Dining Chairs,Sika Design,2,2,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Chairs & Seating > Breakroom & Dining Chairs,A.R.T.,1,1,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Chairs & Seating > Breakroom & Dining Chairs,AllModern,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Breakroom & Dining Chairs,Bay Isle Home,1,1,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Chairs & Seating > Breakroom & Dining Chairs,Beachcrest Home,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Breakroom & Dining Chairs,CHAIRKER,1,1,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Chairs & Seating > Breakroom & Dining Chairs,Caracole,1,1,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Chairs & Seating > Breakroom & Dining Chairs,Charlton Home,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Breakroom & Dining Chairs,Ebern Designs,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Breakroom & Dining Chairs,House of Hampton,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Breakroom & Dining Chairs,Manhattan Comfort,1,1,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Chairs & Seating > Breakroom & Dining Chairs,Newline,1,1,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Chairs & Seating > Breakroom & Dining Chairs,One Allium Way,1,1,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Chairs & Seating > Breakroom & Dining Chairs,Rosalind Wheeler,1,1,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Chairs & Seating > Breakroom & Dining Chairs,Rosecliff Heights,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Breakroom & Dining Chairs,Three Posts,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Breakroom & Dining Chairs,Union Rustic,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Breakroom & Dining Chairs,Vondom,1,1,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Chairs & Seating > Breakroom & Dining Chairs,Wildon Home,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Breakroom & Dining Chairs,Willa Arlo Interiors,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Breakroom & Dining Chairs,Winston Porter,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Breakroom & Dining Chairs,paj interiors,1,1,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Chairs & Seating > Breakroom & Dining Chairs,sohoConcept,1,1,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Chairs & Seating > Office Chairs > Executive,Hokku Designs,2,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Office Chairs > Executive,Inbox Zero,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Office Chairs > Executive,Latitude Run,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Office Chairs > Executive,Lorell,1,1,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Chairs & Seating > Sofas & Benches > Benches & Beam Seating,Lesro,8,1,False,True,Quick win: already a Staples supplier
-Furniture > Chairs & Seating > Sofas & Benches > Benches & Beam Seating,Etta Avenue,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Sofas & Benches > Benches & Beam Seating,George Oliver,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Sofas & Benches > Benches & Beam Seating,Gracie Oaks,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Sofas & Benches > Benches & Beam Seating,Inbox Zero,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Sofas & Benches > Benches & Beam Seating,Joss & Main,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Sofas & Benches > Benches & Beam Seating,Lark Manor,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Sofas & Benches > Benches & Beam Seating,Latitude Run,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Sofas & Benches > Benches & Beam Seating,Modway,1,1,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Chairs & Seating > Sofas & Benches > Benches & Beam Seating,Ophelia & Co.,1,1,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Chairs & Seating > Sofas & Benches > Benches & Beam Seating,POLYWOOD,1,1,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Chairs & Seating > Sofas & Benches > Benches & Beam Seating,Red Barrel Studio,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Sofas & Benches > Benches & Beam Seating,Symple Stuff,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Sofas & Benches > Benches & Beam Seating,The Twillery Co.,1,1,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Chairs & Seating > Sofas & Benches > Benches & Beam Seating,Union Rustic,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Stools & Ottomans > Counter & Bar Stools > Bar,George Oliver,3,2,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Stools & Ottomans > Counter & Bar Stools > Bar,Wade Logan,3,2,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Stools & Ottomans > Counter & Bar Stools > Bar,Ivy Bronx,2,2,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Stools & Ottomans > Counter & Bar Stools > Bar,Red Barrel Studio,2,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Stools & Ottomans > Counter & Bar Stools > Bar,Corrigan Studio,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Stools & Ottomans > Counter & Bar Stools > Bar,Everly Quinn,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Stools & Ottomans > Counter & Bar Stools > Bar,Latitude Run,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Stools & Ottomans > Counter & Bar Stools > Bar,Mercury Row,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Stools & Ottomans > Counter & Bar Stools > Bar,TRQ,1,1,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Chairs & Seating > Stools & Ottomans > Counter & Bar Stools > Bar,Willa Arlo Interiors,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Stools & Ottomans > Counter & Bar Stools > Counter,17 Stories,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Stools & Ottomans > Counter & Bar Stools > Counter,August Grove,1,1,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Chairs & Seating > Stools & Ottomans > Counter & Bar Stools > Counter,Everly Quinn,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Stools & Ottomans > Counter & Bar Stools > Counter,George Oliver,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Stools & Ottomans > Counter & Bar Stools > Counter,Gracie Oaks,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Stools & Ottomans > Counter & Bar Stools > Counter,Hokku Designs,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Stools & Ottomans > Counter & Bar Stools > Counter,Latitude Run,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Stools & Ottomans > Counter & Bar Stools > Counter,Meridian Furniture,1,1,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Chairs & Seating > Stools & Ottomans > Counter & Bar Stools > Counter,Orren Ellis,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Stools & Ottomans > Counter & Bar Stools > Counter,Winston Porter,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Desks > Office Desks > Computer,Orren Ellis,5,3,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Desks > Office Desks > Computer,Cozynest,4,2,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Desks > Office Desks > Computer,Corrigan Studio,3,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Desks > Office Desks > Computer,Latitude Run,3,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Desks > Office Desks > Computer,Canora Grey,2,2,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Desks > Office Desks > Computer,Ebern Designs,2,2,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Desks > Office Desks > Computer,One Allium Way,2,1,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Desks > Office Desks > Computer,Red Barrel Studio,2,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Desks > Office Desks > Computer,Astoria Grand,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Desks > Office Desks > Computer,Bernhardt,1,1,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Desks > Office Desks > Computer,East Urban Home,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Desks > Office Desks > Computer,Everly Quinn,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Desks > Office Desks > Computer,Groove Interior,1,1,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Desks > Office Desks > Computer,Hokku Designs,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Desks > Office Desks > Computer,Inbox Zero,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Desks > Office Desks > Computer,Kaoloupin,1,1,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Desks > Office Desks > Computer,The Twillery Co.,1,1,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Desks > Office Desks > Computer,Wren Decors,1,1,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Desks > Office Desks > Computer,Wrought Studio,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Desks > Office Desks > Table,Cozynest,4,1,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Desks > Office Desks > Table,Inbox Zero,3,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Desks > Office Desks > Table,Orren Ellis,3,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Desks > Office Desks > Table,Wrought Studio,3,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Desks > Office Desks > Table,Hokku Designs,2,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Desks > Office Desks > Table,Trent Austin Design,2,1,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Desks > Office Desks > Table,Canora Grey,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Desks > Office Desks > Table,Corrigan Studio,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Desks > Office Desks > Table,Ebern Designs,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Desks > Office Desks > Table,Everly Quinn,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Desks > Office Desks > Table,Groove Interior,1,1,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Desks > Office Desks > Table,Red Barrel Studio,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Desks > Office Desks > Table,Wildon Home,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Desks > Sit & Stand Desks,Colamy Home,2,1,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Desks > Sit & Stand Desks,Latitude Run,2,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Desks > Sit & Stand Desks,Wrought Studio,2,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Desks > Sit & Stand Desks,August Grove,1,1,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Desks > Sit & Stand Desks,Ebern Designs,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Desks > Sit & Stand Desks,Red Barrel Studio,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Chairs & Seating > Accent & Waiting Room Chairs,keylanta,1,1,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Cubicle & Panel Systems > Office Partitions & Dividers,East Urban Home,5,3,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Cubicle & Panel Systems > Office Partitions & Dividers,YIBOMORE,4,1,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Cubicle & Panel Systems > Office Partitions & Dividers,Forbes Industries,3,2,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Cubicle & Panel Systems > Office Partitions & Dividers,Bungalow Rose,2,2,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Cubicle & Panel Systems > Office Partitions & Dividers,Dakota Fields,2,2,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Cubicle & Panel Systems > Office Partitions & Dividers,Versare,2,2,False,True,Quick win: already a Staples supplier
+Furniture > Cubicle & Panel Systems > Office Partitions & Dividers,August Grove,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Cubicle & Panel Systems > Office Partitions & Dividers,Children's Factory,1,1,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Cubicle & Panel Systems > Office Partitions & Dividers,CoSoTower,1,1,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Cubicle & Panel Systems > Office Partitions & Dividers,Ebern Designs,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Cubicle & Panel Systems > Office Partitions & Dividers,Factory Direct Partners,1,1,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Cubicle & Panel Systems > Office Partitions & Dividers,Loon Peak,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Cubicle & Panel Systems > Office Partitions & Dividers,Norwood Commercial Furniture,1,1,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Cubicle & Panel Systems > Office Partitions & Dividers,Rebrilliant,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Cubicle & Panel Systems > Office Partitions & Dividers,Red Barrel Studio,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Cubicle & Panel Systems > Office Partitions & Dividers,Screen Gems,1,1,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Cubicle & Panel Systems > Office Partitions & Dividers,Upper Square,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Cubicle & Panel Systems > Office Partitions & Dividers,Wrought Studio,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Decor > Clocks & Timers,East Urban Home,234,9,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Decor > Clocks & Timers,Latitude Run,68,5,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Decor > Clocks & Timers,Design Art,32,2,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Decor > Clocks & Timers,Ebern Designs,16,3,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Decor > Clocks & Timers,The Twillery Co.,13,3,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Decor > Clocks & Timers,Wrought Studio,11,2,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Decor > Clocks & Timers,Seiko,10,1,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Decor > Clocks & Timers,Mercer41,8,3,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Decor > Clocks & Timers,Trinx,8,2,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Decor > Clocks & Timers,Astoria Grand,7,2,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Decor > Clocks & Timers,Rosalind Wheeler,7,2,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Decor > Clocks & Timers,Bulova,6,1,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Decor > Clocks & Timers,Gracie Oaks,6,4,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Decor > Clocks & Timers,17 Stories,5,4,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Decor > Clocks & Timers,Ivy Bronx,5,3,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Decor > Clocks & Timers,Laurel Foundry Modern Farmhouse,5,3,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Decor > Clocks & Timers,Red Barrel Studio,5,4,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Decor > Clocks & Timers,August Grove,4,4,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Decor > Clocks & Timers,Canora Grey,4,2,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Decor > Clocks & Timers,Loon Peak,4,2,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Decor > Clocks & Timers,Stella Trek,4,3,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Decor > Clocks & Timers,Dakota Fields,3,2,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Decor > Clocks & Timers,Hermle,3,2,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Decor > Clocks & Timers,One Allium Way,3,3,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Decor > Clocks & Timers,The Holiday Aisle,3,2,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Decor > Clocks & Timers,Wade Logan,3,3,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Decor > Clocks & Timers,Alcott Hill,2,2,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Decor > Clocks & Timers,Black Forest,2,1,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Decor > Clocks & Timers,Bungalow Rose,2,2,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Decor > Clocks & Timers,Darby Home Co,2,2,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Decor > Clocks & Timers,Everly Quinn,2,2,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Decor > Clocks & Timers,George Oliver,2,2,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Decor > Clocks & Timers,ORIXFORCE,2,1,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Decor > Clocks & Timers,Ophelia & Co.,2,2,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Decor > Clocks & Timers,Trent Austin Design,2,2,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Decor > Clocks & Timers,Williston Forge,2,2,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Decor > Clocks & Timers,Winston Porter,2,2,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Decor > Clocks & Timers,Bedford Clocks,1,1,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Decor > Clocks & Timers,Bloomsbury Market,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Decor > Clocks & Timers,Bulova Clocks,1,1,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Decor > Clocks & Timers,Charlton Home,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Decor > Clocks & Timers,Corrigan Studio,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Decor > Clocks & Timers,Elama,1,1,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Decor > Clocks & Timers,Freeport Park,1,1,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Decor > Clocks & Timers,Hermle Black Forest Clocks,1,1,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Decor > Clocks & Timers,Highland Dunes,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Decor > Clocks & Timers,House of Hampton,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Decor > Clocks & Timers,Howard Miller,1,1,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Decor > Clocks & Timers,Mercury Row,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Decor > Clocks & Timers,Millwood Pines,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Decor > Clocks & Timers,Nomon,1,1,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Decor > Clocks & Timers,Sorbus,1,1,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Decor > Clocks & Timers,The Gears Clock,1,1,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Decor > Clocks & Timers,WKING,1,1,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Decor > Clocks & Timers,World Menagerie,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Desks > Office Desks,Ebern Designs,26,7,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Desks > Office Desks,Inbox Zero,25,9,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Desks > Office Desks,17 Stories,18,6,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Desks > Office Desks,Williston Forge,11,6,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Desks > Office Desks,George Oliver,10,8,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Desks > Office Desks,Latitude Run,8,6,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Desks > Office Desks,Rosalind Wheeler,7,3,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Desks > Office Desks,Hokku Designs,6,5,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Desks > Office Desks,Trent Austin Design,4,2,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Desks > Office Desks,Wrought Studio,4,3,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Desks > Office Desks,Mercer41,3,2,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Desks > Office Desks,Birch Lane,2,1,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Desks > Office Desks,Groove Interior,2,2,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Desks > Office Desks,PensivePerch,2,1,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Desks > Office Desks,ACME Furniture,1,1,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Desks > Office Desks,August Grove,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Desks > Office Desks,Blu Dot,1,1,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Desks > Office Desks,Brayden Studio,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Desks > Office Desks,Breakwater Bay,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Desks > Office Desks,Corrigan Studio,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Desks > Office Desks,Cozynest,1,1,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Desks > Office Desks,Everly Quinn,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Desks > Office Desks,Gracie Oaks,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Desks > Office Desks,Hooker Furniture,1,1,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Desks > Office Desks,Ivy Bronx,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Desks > Office Desks,One Allium Way,1,1,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Desks > Office Desks,SpiritHome,1,1,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Desks > Office Desks,Three Posts,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Desks > Office Desks,Wade Logan,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Desks > Office Desks,mingjingxing,1,1,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Lamps & Lighting > Desk Lamps,Latitude Run,7,6,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Lamps & Lighting > Desk Lamps,Ivy Bronx,6,3,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Lamps & Lighting > Desk Lamps,Breakwater Bay,4,3,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Lamps & Lighting > Desk Lamps,Mercer41,4,1,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Lamps & Lighting > Desk Lamps,Brayden Studio,3,2,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Lamps & Lighting > Desk Lamps,World Menagerie,3,2,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Lamps & Lighting > Desk Lamps,AllModern,2,2,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Lamps & Lighting > Desk Lamps,Union Rustic,2,2,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Lamps & Lighting > Desk Lamps,Williston Forge,2,2,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Lamps & Lighting > Desk Lamps,Alcott Hill,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Lamps & Lighting > Desk Lamps,Charlton Home,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Lamps & Lighting > Desk Lamps,Corrigan Studio,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Lamps & Lighting > Desk Lamps,East Urban Home,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Lamps & Lighting > Desk Lamps,George Oliver,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Lamps & Lighting > Desk Lamps,Joss & Main,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Lamps & Lighting > Desk Lamps,Kartell,1,1,False,False,Independent brand: recruit as a marketplace seller
+Furniture > Lamps & Lighting > Desk Lamps,Ophelia & Co.,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
+Furniture > Lamps & Lighting > Desk Lamps,Seed Design,1,1,False,False,Independent brand: recruit as a marketplace seller
+Office Supplies > Calendars & Planners > Planners & Personal Organizers,,32,4,False,False,Independent brand: recruit as a marketplace seller
+Office Supplies > Calendars & Planners > Planners & Personal Organizers,LEUCHTTURM1917,2,2,False,False,Independent brand: recruit as a marketplace seller
+Office Supplies > Calendars & Planners > Planners & Personal Organizers,WANDERINGS,2,1,False,False,Independent brand: recruit as a marketplace seller
+Office Supplies > Calendars & Planners > Planners & Personal Organizers,AKONEGE,1,1,False,False,Independent brand: recruit as a marketplace seller
+Office Supplies > Calendars & Planners > Planners & Personal Organizers,CAGIE,1,1,False,False,Independent brand: recruit as a marketplace seller
+Office Supplies > Calendars & Planners > Planners & Personal Organizers,Fan&Ran,1,1,False,False,Independent brand: recruit as a marketplace seller
+Office Supplies > Calendars & Planners > Planners & Personal Organizers,JUBTIC,1,1,False,False,Independent brand: recruit as a marketplace seller
+Office Supplies > Calendars & Planners > Planners & Personal Organizers,JXSELECT,1,1,False,False,Independent brand: recruit as a marketplace seller
+Office Supplies > Calendars & Planners > Planners & Personal Organizers,MUJI,1,1,False,False,Independent brand: recruit as a marketplace seller
+Office Supplies > Calendars & Planners > Planners & Personal Organizers,PAPERAGE,1,1,False,False,Independent brand: recruit as a marketplace seller
+Office Supplies > Calendars & Planners > Planners & Personal Organizers,SUNEE,1,1,False,False,Independent brand: recruit as a marketplace seller

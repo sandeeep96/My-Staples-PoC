@@ -3,19 +3,21 @@
 # mode: position = earliest match in the highest-precedence source wins (longest pattern wins ties)
 #       priority = first value (in listed order) with any match wins
 #       multi    = every value with a match is kept
-generated_by: "claude-opus-5-5 session draft, 2026-09-28"
+# A node config (config/nodes/*.yaml) can override any vocabulary under `vocab_overrides` (e.g. material_class:
+# backpack fabrics are not chair fabrics).
+generated_by: "claude-opus-5-5 session draft, 2026-09-28; extended for the Phase-2 categories 2026-10-01"
 reviewed_by: null
 
 colour_family:
   mode: position
   values:
-    multi/pattern: ['multicolou?r', 'multi-colou?r', 'assorted', 'patterned', 'pattern', 'floral', 'striped?', 'plaid', 'camo', 'print']
-    clear: ['clear', 'transparent', 'frosted']
+    multi/pattern: ['multi-?colou?r(ed)?', 'assorted( colou?rs)?', 'patterned', 'pattern', 'floral', 'striped?', 'plaid', 'camo\w*', 'print', 'rainbow', 'tie[- ]dye']
+    clear: ['clear', 'transparent', 'frosted', 'translucent']
     metallic: ['silver', 'chrome', 'gold', 'brass', 'bronze', 'copper', 'nickel', 'platinum', 'metallic', 'rose gold', 'gunmetal']
     black: ['black', 'ebony', 'onyx', 'jet']
     white: ['white', 'snow', 'alabaster', 'pure white']
-    beige/cream: ['beige', 'cream', 'ivory', 'off-white', 'tan', 'taupe', 'khaki', 'sand', 'oatmeal', 'linen', 'natural', 'camel', 'ecru', 'bone', 'putty', 'mushroom', 'greige', 'champagne', 'wheat', 'flax']
-    grey: ['gr[ae]y', 'charcoal', 'slate', 'graphite', 'ash', 'stone', 'pewter', 'smoke', 'heather', 'storm', 'cement', 'concrete', 'dove']
+    beige/cream: ['beige', 'cream', 'ivory', 'off-white', 'tan', 'taupe', 'khaki', 'sand', 'oatmeal', 'linen', 'natural', 'camel', 'ecru', 'bone', 'putty', 'mushroom', 'greige', 'champagne', 'wheat', 'flax', 'kraft']
+    grey: ['gr[ae]y', 'charcoal', 'slate', 'graphite', 'ash', 'stone', 'pewter', 'smoke', 'heather', 'storm', 'cement', 'concrete', 'dove', 'anthracite']
     brown/wood: ['natural (elm|oak|wood|walnut|cherry|maple|teak|pine|acacia|ash|birch|bamboo|hickory)', 'light wood', 'dark wood', 'medium wood', 'white (oak|wash|washed)', 'whitewash(ed)?', 'brown', 'walnut', 'oak', 'cherry', 'mahogany', 'espresso', 'teak', 'maple', 'driftwood', 'elm', 'hickory', 'pine', 'acacia', 'mocha', 'chestnut', 'cognac', 'java', 'cappuccino', 'wood tone', 'woodgrain', 'rustic brown', 'coffee', 'chocolate', 'caramel', 'whiskey', 'saddle', 'rosewood', 'barnwood', 'bamboo', 'birch', 'beech', 'ash wood', 'wenge', 'truffle', 'tobacco', 'rust brown', 'brandy']
     navy: ['navy', 'midnight', 'indigo']
     blue: ['blue', 'teal', 'turquoise', 'aqua', 'cobalt', 'sky', 'denim', 'royal', 'cyan', 'peacock', 'cerulean']
@@ -74,17 +76,17 @@ style_family:
     contemporary: ['contemporary']
     modern: ['modern']
   zero_shot_prototypes:
-    mid-century: "mid-century modern furniture with tapered wooden legs and retro curved lines"
-    scandinavian: "scandinavian nordic furniture, light wood, simple soft forms"
-    industrial: "industrial furniture with black metal pipe frame and rustic wood"
-    farmhouse/rustic: "rustic farmhouse furniture, distressed wood, country cottage look"
-    glam: "glamorous luxe furniture with velvet and gold metal accents"
-    boho/coastal: "boho coastal furniture with rattan, wicker and natural woven textures"
-    traditional: "traditional classic furniture with tufting, rolled arms and dark wood"
-    minimalist: "minimalist furniture with clean lines, sleek simple silhouette"
-    contemporary: "contemporary commercial office furniture, plain professional look"
-    gaming: "racing style gaming furniture with bold colors and RGB lighting"
-  spec_style_map:   # Staples 'Furnishing Style' -> canonical (validation indicator only)
+    mid-century: "mid-century modern design with tapered wooden legs and retro curved lines"
+    scandinavian: "scandinavian nordic design, light wood, simple soft forms"
+    industrial: "industrial design with black metal pipe frame and rustic wood"
+    farmhouse/rustic: "rustic farmhouse look, distressed wood, country cottage style"
+    glam: "glamorous luxe design with velvet and gold metal accents"
+    boho/coastal: "boho coastal design with rattan, wicker and natural woven textures"
+    traditional: "traditional classic design with tufting, rolled arms, ornate details and dark wood"
+    minimalist: "minimalist design with clean lines, sleek simple silhouette"
+    contemporary: "contemporary commercial office product, plain professional look"
+    gaming: "racing style gaming product with bold colors and RGB lighting"
+  spec_style_map:   # Staples 'Furnishing Style' / 'Clock Style' -> canonical (validation indicator only)
     Contemporary: contemporary
     Modern: modern
     Industrial: industrial
@@ -98,23 +100,32 @@ style_family:
     Mid-Century Modern: mid-century
     Minimalist: minimalist
     Mission/Shaker: traditional
+  spec_style_keys: ['Furnishing Style', 'Clock Style']
 
+# Listed order = priority for the single-valued `vibe` facet (the first tag found; "plain" when none is found).
 aesthetic_tags:
   mode: multi
   values:
+    character/licensed: ['disney', 'marvel', 'harry potter', 'star wars', 'pok[eé]mon', 'minecraft', 'sanrio', 'hello kitty', 'bluey', 'paw patrol', 'frozen', 'spider-?man', 'mickey', 'minnie', 'pixar', 'barbie', 'super mario', 'sonic', 'licensed']
+    cute/kawaii: ['cute', 'kawaii', 'cartoon', 'unicorn', 'dinosaur', 'mermaid', 'puppy', 'puppies', 'kitten', 'bunny', 'panda']
+    floral/botanical: ['floral', 'botanical', 'flowers?', 'blooms?', 'palm', 'leaf', 'leaves', 'garden']
+    statement: ['statement', 'eye-catching', 'striking', 'show-?stopping', 'bold look', 'oversized']
+    luxe: ['luxury', 'luxurious', 'luxe', 'elegant', 'sophisticated', 'upscale', 'premium']
+    retro/vintage: ['retro', 'vintage', 'antique', 'old-world', 'heirloom']
+    textured: ['textured', 'boucle', 'bouclé', 'sherpa', 'ribbed', 'fluted', 'quilted']
     tufted: ['tufted', 'button[- ]tufted', 'tufting']
     channel-tufted: ['channel[- ]tufted', 'channel stitch\w*', 'channeled']
     curved/organic: ['curved', 'rounded', 'barrel', 'curvy', 'organic shape', 'sculpted', 'sculptural', 'shell', 'wave', 'cocoon', 'egg chair']
-    statement: ['statement', 'eye-catching', 'striking', 'show-?stopping', 'bold look']
-    cozy/plush: ['plush', 'cozy', 'cosy', 'cushy', 'overstuffed', 'cloud', 'sink-in', 'deep seat']
-    sleek/minimal: ['sleek', 'clean lines', 'streamlined', 'slim profile', 'minimalist']
-    natural/woven: ['rattan', 'wicker', 'cane', 'woven', 'jute', 'natural wood', 'solid wood']
-    luxe: ['luxury', 'luxurious', 'luxe', 'elegant', 'sophisticated', 'upscale']
-    retro/vintage: ['retro', 'vintage', 'antique', 'old-world']
+    natural/woven: ['rattan', 'wicker', 'cane', 'woven', 'jute', 'natural wood', 'solid wood', 'bamboo', 'cork']
+    glitter/sparkle: ['glitter', 'sparkle', 'shimmer', 'holographic', 'iridescent']
+    geometric/abstract: ['geometric', 'abstract', 'marble', 'terrazzo', 'mandala']
     playful/colourful: ['playful', 'whimsical', 'vibrant', 'colorful', 'colourful', 'fun colors']
+    cozy/plush: ['plush', 'cozy', 'cosy', 'cushy', 'overstuffed', 'cloud', 'sink-in', 'deep seat']
+    professional: ['executive', 'professional', 'business', 'corporate']
+    sleek/minimal: ['sleek', 'clean lines', 'streamlined', 'slim profile', 'minimalist', 'minimal']
     nailhead: ['nail ?head']
-    textured: ['textured', 'boucle', 'bouclé', 'sherpa', 'ribbed', 'fluted']
-    metal-accent: ['gold legs?', 'brass legs?', 'gold finish', 'chrome legs?', 'gold metal']
+    metal-accent: ['gold legs?', 'brass legs?', 'gold finish', 'chrome legs?', 'gold metal', 'gold accents?']
+    inspirational: ['inspirational', 'motivational', 'affirmations?', 'quotes?']
 
 use_context:
   mode: multi
@@ -122,38 +133,47 @@ use_context:
     home office: ['home office', 'work from home', 'wfh', 'remote work', 'home workspace', 'study room', 'home study']
     corporate office: ["(?<!home )\\boffices?\\b(?!\\s+(chairs?|desks?|stools?|furniture))", 'workplace', 'cubicle', 'corporate', 'conference', 'meeting room', 'boardroom', 'open office']
     reception/lobby: ['reception', 'lobby', 'waiting room', 'waiting area', 'guest seating']
-    residential living: ['living room', 'bedroom', 'family room', 'den', 'apartment', 'reading nook', 'entryway', 'lounge area', 'home decor']
-    breakroom/dining: ['break ?room', 'cafe', 'cafeteria', 'kitchen', 'dining']
-    education: ['school', 'classroom', 'library', 'dorm', 'student', 'college', 'university', 'training room']
-    healthcare: ['medical', 'clinic', 'hospital', 'healthcare', 'patient', 'exam room', 'laboratory']
+    residential living: ['living room', 'bedroom', 'family room', 'den', 'apartment', 'reading nook', 'entryway', 'lounge area', 'home decor', 'nightstand', 'bedside']
+    breakroom/dining: ['break ?room', 'cafe', 'cafeteria', 'kitchen', 'dining', 'countertop', 'coffee bar']
+    education: ['school', 'classroom', 'library', 'dorm', 'student', 'college', 'university', 'training room', 'teachers?']
+    healthcare: ['medical', 'clinic', 'hospital', 'healthcare', 'patient', 'exam room', 'laboratory', 'nurses?']
     hospitality/events: ['restaurant', 'hotel', '\bbar\b', 'hospitality', 'banquet', 'event', 'wedding', 'church', 'bistro']
     gaming: ['gaming', 'gamer', 'e-?sports']
     kids/teen: ['kids', 'children', 'child', 'toddler', 'teen', 'youth', 'nursery']
-    outdoor: ['outdoor', 'patio', 'garden', 'poolside']
+    outdoor: ['outdoor', 'patio', 'garden', 'poolside', 'hiking', 'camping', 'trail', 'picnic', 'beach']
+    travel/commute: ['travel', 'carry[- ]on', 'airline', 'flight', 'commut\w+', 'weekender', 'trip']
+    gym/sports: ['gym', 'sports?', 'athletic', 'fitness', 'workout']
 
 end_user_segment:
   mode: multi
   values:
     big & tall: ['big (and|&) tall', "(4|5|6)\\d\\d ?lbs?"]
     bariatric: ['bariatric']
-    kids: ['kids', 'children', 'toddler', 'child']
+    kids: ['kids', 'children', 'toddler', 'child', 'boys?', 'girls?']
     teens: ['teen', 'youth']
     gamers: ['gamer', 'gaming']
-    students: ['student']
+    students: ['students?', 'college']
+    teachers: ['teachers?']
     remote workers: ['work from home', 'remote work', 'home office']
+    women: ['women', "women's", 'womens', 'ladies']
+    men: ["\\bmen\\b", "men's", '\bmens\b']
+    seniors: ['seniors?', 'elderly', 'large print']
 
 key_benefits:
   mode: multi
   values:
-    ergonomic: ['ergonomic', 'lumbar']
-    space-saving: ['space[- ]saving', 'compact', 'small spaces?', 'foldable', 'nesting']
-    easy-clean: ['easy to clean', 'wipe clean', 'stain[- ]resistant', 'water[- ]resistant', 'waterproof', 'antimicrobial', 'spill']
-    sustainable: ['recycled', 'sustainable', 'eco[- ]friendly', 'fsc', 'greenguard']
+    ergonomic: ['ergonomic', 'lumbar', 'eye[- ]car(e|ing)']
+    space-saving: ['space[- ]saving', 'compact', 'small spaces?', 'foldable', 'nesting', 'collapsible', 'packable']
+    easy-clean: ['easy to clean', 'wipe clean', 'stain[- ]resistant', 'antimicrobial', 'dishwasher safe']
+    water-resistant: ['water[- ]?(resistant|proof|repellent)', 'leak[- ]?proof', 'spill[- ]?proof']
+    sustainable: ['recycled', 'sustainable', 'eco[- ]friendly', 'fsc', 'greenguard', 'bpa[- ]free', 'reusable']
     commercial-grade: ['commercial', 'contract grade', 'bifma', 'heavy[- ]duty']
     comfort: ['memory foam', 'high[- ]density foam', 'cushioned', 'padded']
+    tech-enabled: ['usb', 'wireless charg\w+', 'bluetooth', 'wi-?fi', 'app[- ]controlled', 'smart']
+    security: ['anti[- ]theft', 'rfid', 'lockable', 'tsa']
 
 size_class_by_width: {compact: ['0', '24'], standard: ['24', '60'], oversize: ['60', '1000']}
 
 generic_dfi_anchors:
-  design: ['"a stylish designer piece for a modern home interior', 'sculptural form', 'premium natural materials"', "an aesthetic statement product with a curated residential look and soft neutral colors"]
-  utility: ['"a basic utilitarian product for commercial offices', 'plain black', 'functional design"', '"a standard budget commercial product', 'simple and practical', 'no styling"']
+  design: ["a stylish designer piece for a modern home interior with premium natural materials and a sculptural form", "an aesthetic statement product with a curated residential look and soft neutral colors"]
+  utility: ["a basic utilitarian product for commercial offices, plain black, functional design", "a standard budget commercial product, simple and practical, no styling"]

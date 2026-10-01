@@ -59,7 +59,7 @@ td.key{font-weight:600}
 tr:last-child td{border-bottom:0}
 .chip{display:inline-block;padding:1px 8px;border-radius:99px;background:var(--chip);font-size:11.5px;white-space:nowrap}
 .st-PASS{background:var(--good-bg);color:var(--good)} .st-FAIL{background:var(--bad-bg);color:var(--bad)}
-.st-PARTIAL{background:var(--warn-bg)} .st-PENDING{background:var(--pend-bg);color:var(--ink-2)}
+.st-PARTIAL{background:var(--warn-bg)} .st-FILTER{background:var(--warn-bg);color:var(--ink)} .st-PICK{background:var(--good-bg);color:var(--good)} .st-PENDING{background:var(--pend-bg);color:var(--ink-2)}
 .fig{background:#fcfcfb;border:1px solid var(--line);border-radius:10px;padding:6px;margin:0}
 .fig img{display:block;width:100%;height:auto}
 .fig figcaption{font-size:12px;color:#52514e;padding:4px 6px 2px}
@@ -136,8 +136,16 @@ footer{color:var(--muted);font-size:12px;padding:30px 0}
   .node-sec[hidden]{display:none}
   .node-sec{break-before:page}
 }
+.combo{color:var(--ink-2);font-size:11.5px}
+td .combo{display:block;margin-top:1px}
+.sel-status{font-size:12px;color:var(--muted)}
+.tag-T{display:inline-block;font-size:10.5px;font-weight:700;border-radius:6px;padding:0 5px;background:var(--surface-2);color:var(--ink-2);margin-left:2px}
+.pending{background:var(--warn-bg);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:10px 0}
 </style>
 </head>
+{% macro A(a, bold=True) -%}
+{% if bold %}<b>{{ a.name }}</b>{% else %}{{ a.name }}{% endif %}{% if a.combo %} <span class="combo">({{ a.combo }})</span>{% endif %}
+{%- endmacro %}
 <body>
 <header>
   <div class="wrap">
@@ -154,137 +162,165 @@ footer{color:var(--muted);font-size:12px;padding:30px 0}
 <!-- ======================================================= TAB 1 -->
 <section class="panel" id="tab-method">
   <h2 style="margin-top:0">The question</h2>
-  <p>Staples wants to grow its marketplace with <b>core-adjacent</b> products: design and lifestyle extensions of things it already sells (the “White Chair” idea: an aesthetic-first chair next to Staples' ergonomic range), without taking sales from its own first-party assortment. Using only external data, this PoC compares each granular Staples shelf with a competitor's range and asks:</p>
+  <p>Staples wants to grow its marketplace with <b>core-adjacent</b> products: design and lifestyle extensions of things it already sells (the “White Chair” idea: an aesthetic-first chair next to Staples' ergonomic range), without taking sales from its own first-party assortment. Using only external data, this PoC compares {{ focus|length }} granular Staples nodes, each with its chosen competitor, and asks:</p>
   <ul>
-    <li><b>Where are the gaps?</b> Which archetypes and attribute values (colour, material, style, price band, features) are more common at the competitor than at Staples?</li>
+    <li><b>Where are the gaps?</b> Which archetypes and attribute values (colour, material, style, features, theme) are more common at the competitor than at Staples, and where do prices differ?</li>
     <li><b>Are they safe and on-brand?</b> Would a product take a sale from a Staples item, does it fit Staples' customer, and is it priced to trade up or to undercut?</li>
     <li><b>What should be added?</b> Named archetypes with example products and notes on brands and sellers.</li>
   </ul>
 
+  <h2>The {{ focus|length }} focus nodes</h2>
+  <p class="ink2">A node is one exact Staples L3/L4 category. Each node is compared with its Primary 1 competitor (named on the Gaps &amp; Recommendations tab). {{ n_scored }} nodes are scored{% if n_thin %}, {{ n_thin }} are thin (descriptive only){% endif %}{% if n_pending %}, and {{ n_pending }} are waiting for competitor data (shown as Staples-only profiles){% endif %}.</p>
+  <div class="tbl-wrap"><table><thead><tr><th class="nosort num">#</th><th class="nosort">Segment · play</th><th class="nosort">Staples node (exact path)</th><th class="nosort num">Staples families</th><th class="nosort num">Competitor families</th><th class="nosort">Status</th></tr></thead><tbody>
+  {% for f in focus %}<tr><td class="num">{{ f.rank }}</td><td>{{ f.segment }}</td><td>{{ f.label }}</td><td class="num">{{ "{:,}".format(f.ns) }}</td><td class="num">{{ "{:,}".format(f.nc) if f.nc else "–" }}</td><td>{% if f.status == 'scored' %}<span class="chip st-PASS">scored</span>{% elif f.status == 'thin' %}<span class="chip st-PENDING">thin</span>{% else %}<span class="chip st-PARTIAL">competitor data pending</span>{% endif %}</td></tr>{% endfor %}
+  </tbody></table></div>
+  <p class="muted small">Families = products counted once across colour and size variants. Competitor families are those placed on the node after mapping. {{ "{:,}".format(n_backlog) }} competitor products were set aside because they belong to other Staples categories (for example calendars, briefcases, standing desks) or were mis-shelved.</p>
+
   <h2>How we approached it</h2>
-  <p>Four phases: make the comparison fair, describe every product the same way, score each archetype two ways, then decide.</p>
+  <p>Four phases, ten stages (S0–S9): make the comparison fair, describe every product the same way, score each archetype two ways, then decide.</p>
   <div class="fc">
     <div class="fc-phase">1 · Make the comparison fair</div>
     <div class="fc-step"><div class="fc-tag">S0</div><div>
       <h4>Ingest &amp; clean</h4>
-      <p>Load both retailers' product files and clean them so every later stage reads the same fields.</p>
+      <p>Load every retailer's product file, using only the agreed columns, so all later stages read the same fields.</p>
       <div class="chain"><span class="pill">Parse prices &amp; spec sheets</span><span class="to">→</span><span class="pill">Fix garbled text</span><span class="to">→</span><span class="pill">Strip reviews (personal data)</span></div>
-      <div class="meta"><span class="k">Output</span>Clean product tables for both retailers</div>
+      <div class="meta"><span class="k">Output</span>Clean product tables per retailer (no ratings, review counts or ranks used)</div>
       <div class="meta"><span class="k">Tech</span><span class="tech">pandas · PyArrow · ftfy · regex · Python ast</span></div>
     </div></div>
     <div class="fc-arrow"></div>
     <div class="fc-step"><div class="fc-tag">S1</div><div>
-      <h4>Product families</h4>
-      <p>Group Staples colour-variant SKUs into one family so both retailers are counted the same way.</p>
-      <div class="chain"><span class="pill">Brand + name-stem grouping</span><span class="to">→</span><span class="pill">Colourway count</span><span class="to">→</span><span class="pill">Same product at both retailers?</span></div>
-      <div class="meta"><span class="k">Output</span>Families, colourway counts, identical-product flags</div>
-      <div class="meta"><span class="k">Tech</span><span class="tech">pandas · regex name stems · cosine similarity · size/price blocking</span></div>
+      <h4>Product families &amp; nodes</h4>
+      <p>Count each product once across colour and size variants, for every retailer, and place Staples families on their node.</p>
+      <div class="chain"><span class="pill">Brand + name-stem grouping</span><span class="to">→</span><span class="pill">Colourway count</span><span class="to">→</span><span class="pill">Node = exact Staples L3/L4</span></div>
+      <div class="meta"><span class="k">Output</span>Families, colourway counts, the node list</div>
+      <div class="meta"><span class="k">Tech</span><span class="tech">pandas · regex name stems · YAML config</span></div>
     </div></div>
     <div class="fc-arrow"></div>
     <div class="fc-step"><div class="fc-tag">S2</div><div>
-      <h4>Shelves (analysis nodes)</h4>
-      <p>Use Staples' own leaf categories as shelves, splitting large ones by Staples' product-type facet.</p>
-      <div class="chain"><span class="pill">Staples leaves</span><span class="to">→</span><span class="pill">≥ {{ cfg.nodes.split_min_families }} families: split by type (pseudo-L5)</span><span class="to">→</span><span class="pill">&lt; {{ cfg.nodes.min_families_scored }} per side: thin</span></div>
-      <div class="meta"><span class="k">Output</span>Shelf list, found from the data on every run</div>
-      <div class="meta"><span class="k">Tech</span><span class="tech">pandas · Staples spec facets · YAML config</span></div>
-    </div></div>
-    <div class="fc-arrow"></div>
-    <div class="fc-step"><div class="fc-tag">S3</div><div>
       <h4>Map competitor products</h4>
-      <p>Place each competitor product on a Staples shelf, or send it to the new-node backlog.</p>
-      <div class="chain"><span class="pill">Page prior</span><span class="to">→</span><span class="pill">Vote of {{ mapping_k }} nearest Staples products</span><span class="to">→</span><span class="pill">Distance check</span></div>
+      <p>Place each competitor product on its Staples node, or set it aside when it belongs to another category.</p>
+      <div class="chain"><span class="pill">Page → node crosswalk</span><span class="to">→</span><span class="pill">Vote of {{ mapping_k }} nearest Staples products (all nodes)</span><span class="to">→</span><span class="pill">Distance check</span></div>
       <div class="outs">
-        <span class="o ok"><b>Mapped</b> (≥ {{ "{:.0%}".format(low_conf_prob) }} vote)</span>
+        <span class="o ok"><b>Mapped</b> (≥ {{ "{:.0%}".format(low_conf_prob) }} vote = high confidence)</span>
         <span class="o hold"><b>Close call</b> → LLM adjudication <span class="planned">planned</span></span>
-        <span class="o no"><b>No shelf</b> → backlog</span>
+        <span class="o no"><b>Other category / mis-shelved</b> → backlog</span>
       </div>
-      <div class="meta"><span class="k">Output</span>Product → shelf map, new-node backlog</div>
-      <div class="meta"><span class="k">Tech</span><span class="tech">sentence-transformers · {{ encoder }} · similarity-weighted k-NN · Youden's J · NumPy cosine search · Claude Sonnet 5 (planned)</span></div>
+      <div class="meta"><span class="k">Output</span>Product → node map, backlog for other categories</div>
+      <div class="meta"><span class="k">Tech</span><span class="tech">sentence-transformers · {{ encoder }} · similarity-weighted k-NN · Youden's J with a recall floor · Claude Sonnet 5 (planned)</span></div>
     </div></div>
 
     <div class="fc-arrow"></div>
     <div class="fc-phase">2 · Describe every product the same way</div>
-    <div class="fc-step"><div class="fc-tag">S4–S5</div><div>
+    <div class="fc-step"><div class="fc-tag">S3</div><div>
       <h4>Attributes</h4>
-      <p>Extract the same attributes from both retailers' text and check them against Staples spec sheets.</p>
-      <div class="chain"><span class="pill">Category vocabulary</span><span class="to">→</span><span class="pill">Same extractor, both sides</span><span class="to">→</span><span class="pill">&lt; {{ "{:.0%}".format(cfg.qa.g2_field_acc) }} accurate: excluded</span><span class="to">→</span><span class="pill">Design-Forward Index</span></div>
+      <p>Extract the same attributes from both retailers' text, with the same amount of text per side, and check them against Staples spec sheets.</p>
+      <div class="chain"><span class="pill">Node vocabulary (3 tiers)</span><span class="to">→</span><span class="pill">Same extractor, same text length</span><span class="to">→</span><span class="pill">&lt; {{ "{:.0%}".format(cfg.qa.g2_field_acc) }} accurate: excluded</span><span class="to">→</span><span class="pill">{{ m('DFI') }}</span></div>
       <div class="meta"><span class="k">Output</span>Attribute table, DFI (0–1), per-field accuracy</div>
       <div class="meta"><span class="k">Tech</span><span class="tech">closed-vocabulary regex · embedding zero-shot · anchor contrast · Claude Haiku 4.5 Batch API (planned)</span></div>
     </div></div>
     <div class="fc-arrow"></div>
-    <div class="fc-step"><div class="fc-tag">S6</div><div>
+    <div class="fc-step"><div class="fc-tag">S4</div><div>
       <h4>Archetypes</h4>
-      <p>Cut each shelf into nameable archetypes using its most informative attributes.</p>
-      <div class="chain"><span class="pill">Pick ≤ {{ cfg.archetypes.max_facets }} attributes</span><span class="to">→</span><span class="pill">Grid cells</span><span class="to">→</span><span class="pill">&lt; {{ cfg.archetypes.min_pooled }} products: merge up</span><span class="to">→</span><span class="pill">Cluster cross-check</span></div>
-      <div class="meta"><span class="k">Output</span>Named archetypes, e.g. “Mid-century — warm neutral, $200–$350”</div>
-      <div class="meta"><span class="k">Tech</span><span class="tech">normalised entropy · UMAP · HDBSCAN · ARI / AMI · bootstrap</span></div>
+      <p>Cut each node into archetypes, each defined by {{ cfg.archetypes.core_facets }} to {{ cfg.archetypes.max_facets }} attributes that mix all three tiers. Price is never an attribute.</p>
+      <div class="chain"><span class="pill">Best {{ cfg.archetypes.core_facets }}-attribute combination</span><span class="to">→</span><span class="pill">+5th / 6th where supported</span><span class="to">→</span><span class="pill">&lt; {{ cfg.archetypes.min_pooled }} products: long tail</span><span class="to">→</span><span class="pill">Cluster cross-check</span></div>
+      <div class="meta"><span class="k">Output</span>Archetype (Attributes combo), e.g. “Mid-century velvet chair (Material: velvet · Colour tone: warm-neutral · Form: barrel · Style: mid-century)”</div>
+      <div class="meta"><span class="k">Tech</span><span class="tech">combinatorial search · normalised entropy · UMAP · HDBSCAN · {{ m('ARI') }} · bootstrap</span></div>
     </div></div>
 
     <div class="fc-arrow"></div>
     <div class="fc-phase">3 · Score every archetype, two independent ways</div>
     <div class="fc-fork">
-      <div class="fc-step m1"><div class="fc-tag">S7</div><div>
+      <div class="fc-step m1"><div class="fc-tag">S5</div><div>
         <h4>Method 1 · vector view → VOS</h4>
         <p>Scores whitespace, fit, look difference and cannibalisation risk for every competitor product.</p>
-        <div class="chain"><span class="pill">Standard card → vector</span><span class="to">→</span><span class="pill">VW · AAS · AD · CRS · PPR</span><span class="to">→</span><span class="pill">Label per product</span><span class="to">→</span><span class="pill">Archetype <b>VOS</b></span></div>
+        <div class="chain"><span class="pill">Standard card → vector</span><span class="to">→</span><span class="pill">VW · AAS · AD · CRS · PPR</span><span class="to">→</span><span class="pill">Label per product</span><span class="to">→</span><span class="pill">Archetype <b>{{ m('VOS') }}</b></span></div>
         <div class="outs"><span class="o ok">CURATE · STYLE-EXT · TRADE-UP</span><span class="o hold">REVIEW · EDGE</span><span class="o no">SUBSTITUTE · UNDERCUT · OFF-BRAND</span></div>
-        <div class="meta"><span class="k">Output</span>Decision labels, VOS per archetype</div>
+        <div class="meta"><span class="k">Gate</span>Method 1 safety gate on its own product labels → top {{ cfg.gates.method1.top_n }} per node by VOS</div>
+        <div class="meta"><span class="k">Output</span>Decision labels, VOS per archetype, Method 1 list</div>
         <div class="meta"><span class="k">Tech</span><span class="tech">{{ encoder }} · NumPy cosine k-NN · logistic regression (scikit-learn) · ROC AUC</span></div>
       </div></div>
-      <div class="fc-step m2"><div class="fc-tag">S8</div><div>
+      <div class="fc-step m2"><div class="fc-tag">S6</div><div>
         <h4>Method 2 · attribute view → TG</h4>
-        <p>Compares each archetype's share and attribute mix between the competitor and Staples.</p>
-        <div class="chain"><span class="pill">Share per side</span><span class="to">→</span><span class="pill">LSR · PPG · CG · MSG · DFG</span><span class="to">→</span><span class="pill">Percentiles: <b>TG</b></span></div>
-        <div class="meta"><span class="k">Output</span>TG per archetype, attribute-value gaps</div>
-        <div class="meta"><span class="k">Tech</span><span class="tech">Jeffreys Beta smoothing · Monte-Carlo credibility · Wasserstein-1 (SciPy) · Jensen–Shannon divergence</span></div>
+        <p>Compares each archetype's share, price and attribute mix between the competitor and Staples.</p>
+        <div class="chain"><span class="pill">Share per side</span><span class="to">→</span><span class="pill">LSR · PPG · CG · MSG · DFG</span><span class="to">→</span><span class="pill">Percentiles: <b>{{ m('TG') }}</b></span><span class="to">→</span><span class="pill">Attribute twins: <b>{{ m('ACR') }}</b></span></div>
+        <div class="meta"><span class="k">Gate</span>Method 2 safety gate: credible over-index + ACR → top {{ cfg.gates.method2.top_n }} per node by TG</div>
+        <div class="meta"><span class="k">Output</span>TG per archetype, attribute-value gaps, price view, Method 2 list</div>
+        <div class="meta"><span class="k">Tech</span><span class="tech">Jeffreys Beta smoothing · Monte-Carlo credibility · Wasserstein-1 (SciPy) · {{ m('JSD') }}</span></div>
       </div></div>
       <div class="fc-arrow"></div><div class="fc-arrow"></div>
     </div>
 
     <div class="fc-phase" style="margin-top:0">4 · Decide</div>
-    <div class="fc-step"><div class="fc-tag">S9</div><div>
-      <h4>Gate &amp; re-rank</h4>
-      <p>Remove archetypes that would cannibalise Staples, then rank the rest on both scores together.</p>
-      <div class="chain"><span class="pill">Safety gate</span><span class="to">→</span><span class="pill">Fused re-rank</span><span class="to">→</span><span class="pill">Agreement tier</span><span class="to">→</span><span class="pill">≤ {{ cfg.integration.shortlist_n }} per shelf</span></div>
-      <div class="outs"><span class="o ok">Strong</span><span class="o hold">Gap-led · Vector-led</span><span class="o no">Weak</span></div>
-      <div class="meta"><span class="k">Output</span>Ranked recommendations per shelf</div>
+    <div class="fc-step"><div class="fc-tag">S7</div><div>
+      <h4>Final gate</h4>
+      <p>Combine the two methods' lists: each counts on its own, and agreement shows as the tier.</p>
+      <div class="chain"><span class="pill">Method 1 list ∪ Method 2 list</span><span class="to">→</span><span class="pill">Tier by which method lists it</span><span class="to">→</span><span class="pill">{{ cfg.gates.final.min_per_node }}–{{ cfg.gates.final.max_per_node }} per node</span></div>
+      <div class="outs"><span class="o ok">Strong (both)</span><span class="o hold">Vector-led (M1) · Gap-led (M2)</span><span class="o">Conditional (fill)</span></div>
+      <div class="meta"><span class="k">Output</span>Ranked recommendations per node</div>
       <div class="meta"><span class="k">Tech</span><span class="tech">percentile ranks · Spearman · reciprocal-rank fusion · Dirichlet weight sampling</span></div>
     </div></div>
     <div class="fc-arrow"></div>
-    <div class="fc-step"><div class="fc-tag">S10</div><div>
+    <div class="fc-step"><div class="fc-tag">S8</div><div>
       <h4>Products &amp; sellers</h4>
       <p>Pick varied example products per recommendation, each shown beside its nearest Staples product.</p>
-      <div class="chain"><span class="pill">{{ cfg.skus.n_exemplars }} examples per archetype</span><span class="to">→</span><span class="pill">Nearest Staples match</span><span class="to">→</span><span class="pill">{{ cfg.skus.style_extension_n }} style extensions per shelf</span><span class="to">→</span><span class="pill">Recruit path</span></div>
+      <div class="chain"><span class="pill">{{ cfg.skus.n_exemplars }} examples per archetype</span><span class="to">→</span><span class="pill">Nearest Staples match</span><span class="to">→</span><span class="pill">{{ cfg.skus.style_extension_n }} style extensions per node</span><span class="to">→</span><span class="pill">Recruit path</span></div>
       <div class="outs"><span class="o ok">Existing Staples supplier</span><span class="o hold">Independent seller</span><span class="o">Competitor house brand</span></div>
       <div class="meta"><span class="k">Output</span>SKU cards, vendor / seller list</div>
       <div class="meta"><span class="k">Tech</span><span class="tech">Maximal Marginal Relevance (MMR) · cosine nearest neighbour</span></div>
     </div></div>
+    <div class="fc-arrow"></div>
+    <div class="fc-step"><div class="fc-tag">S9</div><div>
+      <h4>Report</h4>
+      <p>Build this page, the PNG charts and the CSV tables from the stage outputs, with no manual editing.</p>
+      <div class="meta"><span class="k">Output</span>One static HTML file, PNG figures, CSV tables</div>
+      <div class="meta"><span class="k">Tech</span><span class="tech">Jinja2 · matplotlib</span></div>
+    </div></div>
+  </div>
+
+  <h2>Archetypes: {{ cfg.archetypes.core_facets }} to {{ cfg.archetypes.max_facets }} attributes, three tiers</h2>
+  <div class="grid g2">
+    <div class="card">
+      <dl class="lab">
+        <dt>Tier 1</dt><dd>Universal look and physical facts: material, colour tone, colour family, size.</dd>
+        <dt>Tier 2</dt><dd>Functional, specific to the node: product type, features and size bands (for example laptop fit, pod system, insulated, drawers).</dd>
+        <dt>Tier 3</dt><dd>Lifestyle: style, vibe and node-specific theme, pattern or audience.</dd>
+      </dl>
+    </div>
+    <div class="card">
+      <ul class="ins" style="margin-top:0">
+        <li>The {{ cfg.archetypes.core_facets }} core attributes include at least {{ cfg.archetypes.tier_min.tier1 }} Tier 1, {{ cfg.archetypes.tier_min.tier2 }} Tier 2 and {{ cfg.archetypes.tier_min.tier3 }} Tier 3 attribute, chosen so that most of both retailers' products fall into archetypes large enough to compare.</li>
+        <li>A 5th and 6th attribute split an archetype only where each part still has enough products; the rest stays as “&lt;attribute&gt;: other”.</li>
+        <li><b>Price is not an attribute</b>, so archetypes are not split by price. Price is shown separately for each node (price bands and each archetype's price on both sides).</li>
+        <li>Every archetype is shown as <b>Archetype</b> <span class="combo">(Attributes combo)</span>.</li>
+      </ul>
+    </div>
   </div>
 
   <h2>The two methods</h2>
   <p>Each method keeps its own final score. Neither is blended into the other; they meet only in the final ranking.</p>
   <div class="grid g2">
     <div class="card" style="border-left:3px solid var(--accent)">
-      <h3 style="margin-top:0">Method 1 · vector view → VOS</h3>
+      <h3 style="margin-top:0">Method 1 · vector view → {{ m('VOS') }}</h3>
       <p class="ink2">Every product becomes a “card” (same template on both sides: type, colour, material, style, features, vibe, use; no price) and is embedded with <code>{{ encoder }}</code>.</p>
       <dl class="lab">
-        <dt>VW</dt><dd>Vector Whitespace: how few Staples products sit near this product, after balancing sample sizes.</dd>
-        <dt>AAS</dt><dd>Fit with Staples: closeness to Staples' catalogue on this L2 plus overlap with the use contexts Staples serves.</dd>
-        <dt>CRS</dt><dd>Cannibalisation risk: functional similarity to the nearest Staples products. Ignores price and looks by design.</dd>
-        <dt>AD</dt><dd>Aesthetic delta: how different the colour, material, style and vibe are from the nearest Staples product.</dd>
-        <dt>PPR</dt><dd>Price ratio to the nearest Staples products. Used only in the labels, never in a score.</dd>
+        <dt>{{ m('VW') }}</dt><dd>How few Staples products sit near this product, after balancing sample sizes.</dd>
+        <dt>{{ m('AAS') }}</dt><dd>Fit with Staples: closeness to Staples' catalogue plus overlap with the use contexts Staples serves.</dd>
+        <dt>{{ m('CRS') }}</dt><dd>Functional similarity to the nearest Staples products. Ignores price and looks by design.</dd>
+        <dt>{{ m('AD') }}</dt><dd>How different the colour, material, style and vibe are from the nearest Staples product.</dd>
+        <dt>{{ m('PPR') }}</dt><dd>Price relative to the nearest Staples products. Used only in the labels, never in a score.</dd>
       </dl>
       <p><code>VOS = 100 × [{{ cfg.vector.vos_weights.vw }}·pct(VW) + {{ cfg.vector.vos_weights.aas }}·AAS/100 + {{ cfg.vector.vos_weights.ad }}·pct(AD)] × (1 − CRS/100)</code></p>
     </div>
     <div class="card" style="border-left:3px solid var(--comp)">
-      <h3 style="margin-top:0">Method 2 · attribute view → TG</h3>
-      <p class="ink2">Archetypes are compared as shares of each retailer's shelf, so a sample is compared with a sample, never with a census.</p>
+      <h3 style="margin-top:0">Method 2 · attribute view → {{ m('TG') }}</h3>
+      <p class="ink2">Archetypes are compared as shares of each retailer's node, so a sample is compared with a sample, never with a census.</p>
       <dl class="lab">
-        <dt>LSR</dt><dd>Log share ratio: how over-represented the archetype is at the competitor. Defined even when Staples has none; shrunk when not statistically credible.</dd>
-        <dt>PPG</dt><dd>Price position gap: distance between the two price distributions (↑ = competitor priced higher).</dd>
-        <dt>CG</dt><dd>Colour gap: difference in colour-tone mix.</dd>
-        <dt>MSG</dt><dd>Material &amp; style gap.</dd>
-        <dt>DFG</dt><dd>Design-forward gap: competitor median DFI minus Staples median DFI.</dd>
+        <dt>{{ m('LSR') }}</dt><dd>How over-represented the archetype is at the competitor. Defined even when Staples has none; shrunk when not statistically credible.</dd>
+        <dt>{{ m('PPG') }}</dt><dd>Distance between the two price distributions inside the archetype (↑ = competitor priced higher).</dd>
+        <dt>{{ m('CG') }}</dt><dd>Difference in colour-tone mix.</dd>
+        <dt>{{ m('MSG') }}</dt><dd>Difference in material and style mix.</dd>
+        <dt>{{ m('DFG') }}</dt><dd>Competitor median DFI minus Staples median DFI.</dd>
+        <dt>{{ m('ACR') }}</dt><dd>Method 2's own cannibalisation check: share of the archetype's competitor products that have a Staples <i>attribute twin</i> (same functional attributes, anywhere in the node) and are cheaper (&lt; {{ cfg.gates.method2.undercut_ppr }}×) or the same look at a similar price. Gates only, not part of TG.</dd>
       </dl>
       <p><code>TG = 100 × [{{ cfg.gaps.tg_weights.lsr }}·pct(LSR) + {{ cfg.gaps.tg_weights.ppg }}·pct(PPG) + {{ cfg.gaps.tg_weights.cg }}·pct(CG) + {{ cfg.gaps.tg_weights.msg }}·pct(MSG) + {{ cfg.gaps.tg_weights.dfg }}·pct(DFG)]</code></p>
     </div>
@@ -294,103 +330,114 @@ footer{color:var(--muted);font-size:12px;padding:30px 0}
   <div class="tbl-wrap"><table><thead><tr><th class="nosort">Label</th><th class="nosort">Meaning</th><th class="nosort">Action</th><th class="nosort num">Products</th></tr></thead><tbody>
     <tr><td><span class="legend-dot" style="background:#1baf7a"></span>CURATE</td><td>Low cannibalisation, good fit: true whitespace.</td><td>Approve</td><td class="num">{{ label_counts.get('CURATE',0) }}</td></tr>
     <tr><td><span class="legend-dot" style="background:#1baf7a"></span>STYLE-EXTENSION</td><td>Does the same job as a Staples product but in a colour, material or style Staples lacks (the “flavours” case).</td><td>Approve</td><td class="num">{{ label_counts.get('STYLE-EXTENSION',0) }}</td></tr>
-    <tr><td><span class="legend-dot" style="background:#1baf7a"></span>TRADE-UP</td><td>Same job, priced ≥ {{ cfg.vector.ppr_tradeup }}× higher, with a visible upgrade (design or material).</td><td>Approve, margin note</td><td class="num">{{ label_counts.get('TRADE-UP',0) }}</td></tr>
-    <tr><td><span class="legend-dot" style="background:#eda100"></span>REVIEW</td><td>Middle band of cannibalisation risk.</td><td>Pat's calibration queue</td><td class="num">{{ label_counts.get('REVIEW',0) }}</td></tr>
+    <tr><td><span class="legend-dot" style="background:#1baf7a"></span>TRADE-UP</td><td>Same job, PPR ≥ {{ cfg.vector.ppr_tradeup }}× with a visible upgrade (design or material).</td><td>Approve, margin note</td><td class="num">{{ label_counts.get('TRADE-UP',0) }}</td></tr>
+    <tr><td><span class="legend-dot" style="background:#1baf7a"></span>LEAN-APPROVE</td><td>Middle band of CRS, but a clearly different look (AD ≥ {{ cfg.vector.ad_threshold }}) and good fit (AAS ≥ T_high).</td><td>Approve, flag for Pat's review</td><td class="num">{{ label_counts.get('LEAN-APPROVE',0) }}</td></tr>
+    <tr><td><span class="legend-dot" style="background:#eda100"></span>REVIEW</td><td>Middle band of CRS (Cannibalisation Risk Score).</td><td>Pat's calibration queue</td><td class="num">{{ label_counts.get('REVIEW',0) }}</td></tr>
     <tr><td><span class="legend-dot" style="background:#eda100"></span>EDGE</td><td>Low risk, weaker fit with Staples' customer.</td><td>Hold for phase 2</td><td class="num">{{ label_counts.get('EDGE',0) }}</td></tr>
     <tr><td><span class="legend-dot" style="background:#4a3aa7"></span>SUBSTITUTE</td><td>Same job, same look, similar price: pure diversion.</td><td>Reject</td><td class="num">{{ label_counts.get('SUBSTITUTE',0) }}</td></tr>
-    <tr><td><span class="legend-dot" style="background:#4a3aa7"></span>UNDERCUT</td><td>Same job, priced below {{ cfg.vector.ppr_undercut }}× the Staples product: resets the price point.</td><td>Hard reject</td><td class="num">{{ label_counts.get('UNDERCUT',0) }}</td></tr>
-    <tr><td><span class="legend-dot" style="background:#4a3aa7"></span>OFF-BRAND</td><td>Poor fit with Staples' catalogue and customers.</td><td>Reject</td><td class="num">{{ label_counts.get('OFF-BRAND',0) }}</td></tr>
+    <tr><td><span class="legend-dot" style="background:#4a3aa7"></span>UNDERCUT</td><td>Same job, PPR below {{ cfg.vector.ppr_undercut }}× the Staples product: resets the price point.</td><td>Hard reject</td><td class="num">{{ label_counts.get('UNDERCUT',0) }}</td></tr>
+    <tr><td><span class="legend-dot" style="background:#4a3aa7"></span>OFF-BRAND</td><td>Poor fit with Staples' catalogue and customers (low AAS).</td><td>Reject</td><td class="num">{{ label_counts.get('OFF-BRAND',0) }}</td></tr>
     <tr><td><span class="legend-dot" style="background:#4a3aa7"></span>EXCLUDE</td><td>Near-identical to a product Staples already carries.</td><td>Not a gap</td><td class="num">{{ label_counts.get('EXCLUDE',0) }}</td></tr>
+  </tbody></table></div>
+
+  <p class="muted small">These labels come from Method 1 (vector view). Method 2 labels each product separately from attributes and price only:</p>
+  <div class="tbl-wrap"><table><thead><tr><th class="nosort">Method 2 label</th><th class="nosort">Meaning</th><th class="nosort">Counts as</th></tr></thead><tbody>
+    <tr><td>Attribute undercut</td><td>A Staples family with the same functional attributes exists, and this product costs &lt; {{ cfg.gates.method2.undercut_ppr }}× its median price.</td><td>Cannibalising</td></tr>
+    <tr><td>Attribute substitute</td><td>Same functional attributes, &lt; {{ cfg.gates.method2.tradeup_ppr }}× the price and the same colour tone.</td><td>Cannibalising</td></tr>
+    <tr><td>Attribute style-extension</td><td>Same functional attributes and similar price, different look.</td><td>Not cannibalising</td></tr>
+    <tr><td>Attribute trade-up</td><td>Same functional attributes, ≥ {{ cfg.gates.method2.tradeup_ppr }}× the price.</td><td>Not cannibalising</td></tr>
+    <tr><td>No Staples twin</td><td>No Staples family with the same function in the node: whitespace by attributes.</td><td>Not cannibalising</td></tr>
   </tbody></table></div>
 
   <h3>From two scores to one list</h3>
   <ol class="steps">
-    <li><b>Safety gate (shared by both methods).</b> An archetype qualifies only if:
+    <li><b>Common gates.</b> Every competitor product must belong on the node (C1), and every archetype must be valid: ≥ {{ cfg.archetypes.core_facets }} attributes, nameable, ≥ {{ cfg.gates.common.min_competitor_families }} competitor families (C2).</li>
+    <li><b>Method 1 gate (vector view, its own cannibalisation check).</b> ≥ {{ cfg.gates.method1.min_safe_products }} products safe under Method 1's labels, a safe share of ≥ {{ "{:.0%}".format(cfg.gates.method1.min_safe_share) }} of decided (non-REVIEW) products, and fewer than {{ "{:.0%}".format(cfg.gates.method1.max_reject_share) }} substitutes + undercuts. The top {{ cfg.gates.method1.top_n }} per node by VOS form the Method 1 list.</li>
+    <li><b>Method 2 gate (attribute view, its own cannibalisation check).</b> The competitor credibly over-indexes (LSR credibility ≥ {{ "{:.0%}".format(cfg.gates.method2.min_credibility) }}, or Staples has none), ACR (Attribute Cannibalisation Risk) &lt; {{ "{:.0%}".format(cfg.gates.method2.max_acr) }}, and ≥ {{ cfg.gates.method2.min_ok_products }} non-cannibalising products. The top {{ cfg.gates.method2.top_n }} per node by TG form the Method 2 list.</li>
+    <li><b>Final gate.</b> The union of the two lists. Tier = which method lists the archetype:
       <ul>
-        <li>at least {{ "{:.0%}".format(cfg.integration.safe_share_min) }} of its competitor products are approvable (CURATE, STYLE-EXTENSION or TRADE-UP), and</li>
-        <li>fewer than {{ "{:.0%}".format(cfg.integration.reject_share_max) }} would substitute or undercut a Staples product.</li>
+        <li><i>Strong</i>: on both lists.</li>
+        <li><i>Vector-led</i>: Method 1 only (whitespace in the vector view that passes Method 1's checks).</li>
+        <li><i>Gap-led</i>: Method 2 only (a credible attribute gap with few cheaper or same-look Staples twins; check fit with Staples' customer).</li>
+        <li><i>Conditional</i>: added only when a node has fewer than {{ cfg.gates.final.min_per_node }}; best remaining valid archetypes with a product safe under either method.</li>
       </ul>
-      It applies to both scores because TG alone cannot see cannibalisation.</li>
-    <li><b>Fused re-rank.</b> Within each shelf, VOS and TG are turned into percentile ranks and combined: <code>Final = {{ cfg.integration.w_vos }}·rank(VOS) + {{ cfg.integration.w_tg }}·rank(TG)</code>. Using ranks stops either score's scale from dominating.</li>
-    <li><b>Agreement tier.</b> Each archetype is placed in a tier by where it sits in each method's ranking:
-      <ul>
-        <li><i>Strong</i>: top third in both methods.</li>
-        <li><i>Gap-led</i>: top third on TG only (a real attribute gap that the vector view finds crowded or close to Staples).</li>
-        <li><i>Vector-led</i>: top third on VOS only (whitespace the attribute grid does not capture).</li>
-        <li><i>Weak</i>: top third in neither; never recommended.</li>
-      </ul></li>
-    <li><b>Shortlist.</b> Up to {{ cfg.integration.shortlist_n }} non-Weak archetypes per shelf, in Final order.</li>
-    <li><b>Robustness check.</b> Both sets of weights are re-drawn {{ "{:,}".format(cfg.sensitivity.draws) }} times; the report shows how often each archetype stays in its shelf's top {{ cfg.sensitivity.top_n }}.</li>
+      Order: Strong first, then <code>Final = {{ cfg.integration.w_vos }}·rank(VOS) + {{ cfg.integration.w_tg }}·rank(TG)</code>. {{ cfg.gates.final.min_per_node }}–{{ cfg.gates.final.max_per_node }} recommendations per node.</li>
+    <li><b>Products shown.</b> Only products safe under the method(s) that recommended the archetype: Method 1 labels for Vector-led, no cheaper or same-look Staples attribute twin for Gap-led, both for Strong.</li>
+    <li><b>Robustness check.</b> Both sets of weights are re-drawn {{ "{:,}".format(cfg.sensitivity.draws) }} times; the report shows how often each archetype stays in its node's top {{ cfg.sensitivity.top_n }}.</li>
   </ol>
 
-  <h2>Quality gates</h2>
+  <h2>Quality gates: a scorecard, cuts nothing</h2>
+  <p class="ink2">Checks on how trustworthy each step of the method is. They report PASS / FAIL / PENDING and do not remove any product or recommendation (G2 only keeps inaccurate fields out of the gap scores).</p>
   <div class="tbl-wrap"><table><thead><tr><th class="nosort">Gate</th><th class="nosort">What is checked</th><th class="nosort">Result</th><th class="nosort">Target</th><th class="nosort">Status</th><th class="nosort">Note</th></tr></thead><tbody>
   {% for g in gates %}<tr><td><b>{{ g.name }}</b></td><td>{{ g.metric }}</td><td>{{ g.value }}</td><td style="white-space:nowrap">{{ g.target }}</td><td><span class="chip st-{{ g.status }}">{{ g.status }}</span></td><td class="ink2">{{ g.note }}</td></tr>{% endfor %}
   </tbody></table></div>
-  <details><summary>Extraction accuracy per field (text instrument vs Staples specs)</summary>
-    <div class="grid g2" style="margin-top:10px">
-    {% for key, img in ov.items() if key.startswith('acc_') and img %}<figure class="fig"><img alt="Extractor accuracy" src="{{ img }}"><figcaption>{{ key[4:].replace('_',' ') }}</figcaption></figure>{% endfor %}</div>
-  </details>
+  <h2>Safety gates: the filters that decide recommendations</h2>
+  <p class="ink2">Common gates up to the archetypes, then one gate per method on that method's own scores, then the final gate. Counts are for this run, all nodes together.</p>
+  <div class="tbl-wrap"><table class="grouped"><thead><tr><th class="nosort">Gate</th><th class="nosort">What is checked</th><th class="nosort">Result</th><th class="nosort">Target (rule)</th><th class="nosort">Status</th><th class="nosort">Note (stage · code)</th></tr></thead>
+  {% for grp in safety_gates|map(attribute='group')|unique %}<tbody><tr><td colspan="6" class="grp">{{ grp }}</td></tr>
+  {% for g in safety_gates if g.group == grp %}<tr><td><b>{{ g.name }}</b></td><td>{{ g.metric }}</td><td>{{ g.value }}</td><td>{{ g.target }}</td><td><span class="chip st-{{ g.status }}">{{ g.status }}</span></td><td class="ink2">{{ g.note }}</td></tr>{% endfor %}</tbody>{% endfor %}
+  </table></div>
+  <p class="muted small">FILTER = removes items · PICK = selects from what is left. CRS = Cannibalisation Risk Score · AAS = Adjacency Affinity Score · PPR = Price Position Ratio · AD = Aesthetic Delta · LSR = Log Share Ratio · ACR = Attribute Cannibalisation Risk · VOS = Vector Opportunity Score · TG = Total Gap.</p>
+
   <details><summary>Encoder bake-off and calibration</summary>
-    <div class="tbl-wrap" style="margin-top:8px"><table><thead><tr><th class="nosort">Encoder</th><th class="nosort num">Staples leave-one-out k-NN</th><th class="nosort num">In-scope kept</th><th class="nosort num">Out-of-scope rejected</th><th class="nosort num">NONE threshold</th></tr></thead><tbody>
+    <div class="tbl-wrap" style="margin-top:8px"><table><thead><tr><th class="nosort">Encoder</th><th class="nosort num">Staples leave-one-out node k-NN</th><th class="nosort num">In-scope kept</th><th class="nosort num">Out-of-scope rejected</th><th class="nosort num">NONE threshold</th></tr></thead><tbody>
     {% for b in bakeoff %}<tr><td>{{ b.model }}{% if b.model == encoder %} <span class="chip st-PASS">chosen</span>{% endif %}</td><td class="num">{{ "{:.1%}".format(b.staples_loo_knn) }}</td><td class="num">{{ "{:.1%}".format(b.in_scope_recall) }}</td><td class="num">{{ "{:.1%}".format(b.out_scope_rejection) }}</td><td class="num">{{ "%.3f"|format(b.tau_none) }}</td></tr>{% endfor %}
     </tbody></table></div>
-    <div class="tbl-wrap" style="margin-top:8px"><table><thead><tr><th class="nosort">L2</th><th class="nosort">CRS calibration</th><th class="nosort num">AUC</th><th class="nosort num">AAS low / high</th></tr></thead><tbody>
+    <div class="tbl-wrap" style="margin-top:8px"><table><thead><tr><th class="nosort">Peer group (L2)</th><th class="nosort">CRS (Cannibalisation Risk Score) calibration</th><th class="nosort num">AUC (Area Under the ROC Curve)</th><th class="nosort num">AAS (Adjacency Affinity Score) low / high</th></tr></thead><tbody>
     {% for l2, c in calib.items() %}<tr><td>{{ l2 }}</td><td>{{ c.method }} ({{ c.n_pos }} positive, {{ c.n_neg }} negative Staples pairs)</td><td class="num">{{ "%.2f"|format(c.auc) if c.auc is not none else "–" }}</td><td class="num">{{ "%.0f"|format(thresholds[l2].aas_low) }} / {{ "%.0f"|format(thresholds[l2].aas_high) }}</td></tr>{% endfor %}
     </tbody></table></div>
   </details>
 
   <h2>Assumptions and caveats</h2>
   <ul>
-    <li><b>Provisional PoC run.</b> Attributes come from the local rules + embedding instrument (no LLM key available); style, vibe tags and the Design-Forward Index still need human validation; thresholds are weakly supervised, not yet calibrated with Pat.</li>
-    <li>All figures are shares within a convenience sample, never absolute market sizes.</li>
-    <li>The competitor is chosen per shelf. In this run every shelf is compared with {{ comp }}, the only competitor with product-level data so far.</li>
+    <li><b>Provisional PoC run.</b> Attributes come from the local rules + embedding extractor (no LLM key available); style, vibe, theme tags and the DFI (Design-Forward Index) still need human validation; thresholds are weakly supervised, not yet calibrated with Pat. Node vocabularies are drafts awaiting review.</li>
+    <li>Only the agreed product columns are used (title, price, link, brand/vendor, selected option, description and listing page). Ratings, review counts, ranks, badges and specification columns are not used, so nothing here measures demand.</li>
+    <li>Competitor data are convenience samples (pages that scraped successfully). Every number is a within-sample share with a credibility check; nothing here estimates market size.</li>
+    <li>Competitor descriptions differ in length (from a one-line subtitle to long prose). Text-measured attributes read the same amount of Staples text as the competitor provides, so “not mentioned” means the same on both sides.</li>
     <li>Everything Staples.com sells counts as existing assortment for cannibalisation, including third-party brands it retails.</li>
-    <li>The competitor data is a convenience sample (pages that scraped successfully). Every number is a within-sample share with a credibility check; nothing here estimates market size or demand.</li>
-    <li>Competitor consumer and professional (B2B) pages are pooled. Prices are list prices at crawl time.</li>
-    <li>The competitor's “vendor” is often a house brand, not a manufacturer: those products are recommendations to <i>source the archetype</i>, not to recruit that brand.</li>
-    <li>Category-specific vocabularies, the page crosswalk and the house-brand list are drafts awaiting review. Shelves in L2s without a reviewed configuration are marked provisional.</li>
+    <li>A competitor's brand/vendor is often a house brand or missing: those products are recommendations to <i>source the archetype</i>, not to recruit that brand.</li>
   </ul>
 </section>
 
 <!-- ======================================================= TAB 2 -->
 <section class="panel" id="tab-nodes" hidden>
   <div class="controls">
-    <label for="nodeSel">Shelf</label>
+    <label for="nodeSel">Node</label>
     <select id="nodeSel">
-      {% for l2 in nodes|map(attribute='l2')|unique %}<optgroup label="{{ l2 }}">
-        {% for n in nodes if n.l2 == l2 %}<option value="{{ n.id }}">{{ n.label }}{% if n.status == 'thin' %} (thin: descriptive only){% endif %}</option>{% endfor %}
-      </optgroup>{% endfor %}
+      {% for n in nodes %}<option value="{{ n.id }}">{{ n.label }}{% if n.status != 'scored' %} ({{ n.status_label }}){% endif %}</option>{% endfor %}
     </select>
   </div>
-  {% if sel %}<details class="selinfo"><summary>Showing {{ n_shown }} of {{ n_all }} shelves: how they were chosen</summary>
-    <p class="ink2 small">To keep the report focused, {% for l2, n in sf.max_shelves.items() %}{{ l2.split(' > ')[-1] }} is limited to {{ n }} shelves{% if not loop.last %} and {% endif %}{% endfor %}. Categories added later show every shelf. All shelves are still scored and listed in <code>outputs/tables/shelf_selection.csv</code>.</p>
-    <ol>
-      <li><b>R1 Enough data</b> (required): at least {{ cfg.nodes.min_families_scored }} product families on each side.</li>
-      <li><b>R2 Meaningful recommendations</b> (required): at least one archetype recommended.</li>
-      <li><b>R3 Reliable placement</b>: ≥ {{ "{:.0%}".format(sf.r3_min_high_confidence) }} of mapped competitor products placed with high confidence.</li>
-      <li><b>R4 Methods agree</b>: Spearman VOS↔TG ≥ {{ "%.2f"|format(sf.r4_min_spearman) }}.</li>
-      <li><b>R5 Backed by both methods</b>: at least {{ sf.r5_min_strong }} Strong-tier recommendation.</li>
-    </ol>
-    <p class="ink2 small">Shelves meeting R1–R2 are ranked by how many of R3–R5 they pass, then by number of recommendations, then by agreement.</p>
-    <div class="tbl-wrap"><table><thead><tr><th class="nosort">Shelf</th><th class="nosort">R1</th><th class="nosort">R2</th><th class="nosort">R3</th><th class="nosort">R4</th><th class="nosort">R5</th><th class="nosort num">High confidence</th><th class="nosort num">Spearman</th><th class="nosort num">Recommended (Strong)</th><th class="nosort">Shown</th></tr></thead><tbody>
-    {% for r in sel %}<tr><td>{{ r.label }}</td>{% for ok in r.r %}<td>{% if ok %}<span class="yes">✓</span>{% else %}<span class="no-">✗</span>{% endif %}</td>{% endfor %}<td class="num">{{ r.hc }}</td><td class="num">{{ r.rho }}</td><td class="num">{{ r.nrec }} ({{ r.nstrong }})</td><td>{% if r.shown %}<span class="chip st-PASS">shown</span>{% else %}<span class="muted">–</span>{% endif %}</td></tr>{% endfor %}
-    </tbody></table></div>
-  </details>{% endif %}
 
   {% for s in sections %}
   <article class="node-sec" id="n-{{ s.id }}" hidden>
     <div class="node-head">
       <h2>{{ s.label }}</h2>
-      {% if s.status == 'thin' %}<span class="chip st-PENDING">thin shelf: descriptive only</span>{% endif %}
-      {% if s.provisional %}<span class="chip st-PARTIAL">provisional configuration</span>{% endif %}
+      {% if s.status == 'thin' %}<span class="chip st-PENDING">thin node: descriptive only</span>{% endif %}
+      {% if s.status == 'staples_only' %}<span class="chip st-PARTIAL">competitor data pending</span>{% endif %}
+      {% if s.provisional %}<span class="chip st-PARTIAL">provisional vocabulary</span>{% endif %}
     </div>
     <dl class="facts">
-      <dt>Competitor chosen</dt><dd><b class="compname">({{ s.comp }})</b></dd>
+      <dt>Segment · play</dt><dd>{{ s.segment or "–" }}</dd>
+      {% if s.status == 'staples_only' %}
+      <dt>Competitor planned</dt><dd><b class="compname">{{ s.planned }}</b> <span class="muted">(no product data yet)</span></dd>
+      <dt>Product families</dt><dd>Staples {{ "{:,}".format(s.ns) }}</dd>
+      {% else %}
+      <dt>Competitor</dt><dd><b class="compname">{{ s.comp }}</b> <span class="muted">(Primary 1)</span></dd>
       <dt>Product families</dt><dd>Staples {{ "{:,}".format(s.ns) }} · {{ s.comp }} {{ "{:,}".format(s.nc) }}</dd>
-      <dt>Mapping confidence</dt><dd>{{ "{:.0%}".format(s.highconf) }} of mapped {{ s.comp }} products placed with high confidence <span class="muted">(≥ {{ "{:.0%}".format(low_conf_prob) }} of the similarity-weighted vote of the {{ mapping_k }} nearest Staples products points to this shelf)</span></dd>
-      {% if s.facets %}<dt>Archetype grid</dt><dd>{{ s.facets }}</dd>{% endif %}
+      <dt>Mapping confidence</dt><dd>{{ "{:.0%}".format(s.highconf) }} of mapped {{ s.comp }} products placed with high confidence <span class="muted">(≥ {{ "{:.0%}".format(low_conf_prob) }} of the similarity-weighted vote of the {{ mapping_k }} nearest Staples products points to this node)</span>{% if s.backlog %}; {{ s.backlog }} products from this node's pages set aside as mis-shelved or out of scope{% endif %}</dd>
+      {% if s.facets %}<dt>Archetype attributes</dt><dd>{{ s.facets }} <span class="muted">(T1 universal · T2 functional · T3 lifestyle)</span>{% if s.relaxed %} <span class="chip st-PARTIAL">tier mix relaxed: {{ s.relaxed|join(', ') }}</span>{% endif %}</dd>
+      <dt>Archetypes</dt><dd>{{ s.n_arch }} archetypes{% if s.tail is not none %}; {{ "{:.0%}".format(s.tail) }} of families in the long tail (in no supported combination){% endif %}</dd>{% endif %}
+      {% endif %}
     </dl>
+
+    {% if s.status == 'staples_only' %}
+    <div class="pending">No {{ s.planned }} product data for this node yet, so gaps and recommendations cannot be scored. The Staples side is profiled below; the node runs in full as soon as competitor data is added, with no code change.</div>
+    <h3>Staples profile</h3>
+    <p class="ink2">Median Staples price {{ s.price_median }}. Price bands: {% for b in s.bands %}{{ b.band }} {{ b.share }}{% if not loop.last %} · {% endif %}{% endfor %}.</p>
+    <div class="tbl-wrap"><table><thead><tr><th class="nosort">Attribute</th><th class="nosort num">Known</th><th class="nosort">Most common values (share of families where known)</th></tr></thead><tbody>
+    {% for r in s.profile %}<tr><td class="key">{{ r.attr }}</td><td class="num">{{ r.known }}</td><td>{{ r.top }}</td></tr>{% endfor %}
+    </tbody></table></div>
+    {% else %}
 
     <h3>Key insights</h3>
     <div class="card"><dl class="insg">{% for g in s.insights %}
@@ -399,56 +446,50 @@ footer{color:var(--muted);font-size:12px;padding:30px 0}
 
     <h3>Coverage</h3>
     <div class="grid g2">
-      {% if s.figs.price %}<figure class="fig"><img alt="Price-band coverage" src="{{ s.figs.price }}"><figcaption>Share of each retailer's families per price band. “gap” = {{ s.comp }} share credibly higher.</figcaption></figure>{% endif %}
-      <figure class="fig"><img alt="Design-forward distribution" src="{{ s.figs.dfi }}"><figcaption>Design-Forward Index, pooled percentile of a design-vs-utility contrast (provisional until human validation).</figcaption></figure>
-      {% if s.figs.jsd %}<figure class="fig"><img alt="Attribute divergence" src="{{ s.figs.jsd }}"><figcaption>Higher = the two retailers' mixes differ more on that attribute.</figcaption></figure>{% endif %}
+      <figure class="fig"><img alt="Design-forward distribution" src="{{ s.figs.dfi }}"><figcaption>DFI (Design-Forward Index), pooled percentile of a design-vs-utility contrast (provisional until human validation).</figcaption></figure>
+      {% if s.figs.jsd %}<figure class="fig"><img alt="Attribute divergence" src="{{ s.figs.jsd }}"><figcaption>JSD (Jensen–Shannon Divergence): higher = the two retailers' mixes differ more on that attribute.</figcaption></figure>{% endif %}
       {% if s.figs.gaps %}<figure class="fig"><img alt="Attribute value gaps" src="{{ s.figs.gaps }}"><figcaption>Credible gaps only (≥ 90% posterior probability); fields that failed validation are excluded.</figcaption></figure>{% endif %}
     </div>
 
     <h3>Attribute-level gaps</h3>
     <div class="tbl-wrap"><table class="grouped"><thead><tr><th class="nosort">Attribute</th><th class="nosort">Value</th><th class="nosort num">{{ s.comp }}</th><th class="nosort num">Staples</th><th class="nosort num">Gap</th><th class="nosort num">Credibility</th></tr></thead>
-    {% for g in s.gaps %}<tbody>{% for r in g.rows %}<tr>{% if loop.first %}<td rowspan="{{ g.rows|length }}" class="grp">{{ g.attr }}{% if g.desc %}<br><span class="chip">descriptive only</span>{% endif %}</td>{% endif %}<td>{{ r.val }}</td><td class="num">{{ r.sc }}</td><td class="num">{{ r.ss }}</td><td class="num {{ 'pos' if r.pos else 'neg' }}">{{ r.delta }}</td><td class="num">{{ r.cred }}</td></tr>{% endfor %}</tbody>{% endfor %}
+    {% for g in s.gaps %}<tbody>{% for r in g.rows %}<tr>{% if loop.first %}<td rowspan="{{ g.rows|length }}" class="grp">{{ g.attr }}{% if g.desc %}<br><span class="chip">descriptive only</span>{% endif %}</td>{% endif %}<td>{{ r.val }}</td><td class="num">{{ r.sc }}</td><td class="num">{{ r.ss }}</td><td class="num {{ 'pos' if r.pos else 'neg' }}">{{ r.delta }}</td><td class="num">{{ r.cred }}</td></tr>{% endfor %}</tbody>
+    {% else %}<tbody><tr><td colspan="6" class="muted">No credible attribute-value gaps.</td></tr></tbody>{% endfor %}
     </table></div>
-    <p class="muted" style="font-size:12px">Grouped by attribute; attributes ordered by their largest gap, values by gap ({{ s.comp }} deeper first). Credibility = posterior probability that {{ s.comp }}'s share is higher; values near 0% mean Staples is credibly deeper.</p>
+    <p class="muted" style="font-size:12px">Share of families where the attribute is known. Grouped by attribute; attributes ordered by their largest gap, values by gap ({{ s.comp }} deeper first). Credibility = posterior probability that {{ s.comp }}'s share is higher; values near 0% mean Staples is credibly deeper.</p>
+
+    <h3>Price insights</h3>
+    <p class="ink2">Price is kept out of the archetype definitions and read here. Median price: {{ s.comp }} {{ s.price_median_c }} vs Staples {{ s.price_median_s }}.</p>
+    {% if s.price_lines %}<ul class="ins">{% for l in s.price_lines %}<li>{{ l }}</li>{% endfor %}</ul>{% endif %}
+    <div class="grid g2">
+      {% if s.figs.price %}<figure class="fig"><img alt="Price-band coverage" src="{{ s.figs.price }}"><figcaption>Share of each retailer's families per price band (node quartiles, rounded). “gap” = {{ s.comp }} share credibly higher.</figcaption></figure>{% endif %}
+    </div>
+    {% if s.ladder %}<details><summary>Price ladder by archetype ({{ s.ladder|length }})</summary>
+    <div class="tbl-wrap" style="margin-top:8px"><table class="sortable"><thead><tr><th>Archetype (Attributes combo)</th><th class="num">Staples</th><th class="num">{{ s.comp }}</th><th class="num">Staples median</th><th class="num">{{ s.comp }} median</th><th class="num">{{ s.comp }} ÷ Staples</th><th>Reading</th><th class="num">PPG (Price Position Gap)</th></tr></thead><tbody>
+    {% for r in s.ladder %}<tr><td>{{ A(r.a, False) }}</td><td class="num">{{ r.ns }}</td><td class="num">{{ r.nc }}</td><td class="num">{{ r.ps }}</td><td class="num">{{ r.pc }}</td><td class="num">{{ r.ratio }}</td><td>{{ r.dir }}</td><td class="num">{{ r.ppg }}</td></tr>{% endfor %}
+    </tbody></table></div></details>{% endif %}
 
     {% if s.status == 'scored' %}
-    <h3>Method 1: Vector view results</h3>
-    <p class="ink2">Every archetype on this shelf, highest VOS first. VOS rewards whitespace, fit with Staples and a visibly different look, then is reduced by cannibalisation risk. Faded bars and “no” in the Gate column failed the shared safety gate.</p>
-    <div class="grid g2">
-      {% if s.figs.vos %}<figure class="fig"><img alt="VOS by archetype" src="{{ s.figs.vos }}"><figcaption>Bar segments = what whitespace, fit and look difference contribute after the cannibalisation-risk discount; the number in brackets is the score before that discount.</figcaption></figure>{% endif %}
-      {% if s.figs.decision %}<figure class="fig"><img alt="Decision scatter" src="{{ s.figs.decision }}"><figcaption>Every {{ s.comp }} product on this shelf; lines = CRS {{ cfg.vector.crs_low }}/{{ cfg.vector.crs_high }} and AAS thresholds.</figcaption></figure>{% endif %}
-    </div>
-    <div class="tbl-wrap" style="margin-top:10px"><table class="sortable"><thead><tr><th>Archetype</th><th class="num">VOS</th><th class="num">Staples</th><th class="num">{{ s.comp }}</th><th class="num">VW</th><th class="num">AAS</th><th class="num">AD</th><th class="num">CRS</th><th class="num">PPR</th><th class="num">Safe share</th><th>Gate</th></tr></thead><tbody>
-    {% for r in s.m1 %}<tr><td>{{ r.name }}</td><td class="num"><b>{{ r.vos }}</b></td><td class="num">{{ r.ns }}</td><td class="num">{{ r.nc }}</td><td class="num">{{ r.vw }}</td><td class="num">{{ r.aas }}</td><td class="num">{{ r.ad }}</td><td class="num">{{ r.crs }}</td><td class="num">{{ r.ppr }}</td><td class="num">{{ r.safe }}</td><td>{{ r.elig }}</td></tr>{% endfor %}
-    </tbody></table></div>
-
-    <h3>Method 2: Attribute view results</h3>
-    <p class="ink2">Every archetype on this shelf, highest TG first. TG measures how far {{ s.comp }} over-indexes on the archetype and how different its price, colour, material/style and design-forward mix is.</p>
-    {% if s.figs.tg %}<figure class="fig solo"><img alt="TG by archetype" src="{{ s.figs.tg }}"><figcaption>Bar segments = weighted contribution of each gap metric (percentile within the category). Faded = failed the safety gate.</figcaption></figure>{% endif %}
-    <div class="tbl-wrap" style="margin-top:10px"><table class="sortable"><thead><tr><th>Archetype</th><th class="num">TG</th><th class="num">Staples share</th><th class="num">{{ s.comp }} share</th><th class="num">LSR</th><th class="num">Credibility</th><th>Flag</th><th class="num">PPG</th><th class="num">CG</th><th class="num">MSG</th><th class="num">DFG</th><th class="num">TG (original weights)</th><th>Colours Staples lacks</th></tr></thead><tbody>
-    {% for r in s.m2 %}<tr><td>{{ r.name }}</td><td class="num"><b>{{ r.tg }}</b></td><td class="num">{{ r.ps }}</td><td class="num">{{ r.pc }}</td><td class="num">{{ r.lsr }}</td><td class="num">{{ r.cred }}</td><td>{{ r.flag }}</td><td class="num">{{ r.ppg }}</td><td class="num">{{ r.cg }}</td><td class="num">{{ r.msg }}</td><td class="num">{{ r.dfg }}</td><td class="num">{{ r.tgo }}</td><td class="ink2">{{ r.miss }}</td></tr>{% endfor %}
-    </tbody></table></div>
-
-    <h3>Final recommendations: re-ranked</h3>
+    <h3>Final recommendations</h3>
     <div class="lede"><ul class="agree">
-      <li><b>Method agreement score: {% if s.rho is not none %}{{ "%.2f"|format(s.rho) }}{% else %}–{% endif %}</b> <span class="ink2">(Spearman correlation coefficient, VOS vs TG)</span></li>
+      <li><b>Method agreement score: {% if s.rho is not none %}{{ "%.2f"|format(s.rho) }}{% else %}–{% endif %}</b> <span class="ink2">(Spearman correlation coefficient, VOS (Vector Opportunity Score) vs TG (Total Gap))</span></li>
       <li>{{ s.rho_note }}</li>
       <li class="ink2">Scale: −1 = opposite rankings · 0 = unrelated · +1 = identical rankings. Read ≥ 0.5 as broad agreement, 0.2–0.5 as partial, below 0.2 as weak.</li>
     </ul></div>
-    <div class="grid g2">
-      {% if s.figs.agreement %}<figure class="fig"><img alt="TG versus VOS" src="{{ s.figs.agreement }}"><figcaption>#n = recommended, by fused rank. Hollow = failed the safety gate.</figcaption></figure>{% endif %}
-      {% if s.figs.labelmix %}<figure class="fig"><img alt="Label mix per archetype" src="{{ s.figs.labelmix }}"><figcaption>Share of each archetype's {{ s.comp }} products per decision group.</figcaption></figure>{% endif %}
-    </div>
-    <div class="tbl-wrap" style="margin-top:10px"><table class="sortable"><thead><tr><th class="num">Rank</th><th>Archetype</th><th>Agreement</th><th class="num">VOS</th><th class="num">TG</th><th class="num">Final</th><th class="num">Top-5 stability (TG / VOS)</th><th>Definition</th></tr></thead><tbody>
-    {% for r in s.final %}<tr><td class="num">{{ r.rank }}</td><td>{% if r.short %}<b>{{ r.name }}</b> <span class="chip st-PASS">recommended</span>{% else %}{{ r.name }}{% endif %}</td><td>{{ r.tier }}</td><td class="num">{{ r.vos }}</td><td class="num">{{ r.tg }}</td><td class="num">{{ r.final }}</td><td class="num">{{ r.stab }}</td><td class="ink2">{{ r.def }}</td></tr>
-    {% else %}<tr><td colspan="8" class="muted">No archetype passed the safety gate.</td></tr>{% endfor %}
+    <div class="tbl-wrap" style="margin-top:10px"><table class="sortable"><thead><tr><th class="num">Rank</th><th>Archetype (Attributes combo)</th><th>Tier</th><th>Method 1 list</th><th>Method 2 list</th><th class="num">VOS (Vector Opportunity Score)</th><th class="num">TG (Total Gap)</th><th class="num">M1 safe products</th><th class="num">ACR (Attribute Cannibalisation Risk)</th><th class="num">Staples / {{ s.comp }} families</th></tr></thead><tbody>
+    {% for r in s.final %}<tr><td class="num">{{ r.rank }}</td><td>{{ A(r.a, True) }}</td><td>{% if r.tier == 'Strong' %}<span class="chip st-PASS">Strong</span>{% elif r.tier == 'Conditional' %}<span class="chip st-PARTIAL">Conditional</span>{% else %}<span class="chip">{{ r.tier }}</span>{% endif %}</td><td>{{ r.m1 }}</td><td>{{ r.m2 }}</td><td class="num">{{ r.vos }}</td><td class="num">{{ r.tg }}</td><td class="num">{{ r.nsafe }}</td><td class="num">{{ r.acr }}</td><td class="num">{{ r.ns }} / {{ r.nc }}</td></tr>
+    {% else %}<tr><td colspan="10" class="muted">No archetype passed either method's safety gate.</td></tr>{% endfor %}
     </tbody></table></div>
+    <div class="grid g2" style="margin-top:10px">
+      {% if s.figs.agreement %}<figure class="fig"><img alt="TG versus VOS" src="{{ s.figs.agreement }}"><figcaption>#n = recommended, by final order. Colour = tier; hollow = not recommended.</figcaption></figure>{% endif %}
+      {% if s.figs.labelmix %}<figure class="fig"><img alt="Label mix per archetype" src="{{ s.figs.labelmix }}"><figcaption>Share of each archetype's {{ s.comp }} products per Method 1 decision group.</figcaption></figure>{% endif %}
+    </div>
 
     <h3>SKU recommendations</h3>
     {% for g in s.skus %}<div class="skugrp">
-      <b>#{{ g.rank }} · {{ g.name }}</b> <span class="chip">{{ g.tier }}</span>
+      <b>#{{ g.rank }} · {{ g.a.name }}</b> <span class="combo">({{ g.a.combo }})</span> <span class="chip">{{ g.tier }}</span>
       {% for c in g.cards %}{% include 'card.html.j2' %}{% endfor %}
-    </div>{% else %}<p class="muted">No shortlisted archetype on this shelf.</p>{% endfor %}
+    </div>{% else %}<p class="muted">No shortlisted archetype on this node.</p>{% endfor %}
 
     {% if s.style_ext %}<h4>Style extensions: {{ s.style_ext|length }} colour, material or style variants of existing Staples products</h4>
       {% for c in s.style_ext %}{% include 'card.html.j2' %}{% endfor %}
@@ -461,18 +502,40 @@ footer{color:var(--muted);font-size:12px;padding:30px 0}
     </tbody></table></div>
 
     <h3>Excluded archetypes ({{ s.excluded|length }})</h3>
-    <div class="tbl-wrap"><table class="sortable"><thead><tr><th>Archetype</th><th>Why excluded</th><th>Agreement</th><th class="num">VOS</th><th class="num">TG</th></tr></thead><tbody>
-    {% for r in s.excluded %}<tr><td>{{ r.name }}</td><td class="ink2">{{ r.reason }}</td><td>{{ r.tier }}</td><td class="num">{{ r.vos }}</td><td class="num">{{ r.tg }}</td></tr>
+    <div class="tbl-wrap"><table class="sortable"><thead><tr><th>Archetype (Attributes combo)</th><th>Why excluded</th><th>Agreement</th><th class="num">VOS (Vector Opportunity Score)</th><th class="num">TG (Total Gap)</th></tr></thead><tbody>
+    {% for r in s.excluded %}<tr><td>{{ A(r.a, False) }}</td><td class="ink2">{{ r.reason }}</td><td>{{ r.tier }}</td><td class="num">{{ r.vos }}</td><td class="num">{{ r.tg }}</td></tr>
     {% else %}<tr><td colspan="5" class="muted">None: every archetype passed the safety gate.</td></tr>{% endfor %}
     </tbody></table></div>
+
+    <h3>Method 1: Vector view results</h3>
+    <p class="ink2">Every archetype on this node, highest VOS (Vector Opportunity Score) first. VOS rewards whitespace (VW), fit with Staples (AAS) and a visibly different look (AD), then is reduced by cannibalisation risk (CRS). Faded bars and “no” in the Gate column failed the shared safety gate.</p>
+    <div class="grid g2">
+      {% if s.figs.vos %}<figure class="fig"><img alt="VOS by archetype" src="{{ s.figs.vos }}"><figcaption>Bar segments = what VW (Vector Whitespace), AAS (Adjacency Affinity Score) and AD (Aesthetic Delta) contribute after the CRS (Cannibalisation Risk Score) discount; the number in brackets is the score before that discount.</figcaption></figure>{% endif %}
+      {% if s.figs.decision %}<figure class="fig"><img alt="Decision scatter" src="{{ s.figs.decision }}"><figcaption>Every {{ s.comp }} product on this node; lines = CRS {{ cfg.vector.crs_low }}/{{ cfg.vector.crs_high }} and AAS thresholds.</figcaption></figure>{% endif %}
+    </div>
+    <div class="tbl-wrap" style="margin-top:10px"><table class="sortable"><thead><tr><th>Archetype (Attributes combo)</th><th class="num">VOS (Vector Opportunity Score)</th><th class="num">Staples</th><th class="num">{{ s.comp }}</th><th class="num">VW (Vector Whitespace)</th><th class="num">AAS (Adjacency Affinity Score)</th><th class="num">AD (Aesthetic Delta)</th><th class="num">CRS (Cannibalisation Risk Score)</th><th class="num">PPR (Price Position Ratio)</th><th class="num">Safe products</th><th class="num">Safe share (of decided)</th><th class="num">Substitute + undercut</th><th>M1 gate</th><th>Reason</th></tr></thead><tbody>
+    {% for r in s.m1 %}<tr><td>{{ A(r.a, False) }}</td><td class="num"><b>{{ r.vos }}</b></td><td class="num">{{ r.ns }}</td><td class="num">{{ r.nc }}</td><td class="num">{{ r.vw }}</td><td class="num">{{ r.aas }}</td><td class="num">{{ r.ad }}</td><td class="num">{{ r.crs }}</td><td class="num">{{ r.ppr }}</td><td class="num">{{ r.nsafe }}</td><td class="num">{{ r.safe }}</td><td class="num">{{ r.rej }}</td><td>{% if r.listed %}<span class="chip st-PASS">listed</span>{% else %}{{ r.elig }}{% endif %}</td><td class="ink2">{{ r.why }}</td></tr>{% endfor %}
+    </tbody></table></div>
+
+    <h3>Method 2: Attribute view results</h3>
+    <p class="ink2">Every archetype on this node, highest TG (Total Gap) first. TG measures how far {{ s.comp }} over-indexes on the archetype (LSR) and how different its price (PPG), colour (CG), material/style (MSG) and design-forward (DFG) mix is.</p>
+    {% if s.figs.tg %}<figure class="fig solo"><img alt="TG by archetype" src="{{ s.figs.tg }}"><figcaption>Bar segments = weighted contribution of each gap metric (percentile within the peer group). Faded = failed the safety gate.</figcaption></figure>{% endif %}
+    <div class="tbl-wrap" style="margin-top:10px"><table class="sortable"><thead><tr><th>Archetype (Attributes combo)</th><th class="num">TG (Total Gap)</th><th class="num">Staples share</th><th class="num">{{ s.comp }} share</th><th class="num">LSR (Log Share Ratio)</th><th class="num">Credibility</th><th>Flag</th><th class="num">PPG (Price Position Gap)</th><th class="num">CG (Colour Gap)</th><th class="num">MSG (Material &amp; Style Gap)</th><th class="num">DFG (Design-Forward Gap)</th><th class="num">TG (original weights)</th><th class="num">ACR (Attribute Cannibalisation Risk)</th><th class="num">Non-cannibalising products</th><th>M2 gate</th><th>Reason</th><th>Colours Staples lacks</th></tr></thead><tbody>
+    {% for r in s.m2 %}<tr><td>{{ A(r.a, False) }}</td><td class="num"><b>{{ r.tg }}</b></td><td class="num">{{ r.ps }}</td><td class="num">{{ r.pc }}</td><td class="num">{{ r.lsr }}</td><td class="num">{{ r.cred }}</td><td>{{ r.flag }}</td><td class="num">{{ r.ppg }}</td><td class="num">{{ r.cg }}</td><td class="num">{{ r.msg }}</td><td class="num">{{ r.dfg }}</td><td class="num">{{ r.tgo }}</td><td class="num">{{ r.acr }}</td><td class="num">{{ r.nok }}</td><td>{% if r.listed %}<span class="chip st-PASS">listed</span>{% else %}{{ r.elig }}{% endif %}</td><td class="ink2">{{ r.why }}</td><td class="ink2">{{ r.miss }}</td></tr>{% endfor %}
+    </tbody></table></div>
     {% else %}
-    <p class="muted">Fewer than {{ cfg.nodes.min_families_scored }} families on one side: shown descriptively; archetypes and recommendations are not scored for this shelf.</p>
+    <p class="muted">Fewer than {{ cfg.nodes.min_families_scored }} families on one side: shown descriptively; archetypes and recommendations are not scored for this node.</p>
     {% endif %}
+    {% endif %}
+
+    {% if s.acc_img %}<details><summary>Extraction accuracy on this node (text extractor vs Staples specs{% if s.parity %}, Staples text cut to {{ s.parity }} characters{% endif %})</summary>
+      <figure class="fig solo" style="margin-top:8px"><img alt="Extractor accuracy" src="{{ s.acc_img }}"></figure>
+    </details>{% endif %}
   </article>
   {% endfor %}
 </section>
 
-<footer>Staples Marketplace assortment PoC · LatentView · generated {{ date }} · method: methodology.md v1.2 · encoder {{ encoder }} · extraction backend: {{ backend }}.</footer>
+<footer>Staples Marketplace assortment PoC · LatentView · generated {{ date }} · method: methodology.md v1.3 (Phase 2) · encoder {{ encoder }} · extraction backend: {{ backend }}.</footer>
 </div></main>
 
 <script>

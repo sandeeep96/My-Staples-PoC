@@ -1,0 +1,86 @@
+node: "Furniture > Cubicle & Panel Systems > Office Partitions & Dividers"
+noun: divider
+generated_by: "claude-opus-5-5 session draft from Staples spec keys + Wayfair sample, 2026-10-01"
+reviewed_by: null
+
+material_spec_keys: ['Panel Material', 'Frame Materials']
+material_spec_map: {Fabric: fabric/acoustic, Plastic: acrylic/plastic, Acrylic: acrylic/plastic, Wood: wood}
+style_zero_shot: true
+vocab_overrides:
+  material_class:
+    mode: position
+    values:
+      rattan/woven: ['rattan', 'wicker', 'woven', 'cane', 'seagrass', 'jute', 'bamboo slat', 'water hyacinth']
+      paper/shoji: ['shoji', 'rice paper', 'paper']
+      canvas/print: ['canvas', 'printed', 'photo', 'art print']
+      fabric/acoustic: ['fabric', 'acoustic', 'felt', 'pet', 'polyester', 'sound[- ]?absorb\w*', 'soundsorb', 'upholstered', 'linen', 'foam']
+      wood: ['wood', 'wooden', 'bamboo', 'paulownia', 'pine', 'mdf', 'oak', 'walnut']
+      acrylic/plastic: ['acrylic', 'plexiglass', 'plastic', 'polycarbonate', 'translucent', 'pvc', 'frosted']
+      glass: ['glass']
+      metal: ['metal', 'steel', 'iron', 'alumin(i)?um', 'wire']
+
+tier2:
+  divider_type:
+    mode: priority
+    spec_keys: ['Partition & Divider Type']
+    spec_role: indicator
+    spec_map: {Room Divider: freestanding partition, Panel System: panel system, Acoustic Panel: acoustic panel}
+    values:
+      acoustic panel: ['acoustic panels?', 'sound panels?', 'wall panels?', 'acoustic tiles?', 'sound absorbing panels?', 'stick[- ]on']
+      hanging/curtain: ['hanging', 'curtain', 'ceiling']
+      panel system: ['panel system', 'cubicle panel', 'workstation panel', 'panel\b.{0,20}\bsystem', 'verse panel']
+      sliding/operable wall: ['sliding', 'operable wall', 'track']
+      folding screen: ['folding', 'fold', 'screen', 'hinged', '[3-9][- ]panel']
+      freestanding partition: ['partition', 'room divider', 'divider', 'mobile', 'freestanding', 'privacy panel', 'straightwall']
+  wheels:
+    mode: priority
+    values: {"yes": ['wheels?', 'casters?', 'rolling', 'mobile']}
+    spec_keys: ['Wheels']
+    spec_map: {With Wheels: "yes", Without Wheels: "no"}
+  sound_absorbing:
+    mode: priority
+    values: {"yes": ['acoustic', 'sound[- ]?absorb\w*', 'noise[- ]reduc\w*', 'soundproof\w*', 'soundsorb', 'sound dampening']}
+    spec_keys: ['Sound Absorbing']
+    spec_map: {Is Sound Absorbing: "yes", Not Sound Absorbing: "no"}
+  tackable:
+    mode: priority
+    values: {"yes": ['tackable', 'whiteboard', 'dry[- ]erase', 'pin ?board', 'cork', 'magnetic']}
+
+numeric:
+  panels:
+    spec_keys: ['Number of Panels']
+    text_regex: ['(\d{1,2})[- ]panels?', '(\d{1,2})[- ]pc']
+    min: 1
+    max: 20
+numeric_bands:
+  panel_band: {source: panels, bands: {"1-3 panels": ['0', '3.5'], "4-5 panels": ['3.5', '5.5'], "6+ panels": ['5.5', '100']}}
+size_bands: {source: height, bands: {"low (<48 in)": ['0', '48'], "mid (48-71 in)": ['48', '71.5'], "tall (72 in+)": ['71.5', '1000']}}
+
+tier3:
+  design:
+    mode: priority
+    default: plain
+    values:
+      oriental/art: ['oriental', 'chinese', 'japanese', 'lotus', 'asian', 'cherry blossom', 'shoji', 'bamboo']
+      print/photo: ['print', 'printed', 'photo', 'art', 'landscape', 'floral', 'abstract', 'pattern']
+      carved/cutout: ['carved', 'cut[- ]?out', 'lattice', 'laser[- ]cut', 'fretwork', 'geometric']
+
+archetype_facets:
+  tier1: [material_class, colour_tone, colour_family, size_class]
+  tier2: [divider_type, wheels, sound_absorbing, panel_band, tackable]
+  tier3: [style_family, design, vibe]
+name_order: [style_family, design, material_class, divider_type]
+type_attrs: [divider_type]
+functional_core: [divider_type, wheels, sound_absorbing, tackable, panel_band]
+labels:
+  design: {plain: ''}
+facet_labels: {divider_type: Type, wheels: Wheels, sound_absorbing: Sound-absorbing, tackable: Tackable/whiteboard, panel_band: Panels, size_class: Height, design: Design}
+material_tiers: {acrylic/plastic: 1, fabric/acoustic: 2, metal: 2, paper/shoji: 2, canvas/print: 2, wood: 3, rattan/woven: 3, glass: 3}
+
+dfi_anchors:
+  design:
+    - "a decorative folding room divider screen in natural rattan or carved wood for a stylish living room"
+    - "an artistic screen with a printed botanical design, a statement decor piece"
+  utility:
+    - "a gray fabric office partition panel on an aluminum frame for open-plan workspaces"
+    - "a freestanding mobile room divider in black acoustic fabric for classrooms, utilitarian"

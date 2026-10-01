@@ -1,0 +1,93 @@
+node: "Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes"
+noun: lunch bag / box
+generated_by: "claude-opus-5-5 session draft from Staples spec keys + Amazon sample, 2026-10-01"
+reviewed_by: null
+
+material_spec_keys: ['Lunch Bag & Box Material']
+style_zero_shot: false
+vocab_overrides:
+  material_class:
+    mode: position
+    values:
+      stainless steel: ['stainless steel', 'stainless', 'steel', '18/8', 'metal', 'tin']
+      glass: ['glass', 'borosilicate']
+      silicone: ['silicone']
+      neoprene: ['neoprene']
+      bamboo/wood: ['bamboo', 'wood', 'wooden']
+      faux leather: ['faux leather', 'pu leather', 'vegan leather', 'leather']
+      fabric/poly: ['polyester', 'nylon', 'fabric', 'oxford', 'canvas', 'cotton', 'peva', 'quilted', '\d{3,4}d', 'cloth', 'linen']
+      plastic: ['plastic', 'polypropylene', 'tritan', 'pp', 'polyethylene', 'bpa[- ]free']
+      paper: ['kraft', 'paper']
+
+tier2:
+  lunch_type:
+    mode: priority
+    spec_keys: ['Lunch Bags & Boxes Type']
+    spec_role: indicator
+    spec_map: {Lunch Bag: lunch bag/tote, Bento Box: bento box, Food Jar: food jar, Ice Pack: ice pack, Snack Container: container/snack, Salad Container: container/snack}
+    values:
+      electric heated: ['electric', 'heated', 'heating', 'self[- ]heating']
+      ice pack: ['ice packs?', 'freezer packs?', 'cold packs?']
+      food jar: ['food jar', 'thermos', 'soup', 'food flask', 'insulated jar', 'thermal jar', 'food container.{0,10}(hot|thermal)']
+      bento box: ['bento']
+      lunch bag/tote: ['lunch bags?', 'lunch totes?', 'tote', 'cooler bag', 'lunch backpack', 'lunch cooler', 'soft cooler', 'lunch sack', 'lunch pail']
+      lunch box: ['lunch ?box(es)?', 'lunch kit', 'lunch container']
+      container/snack: ['containers?', 'snack', 'salad', 'sandwich', 'bowl']
+  insulated:
+    mode: priority
+    values: {"yes": ['insulat\w*', 'thermal', 'keeps? (food |drinks? )?(cold|hot|warm)', 'cooler']}
+    spec_keys: ['Insulated']
+    spec_map: {Insulated: "yes"}
+  leakproof:
+    mode: priority
+    values: {"yes": ['leak[- ]?proof', 'leak[- ]?resistant', 'spill[- ]?proof', 'leak[- ]?free']}
+  compartments:
+    mode: priority
+    values:
+      multi-compartment: ['[2-9][- ]compartments?', 'dual compartment', 'compartments', 'divided', 'dividers?', '[2-4][- ]tier', 'double[- ]decker']
+      single: ['1[- ]compartment', 'single compartment', 'one compartment']
+  dishwasher_safe:
+    mode: priority
+    values: {"yes": ['dishwasher', 'microwave']}
+
+tier3:
+  pattern:
+    mode: priority
+    spec_keys: ['Lunch Bag & Box Pattern']
+    default: solid
+    values:
+      character/licensed: ['disney', 'marvel', 'harry potter', 'star wars', 'pok[eé]mon', 'minecraft', 'sanrio', 'hello kitty', 'bluey', 'paw patrol', 'frozen', 'spider-?man', 'mickey', 'pixar', 'barbie', 'sonic', 'super mario', 'licensed']
+      floral: ['floral', 'flowers?', 'botanical']
+      novelty/animal: ['unicorn', 'dinosaur', 'shark', 'mermaid', 'animal', 'novelty', 'sports']
+      print/pattern: ['print', 'pattern', 'plaid', 'geometric', 'tie[- ]dye', 'stripes?', 'polka', 'marble', 'artwork', 'graphic', 'glitter']
+  audience:
+    mode: priority
+    spec_keys: ['Age Group']
+    default: general
+    values:
+      kids: ['kids', 'children', 'toddler', 'preschool', 'youth', 'boys?', 'girls?', 'child']
+      women: ['women', "women's", 'womens', 'ladies']
+      men: ["\\bmen\\b", "men's", '\bmens\b']
+      adult/work: ['adults?', 'work', 'office', 'workers?']
+
+archetype_facets:
+  tier1: [material_class, colour_tone, colour_family]
+  tier2: [lunch_type, insulated, leakproof, compartments, dishwasher_safe]
+  tier3: [pattern, audience, vibe]
+name_order: [pattern, audience, material_class, insulated, lunch_type]
+type_attrs: [lunch_type]
+functional_core: [lunch_type, insulated, leakproof, compartments, dishwasher_safe]
+labels:
+  pattern: {solid: solid}
+  audience: {general: ''}
+  insulated: {"yes": insulated}
+facet_labels: {lunch_type: Type, insulated: Insulated, leakproof: Leak-proof, compartments: Compartments, dishwasher_safe: Dishwasher/microwave safe, pattern: Pattern, audience: Audience}
+material_tiers: {paper: 0, plastic: 1, fabric/poly: 1, neoprene: 2, silicone: 2, faux leather: 2, glass: 3, stainless steel: 3, bamboo/wood: 3}
+
+dfi_anchors:
+  design:
+    - "a chic minimalist lunch tote in vegan leather or muted linen for professionals"
+    - "a stylish glass and bamboo bento set with a clean aesthetic design"
+  utility:
+    - "a basic plastic food container for lunch"
+    - "a plain insulated polyester lunch bag, functional and simple"

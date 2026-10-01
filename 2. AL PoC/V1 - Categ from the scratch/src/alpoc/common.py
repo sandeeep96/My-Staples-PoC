@@ -32,10 +32,42 @@ def slug(s: str) -> str:
     return re.sub(r"[^a-z0-9]+", "_", s.lower()).strip("_")
 
 
-def l2_config(l2_key: str) -> dict:
-    """Per-L2 generated artefact; {} (provisional, universal-only) when none exists."""
-    name = "l2/" + "__".join(slug(p) for p in l2_key.split(" > ")) + ".yaml"
-    return load_yaml(name)
+@lru_cache(maxsize=None)
+def _node_configs() -> dict:
+    out_ = {}
+    for p in sorted((CONFIG_DIR / "nodes").glob("*.yaml")):
+        c = yaml.safe_load(p.read_text(encoding="utf-8")) or {}
+        if c.get("node"):
+            out_[c["node"]] = c
+    return out_
+
+
+def node_config(node_id: str) -> dict:
+    """Per-node generated artefact (config/nodes/*.yaml, matched on its `node` path); {} = universal-only, provisional."""
+    return _node_configs().get(node_id, {})
+
+
+@lru_cache(maxsize=None)
+def retailers() -> dict:
+    return load_yaml("retailers.yaml")
+
+
+def display_name(retailer: str) -> str:
+    return (retailers().get(retailer) or {}).get("display", retailer.title())
+
+
+# Every metric abbreviation is shown with its full name: "TG (Total Gap)" (Sai, 2026-10-01).
+METRICS = {
+    "VOS": "Vector Opportunity Score", "TG": "Total Gap", "VW": "Vector Whitespace",
+    "AAS": "Adjacency Affinity Score", "CRS": "Cannibalisation Risk Score", "AD": "Aesthetic Delta",
+    "PPR": "Price Position Ratio", "LSR": "Log Share Ratio", "PPG": "Price Position Gap", "CG": "Colour Gap",
+    "MSG": "Material & Style Gap", "DFG": "Design-Forward Gap", "DFI": "Design-Forward Index",
+    "JSD": "Jensen–Shannon Divergence", "ACR": "Attribute Cannibalisation Risk", "ARI": "Adjusted Rand Index", "AUC": "Area Under the ROC Curve",
+}
+
+
+def m(abbr: str) -> str:
+    return f"{abbr} ({METRICS[abbr]})"
 
 
 # ----------------------------------------------------------------------------- paths & IO

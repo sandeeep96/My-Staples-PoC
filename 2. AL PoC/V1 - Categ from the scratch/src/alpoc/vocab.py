@@ -74,8 +74,10 @@ def universal() -> dict:
 
 
 @lru_cache(maxsize=None)
-def matcher(attr: str) -> Matcher:
-    spec = universal()[attr]
+def matcher(attr: str, node_id: str | None = None) -> Matcher:
+    """Universal vocabulary, or the node's override (config/nodes/*.yaml -> vocab_overrides) when it has one."""
+    from .common import node_config
+    spec = ((node_config(node_id).get("vocab_overrides") or {}).get(attr) if node_id else None) or universal()[attr]
     return Matcher(spec["values"], spec.get("mode", "position"))
 
 

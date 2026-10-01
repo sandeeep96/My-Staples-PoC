@@ -1,4 +1,8 @@
-"""S0 Ingest & clean: retailer adapters -> one SKU table per retailer (methodology §5.1)."""
+"""S0 Ingest & clean: retailer adapters -> one SKU table per retailer (methodology §5.1).
+
+Only the Phase-1 columns are read (id, title, price, url, brand/vendor, selected choice, description, listing page
+and its path). Ratings, review counts, badges, ranks, list prices, images and specification columns are ignored.
+"""
 from __future__ import annotations
 
 import ast
@@ -9,7 +13,7 @@ import numpy as np
 import pandas as pd
 from ftfy import fix_text
 
-from .common import interim, load_yaml, log, path, save
+from .common import interim, log, path, retailers, save
 
 
 def _read_excel_cached(fname: str) -> pd.DataFrame:
@@ -18,18 +22,23 @@ def _read_excel_cached(fname: str) -> pd.DataFrame:
     if cache.exists() and cache.stat().st_mtime > src.stat().st_mtime:
         return pd.read_pickle(cache)
     log(f"reading {fname}")
-    df = pd.read_excel(src)
+    df = pd.read_excel(src, sheet_name=0)
     df.to_pickle(cache)
     return df
 
 
 def parse_price(v) -> tuple[float, bool]:
+    """'$1,099.99' -> 1099.99. Strings without a $ amount ('2 sizes', '1 text input') are not prices."""
     if v is None or (isinstance(v, float) and np.isnan(v)):
         return np.nan, False
+    if isinstance(v, (int, float)):
+        return float(v), False
     s = str(v)
     per_item = "per item" in s.lower()
-    m = re.search(r"[\d,]+(\.\d+)?", s.replace("$", ""))
-    return (float(m.group(0).replace(",", "")) if m else np.nan), per_item
+    mt = re.search(r"\$\s*([\d,]+(?:\.\d+)?)", s)
+    if mt is None:
+        mt = re.fullmatch(r"\s*([\d,]+(?:\.\d+)?)\s*", s)
+    return (float(mt.group(1).replace(",", "")) if mt else np.nan), per_item
 
 
 _MOJIBAKE = {"â„¢": "™", "â€™": "'", "â€œ": '"', "â€\x9d": '"', "â€“": "–", "â€”": "—", "Â®": "®", "Â°": "°"}
@@ -62,16 +71,19 @@ def parse_staples_description(raw) -> tuple[str, str, dict]:
     return para, bullets, specs
 
 
+def _path(r: dict, cols: list[str]) -> list[str]:
+    return [_clean(r[k]) for k in cols if isinstance(r.get(k), str) and r[k].strip()]
+
+
 def ingest_staples(ad: dict) -> pd.DataFrame:
     raw = _read_excel_cached(ad["file"])
     c = ad["columns"]
     raw = raw.drop_duplicates()
     rows = []
     for r in raw.to_dict("records"):
-        levels = [str(r[k]) for k in ad["path_columns"] if isinstance(r.get(k), str) and r[k].strip()]
+        levels = _path(r, ad["path_columns"])
         para, bullets, specs = parse_staples_description(r.get(c["description"]))
         price, per_item = parse_price(r.get(c["price"]))
-        rating = re.search(r"([\d.]+)\s*stars", str(r.get(c["rating"]) or ""))
         rows.append({
             "retailer": "staples",
             "sku_id": str(r[c["id"]]),
@@ -79,11 +91,10 @@ def ingest_staples(ad: dict) -> pd.DataFrame:
             "price": price, "per_item_price": per_item,
             "url": str(r.get(c["url"]) or ""),
             "model": _clean(r.get(c["model"])),
-            "rating": float(rating.group(1)) if rating else np.nan,
             "desc": para, "bullets": bullets, "specs": json.dumps(specs, ensure_ascii=False),
             "leaf_path": " > ".join(levels),
             "l2_key": " > ".join(levels[:2]),
-            "leaf": str(r[ad["leaf_column"]]),
+            "leaf": _clean(r[ad["leaf_column"]]),
         })
     df = pd.DataFrame(rows)
     # a SKU listed under several leaves keeps its first leaf as primary (secondary kept for reference)
@@ -93,38 +104,61 @@ def ingest_staples(ad: dict) -> pd.DataFrame:
     return df
 
 
+def clean_vendor(v, ad: dict) -> str:
+    s = re.sub(r"[®™]", "", _clean(v)).strip()
+    for rx in ad.get("vendor_strip") or []:
+        s = re.sub(rx, "", s, flags=re.I).strip()
+    if any(re.search(rx, s, flags=re.I) for rx in ad.get("vendor_junk") or []):
+        return ""
+    return s
+
+
 def ingest_competitor(name: str, ad: dict) -> pd.DataFrame:
     raw = _read_excel_cached(ad["file"])
     c = ad["columns"]
     raw = raw.drop_duplicates()
+    raw = raw[raw[c["id"]].notna() & raw[c["title"]].notna()]
     rows = []
     for r in raw.to_dict("records"):
         desc_full = _clean(r.get(c["description"]))
-        desc = desc_full.split(" | ")[0]            # right of " | " = customer review (PII): dropped
-        page = str(r[c["page"]])
-        for k, v in (ad.get("page_name_fixes") or {}).items():   # before whitespace is collapsed
-            page = page.replace(k, v)
-        page = _clean(page)
+        # right of " | " = customer review with name, city, date (PII): dropped, never used
+        desc = desc_full.split(" | ")[0] if ad.get("description_format") == "text_with_review" else desc_full
+        levels = []
+        for k in ad.get("path_columns") or []:
+            v = r.get(k)
+            if isinstance(v, str) and v.strip():
+                for bad, good in (ad.get("page_name_fixes") or {}).items():   # before whitespace is collapsed
+                    v = v.replace(bad, good)
+                levels.append(_clean(v))
+        page_name = str(r[c["page"]])
+        for bad, good in (ad.get("page_name_fixes") or {}).items():
+            page_name = page_name.replace(bad, good)
+        page_name = _clean(page_name)
+        page = " > ".join(levels) if levels else page_name      # the page is identified by its full path
         price, per_item = parse_price(r.get(c["price"]))
+        pid = str(r[c["id"]]).strip()
+        url = ad["url_template"].format(id=pid) if ad.get("url_template") else str(r.get(c["url"]) or "")
         rows.append({
             "retailer": name,
-            "sku_id": str(r[c["id"]]),
+            "sku_id": pid,
             "title": _clean(r[c["title"]]),
             "price": price, "per_item_price": per_item,
-            "url": str(r.get(c["url"]) or ""),
-            "vendor": re.sub(r"[®™]", "", _clean(r.get(c["vendor"]))).strip(),
-            "choice": _clean(r.get(c["choice"])),
+            "url": url,
+            "vendor": clean_vendor(r.get(c["vendor"]), ad) if c.get("vendor") else "",
+            "choice": _clean(r.get(c["choice"])) if c.get("choice") else "",
             "desc": desc, "bullets": "", "specs": "{}",
-            "page": page,
-            "had_review_text": " | " in desc_full,
+            "page": page, "page_name": page_name,
+            "had_review_text": ad.get("description_format") == "text_with_review" and " | " in desc_full,
         })
     return pd.DataFrame(rows)
 
 
 def run() -> dict:
-    retailers = load_yaml("retailers.yaml")
     stats = {}
-    for name, ad in retailers.items():
+    for name, ad in retailers().items():
+        if not (path("raw_dir") / ad["file"]).exists():
+            log(f"S0 {name}: file not found ({ad['file']}), skipped")
+            continue
         df = ingest_staples(ad) if ad["role"] == "base" else ingest_competitor(name, ad)
         save(df, f"sku_{name}.parquet")
         stats[name] = {"rows": int(len(df)), "skus": int(df["sku_id"].nunique()),

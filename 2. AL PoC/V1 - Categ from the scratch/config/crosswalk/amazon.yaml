@@ -1,0 +1,25 @@
+# Competitor page path -> candidate Staples leaf (S2 page prior). Keys are page-path PREFIXES ("L1 > L2 > ..."):
+# the longest matching prefix wins, so a whole branch can map to one leaf and a sub-page can override it.
+# [] = no Staples focus leaf: products go to the new-node backlog. Checked against the Staples nav tree: every []
+# below is a page whose products Staples shelves under a DIFFERENT leaf (sibling of the focus leaf) or not at all.
+# Pages matching no prefix get automatic candidates (flagged provisional).
+generated_by: "claude-opus-5-5 session draft from page paths + Staples nav tree, 2026-10-01"
+reviewed_by: null
+pages:
+  # Backpacks
+  "Clothing, Shoes & Jewelry > Luggage & Travel Gear > Backpacks": [Backpacks]
+  "Clothing, Shoes & Jewelry > Luggage & Travel Gear > Laptop Bags": []          # Staples: Laptop Bags / Messenger Bags leaves
+  # Coffee organizers
+  "Home & Kitchen > Kitchen & Dining > Storage & Organization > Food Storage > Coffee Pod Holders": [Coffee Organizers & Dispensers]
+  # Lunch bags & boxes
+  "Home & Kitchen > Kitchen & Dining > Storage & Organization > Travel & To-Go Food Containers": []
+  "Home & Kitchen > Kitchen & Dining > Storage & Organization > Travel & To-Go Food Containers > Bento Boxes": [Lunch Bags & Boxes]
+  "Home & Kitchen > Kitchen & Dining > Storage & Organization > Travel & To-Go Food Containers > Lunch Bags": [Lunch Bags & Boxes]
+  "Home & Kitchen > Kitchen & Dining > Storage & Organization > Travel & To-Go Food Containers > Lunch Boxes": [Lunch Bags & Boxes]
+  # (Reusable Grocery Bags, Reusable Produce Bags, Thermocoolers = can coolers: no Staples lunch-bag equivalent)
+  # Planners & personal organizers (Staples' leaf holds planners, appointment books, organizers and address books)
+  "Office Products > Office Supplies > Calendars, Planners & Personal Organizers": []   # calendars, boards, pads: Staples "Calendars" leaf
+  "Office Products > Office Supplies > Calendars, Planners & Personal Organizers > Address Books": [Planners & Personal Organizers]
+  "Office Products > Office Supplies > Calendars, Planners & Personal Organizers > Personal Organizers": [Planners & Personal Organizers]
+  "Office Products > Office Supplies > Calendars, Planners & Personal Organizers > Planners, Refills & Covers > Planners": [Planners & Personal Organizers]
+  # (Planner Refills / Covers / Accessories: Staples "Organizer Refills & Accessories" leaf)

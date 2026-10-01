@@ -1,0 +1,104 @@
+node: "Office Supplies > Calendars & Planners > Planners & Personal Organizers"
+noun: planner
+generated_by: "claude-opus-5-5 session draft from Staples spec keys + Amazon sample, 2026-10-01"
+reviewed_by: null
+
+material_spec_keys: ['Cover Material']
+style_zero_shot: false            # furniture style prototypes do not describe planners; design_theme carries the look
+vocab_overrides:
+  material_class:
+    mode: position
+    values:
+      faux leather: ['faux leather', 'pu leather', 'vegan leather', 'leatherette', 'leather[- ]?like', 'pu']
+      leather: ['genuine leather', 'full[- ]grain', 'top[- ]grain', 'real leather', 'leather']
+      fabric/linen: ['linen', 'fabric', 'cloth', 'canvas', 'velvet', 'bookcloth']
+      plastic/poly: ['plastic', 'poly', 'polypropylene', 'vinyl', 'pvc', 'frosted cover']
+      hardcover: ['hard ?cover', 'hardback', 'paperboard', 'cardboard', 'laminated cover', 'hardbound']
+      softcover/paper: ['soft ?cover', 'paperback', 'kraft', 'paper cover', 'flexible cover']
+
+tier2:
+  planner_type:
+    mode: priority
+    spec_keys: ['Planner & Organizer Type']
+    spec_role: indicator
+    spec_map: {Planner: planner, Appointment Book: appointment book, Personal Organizer: personal organizer, Address Book: address book}
+    values:
+      address book: ['address book', 'password book', 'phone book', 'contact book']
+      appointment book: ['appointment book', 'appointment', 'dayminder', 'scheduler']
+      planner: ['planners?', 'agenda', 'diary', 'datebook']
+      personal organizer: ['personal organizer', 'organizer', 'refillable binder']
+      journal/guided: ['journal', 'guided', 'log ?book', 'tracker', 'workbook', 'notebook']
+  date_format:
+    mode: priority
+    spec_keys: ['Date Format']
+    spec_map: {Weekly & Monthly: weekly & monthly, Monthly: monthly, Weekly: weekly, Daily: daily, Daily & Monthly: daily}
+    values:
+      weekly & monthly: ['weekly (and|&) monthly', 'weekly/monthly', 'weekly, monthly', 'monthly (and|&) weekly', 'monthly/weekly']
+      daily: ['daily', 'day[- ]per[- ]page', 'one day per page', 'hourly', 'day[- ]at[- ]a[- ]glance']
+      weekly: ['weekly', 'week[- ]at[- ]a[- ]glance', 'week per', '52[- ]weeks?']
+      monthly: ['monthly', 'month[- ]at[- ]a[- ]glance', '12[- ]months?', '18[- ]months?', '24[- ]months?']
+  year_format:
+    mode: priority
+    values:
+      undated: ['undated', 'no dates?', 'non[- ]dated', 'timeless', 'perpetual', 'start anytime']
+      academic: ['academic', 'school year', 'july 20\d\d', 'august 20\d\d', 'aug(ust)? 20\d\d']
+      multi-year: ['[2-5][- ]years?', 'two[- ]years?', 'five[- ]years?', '20\d\d[-–/ ]+20\d\d[-–/ ]+20\d\d']
+      calendar year: ['20[23]\d', 'calendar year', 'jan(uary)? 20\d\d']
+  planner_size:
+    mode: priority
+    spec_keys: ['Planner & Organizer Size']
+    spec_map: {'Large (8" x 10" or larger)': large, 'Medium (4 7/8" x 8" up to 6" x 9")': medium, 'Small (4" x 6" or smaller)': pocket}
+    values:
+      large: ['8\.5\W{0,4}x\W{0,4}11', '8\W{0,4}x\W{0,4}10', '8\W{0,4}x\W{0,4}11', '9\W{0,4}x\W{0,4}11', '8\.5\W{0,4}x\W{0,4}10\.5', '10(\.\d+)?\W{0,4}x\W{0,4}12(\.\d+)?', 'a4', 'letter size', 'large', 'desk size']
+      medium: ['a5', '5\W{0,4}x\W{0,4}8', '5\.5\W{0,4}x\W{0,4}8\.5', '5\.8\W{0,4}x\W{0,4}8\.3', '6\W{0,4}x\W{0,4}9', '6(\.\d+)?\W{0,4}x\W{0,4}8', '7\W{0,4}x\W{0,4}9', 'b6', 'medium', 'personal size']
+      pocket: ['pocket', 'mini', 'a6', 'b7', '3\.5\W{0,4}x\W{0,4}6(\.\d+)?', '4\W{0,4}x\W{0,4}6', '3(\.\d+)?\W{0,4}x\W{0,4}5(\.\d+)?', 'compact', 'small']
+  binding:
+    mode: priority
+    values:
+      ring/disc binder: ['ring binder', '[3-7][- ]rings?', 'disc[- ]?bound', 'refillable', 'binder', 'loose[- ]leaf']
+      spiral/wire: ['spiral', 'wire[- ]?o', 'wire[- ]?bound', 'twin[- ]wire', 'coil', 'wirebound']
+      bound: ['hard ?cover', 'bound', 'sewn', 'stitched', 'lay[- ]flat', 'perfect bound', 'paperback']
+
+tier3:
+  design_theme:
+    mode: priority
+    spec_keys: ['Style']
+    default: plain
+    values:
+      faith/inspirational: ['bible', 'faith', 'christian', 'devotional', 'scripture', 'prayer', 'inspirational', 'motivational', 'affirmations?', 'manifest\w*']
+      floral/botanical: ['floral', 'botanical', 'flowers?', 'blooms?', 'garden', 'leaf', 'leaves', 'palm', 'tropical', 'peony', 'rose']
+      animal/cute: ['animals?', 'pupp(y|ies)', 'cats?', 'kittens?', 'dogs?', 'bunny', 'unicorn', 'cute', 'kawaii', 'panda', 'frog']
+      travel/scenic: ['national parks?', 'travel', 'scenic', 'landscape', 'mountains?', 'ocean']
+      art/pattern: ['art', 'artisan', 'abstract', 'geometric', 'marble', 'pattern', 'dots', 'stripes?', 'watercolou?r', 'gold foil', 'foil', 'terrazzo', 'designer']
+  audience:
+    mode: priority
+    spec_keys: ['Planner & Organizer Audience']
+    default: general
+    values:
+      teacher: ['teachers?', 'lesson plan\w*', 'educators?']
+      student: ['students?', 'school', 'college', 'homework', 'kids']
+      wellness/self-care: ['wellness', 'self[- ]care', 'fitness', 'health', 'meal', 'mental health', 'gratitude', 'mindful\w*', 'habit']
+      business/professional: ['executive', 'professional', 'business', 'work', 'productivity', 'goals?']
+      family/home: ['family', 'moms?', 'household', 'home', 'budget']
+
+archetype_facets:
+  tier1: [material_class, colour_tone, colour_family]
+  tier2: [planner_type, date_format, year_format, planner_size, binding]
+  tier3: [design_theme, audience, vibe]
+name_order: [design_theme, audience, planner_size, date_format, planner_type]
+type_attrs: [planner_type]
+functional_core: [planner_type, date_format, year_format, planner_size, binding]
+labels:
+  design_theme: {plain: plain-cover}
+  audience: {general: ''}
+  planner_size: {large: large, medium: medium, pocket: pocket}
+facet_labels: {planner_type: Type, date_format: Layout, year_format: Year, planner_size: Size, binding: Binding, design_theme: Design, audience: Audience}
+material_tiers: {softcover/paper: 1, plastic/poly: 1, hardcover: 2, fabric/linen: 3, faux leather: 3, leather: 4}
+
+dfi_anchors:
+  design:
+    - "a beautifully designed lifestyle planner with a linen or gold-foil cover and a curated artistic layout"
+    - "a stylish aesthetic planner with floral illustrations and elegant typography for a creative professional"
+  utility:
+    - "a basic black appointment book for office scheduling"
+    - "a plain plastic-cover weekly planner for business use, functional and simple"

@@ -1,0 +1,14 @@
+[    2.1s] === s2: competitor mapping (page prior + scope check)
+[    3.7s] encoding 3,409 new texts with BAAI/bge-small-en-v1.5
+[   26.4s] loading encoder BAAI/bge-small-en-v1.5
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights:  13%|█▎        | 25/199 [00:00<00:00, 231.01it/s]Loading weights:  30%|██▉       | 59/199 [00:00<00:00, 287.06it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 650.48it/s]
+[  116.6s] encoding 24,209 new texts with BAAI/bge-small-en-v1.5
+[  609.3s] S2 bake-off BAAI/bge-small-en-v1.5: tau=0.687 (recall floor (95%); Youden cut 0.737 would reject more in-scope products) in-scope kept=0.914 out-of-scope rejected=0.221 staples-LOO=0.992
+[  609.3s] encoding 3,409 new texts with BAAI/bge-base-en-v1.5
+[  609.3s] loading encoder BAAI/bge-base-en-v1.5
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights:   9%|▊         | 17/199 [00:00<00:01, 152.50it/s]Loading weights:  17%|█▋        | 33/199 [00:00<00:01, 127.38it/s]Loading weights:  23%|██▎       | 46/199 [00:00<00:01, 84.21it/s] Loading weights:  28%|██▊       | 56/199 [00:00<00:01, 84.19it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 320.29it/s]
+[  910.7s] encoding 24,209 new texts with BAAI/bge-base-en-v1.5
+[ 2580.7s] S2 bake-off BAAI/bge-base-en-v1.5: tau=0.647 (recall floor (95%); Youden cut 0.698 would reject more in-scope products) in-scope kept=0.917 out-of-scope rejected=0.221 staples-LOO=0.990
+[ 2587.2s] S2 mapping: {'amazon': {'none_page': 6451, 'mapped': 6134, 'none_far': 653, 'none_misshelved': 247}, 'wayfair': {'mapped': 9901, 'none_misshelved': 418, 'none_page': 331, 'none_far': 191}}; nodes: {'scored': 9, 'staples_only': 3}
+[ 2587.2s] done

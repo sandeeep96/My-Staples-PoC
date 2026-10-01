@@ -1,0 +1,78 @@
+node: "Furniture > Lamps & Lighting > Desk Lamps"
+noun: desk lamp
+generated_by: "claude-opus-5-5 session draft from Staples spec keys + Wayfair sample, 2026-10-01"
+reviewed_by: null
+
+material_spec_keys: ['Lighting Fixture Finish']
+style_zero_shot: true
+vocab_overrides:
+  material_class:
+    mode: position
+    values:
+      glass/crystal: ['glass', 'crystal', 'tiffany', 'favrile', 'stained glass']
+      ceramic/porcelain: ['ceramic', 'porcelain', 'stoneware', 'terracotta']
+      marble/stone: ['marble', 'stone', 'concrete', 'alabaster']
+      wood/bamboo: ['wood', 'wooden', 'bamboo', 'walnut', 'oak', 'spruce', 'rattan', 'wicker']
+      metal: ['metal', 'steel', 'iron', 'alumin(i)?um', 'brass', 'chrome', 'nickel', 'bronze', 'stainless', 'copper', 'gunmetal']
+      plastic/resin: ['plastic', 'abs', 'resin', 'acrylic', 'silicone', 'polyresin']
+
+tier2:
+  lamp_form:
+    mode: priority
+    values:
+      banker's: ["banker'?s?", 'piano lamp', 'green glass shade', 'emerald glass']
+      architect/swing-arm: ['architect', 'swing[- ]arm', 'drafting', 'adjustable arm', 'articulat\w+', 'balanced arm', 'folding arm', 'task lamp']
+      gooseneck/flex: ['gooseneck', 'flexible neck', 'flex(ible)?', 'bendable']
+      novelty/sculptural: ['sculpture', 'sculptural', 'monkey', 'animal', 'figur\w+', 'cherub', 'mushroom', 'tiffany', 'statue', 'moroccan']
+      shaded table-style: ['shade', 'drum', 'linen shade', 'table lamp', 'fabric shade', 'dome']
+      bar/panel LED: ['light bar', 'led bar', 'monitor light', 'stick', 'panel', 'wand']
+  bulb:
+    mode: priority
+    spec_keys: ['Light Bulb Type']
+    spec_map: {LED: LED, Incandescent: bulb (E26/E12), Compact Fluorescent (CFL): bulb (E26/E12)}
+    values:
+      LED: ['led']
+      bulb (E26/E12): ['incandescent', 'e26', 'e27', 'e12', 'bulb not included', 'edison', 'socket']
+  usb_port:
+    mode: priority
+    values: {"yes": ['usb']}
+    spec_keys: ['USB Ports Included']
+    spec_map: {Includes USB Ports: "yes", Does Not Include USB Ports: "no"}
+  wireless_charging:
+    mode: priority
+    values: {"yes": ['wireless charg\w+', 'qi[- ]charg\w+', 'wireless phone charg\w+']}
+    spec_keys: ['Wireless Charging Compatible']
+    spec_map: {Wireless Charging Compatible: "yes", Not Wireless Charging Compatible: "no"}
+  dimmable:
+    mode: priority
+    values: {"yes": ['dimmable', 'dimming', 'dimmer', 'brightness levels?', '3[- ]way', 'touch control']}
+    spec_keys: ['Dimmable']
+    spec_map: {Dimmable: "yes", Not Dimmable: "no"}
+  cordless:
+    mode: priority
+    values: {"yes": ['cordless', 'rechargeable', 'battery[- ]operated', 'battery[- ]powered']}
+    spec_keys: ['Corded or Cordless']
+    spec_map: {Cordless: "yes", Corded: "no", Cordless/Corded: "yes"}
+  clamp:
+    mode: priority
+    values: {"yes": ['clamp']}
+
+size_bands: {source: height, bands: {"short (<15 in)": ['0', '15'], "medium (15-20 in)": ['15', '20.5'], "tall (20-26 in)": ['20.5', '26.5'], "extra tall (26 in+)": ['26.5', '1000']}}
+
+archetype_facets:
+  tier1: [material_class, colour_tone, colour_family, size_class]
+  tier2: [lamp_form, bulb, usb_port, dimmable, cordless, wireless_charging]
+  tier3: [style_family, vibe]
+name_order: [style_family, vibe, material_class, lamp_form]
+type_attrs: [lamp_form]
+functional_core: [lamp_form, bulb, usb_port, wireless_charging, dimmable, cordless, clamp]
+facet_labels: {lamp_form: Form, bulb: Light source, usb_port: USB port, wireless_charging: Wireless charging, dimmable: Dimmable, cordless: Cordless, clamp: Clamp, size_class: Height}
+material_tiers: {plastic/resin: 1, metal: 2, wood/bamboo: 3, ceramic/porcelain: 3, glass/crystal: 3, marble/stone: 4}
+
+dfi_anchors:
+  design:
+    - "a sculptural designer table lamp with a ceramic or marble base and a linen shade for a residential interior"
+    - "a mid-century brass desk lamp with a curved arm and warm light, a statement piece"
+  utility:
+    - "a basic black LED task lamp for an office desk, functional"
+    - "a plain plastic desk lamp with a USB port for a cubicle, utilitarian"

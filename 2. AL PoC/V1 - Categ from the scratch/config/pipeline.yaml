@@ -1,4 +1,4 @@
-# Pipeline settings: thresholds, weights, models. Method: methodology.md.
+# Pipeline settings: thresholds, weights, models. Method: methodology.md (Phase 2 changes in §14).
 # Everything tunable lives here, not in code.
 
 paths:
@@ -9,38 +9,63 @@ paths:
 
 encoder:
   default: BAAI/bge-small-en-v1.5
-  candidates: [BAAI/bge-small-en-v1.5, BAAI/bge-base-en-v1.5]   # bake-off on mapping (S3)
+  candidates: [BAAI/bge-small-en-v1.5, BAAI/bge-base-en-v1.5]   # bake-off on mapping (S2)
   bakeoff: true
   batch_size: 64
+
+families:
+  # competitor variants (same brand + same name stem) merge only when their descriptions also start the same:
+  # house-brand titles are generic ("Metal Desk Lamp"), so the name alone would merge different products
+  competitor_desc_prefix: 80
 
 extraction:
   # "rules": local vocabulary + embedding zero-shot instrument (no API key needed).
   # "claude": LLM instrument (methodology §6.2); needs ANTHROPIC_API_KEY. Not wired yet.
   backend: rules
-  style_zero_shot: true
+  style_zero_shot: true            # default; a node config can switch it off (non-furniture nodes)
   style_zero_shot_margin: 0.015
   desc_words_in_card: 40
+  # Text parity (same instrument, same amount of text): for text-measured fields, Staples text is cut to the
+  # median description length of that node's competitor. Staples-only nodes use the default.
+  parity_default_chars: 400
+  parity_min_chars: 80
+  parity_max_chars: 1500
 
 nodes:
-  split_key_regex: "Type|Shape|Design"
-  split_key_exclude: "Arm|Base|Back|Seat|Caster|Compatibility|Mat |Mouse|Wrist|Footrest|Accessory|Mount"   # component facets are not product types
-  split_min_families: 250        # leaf size before a pseudo-L5 split is considered
-  split_min_coverage: 0.8        # share of leaf families that carry the split facet
-  child_min_families: 30         # per side, else the child folds into "Other"
-  min_families_scored: 30        # per side, else the node is "thin" (descriptive only)
+  min_families_scored: 30          # per side, else the node is "thin" (descriptive only)
 
 mapping:
   k: 15
   affinity_top: 5
-  none_percentile: 5             # fallback only: percentile of Staples' own affinity when no known negatives exist
   low_conf_prob: 0.6
+  # NONE threshold: Youden-J between known in-scope and known out-of-scope products, but never rejecting more
+  # than (1 - min_in_scope_recall) of the known in-scope products. The page crosswalk already removes whole
+  # out-of-scope pages; the product check only has to catch mis-shelved items.
+  min_in_scope_recall: 0.95
+  auto_candidates: 3               # pages missing from the crosswalk: top-n Staples nodes by name similarity
 
 archetypes:
-  max_facets: 4
+  core_facets: 4                   # every archetype is defined by at least 4 attributes ...
+  max_facets: 6                    # ... and at most 6 (refinement adds the 5th/6th only where support allows)
+  max_archetypes: 40               # refinement stops before a node exceeds this many archetypes
+  tier_min: {tier1: 1, tier2: 1, tier3: 1}   # the 4 core attributes mix all three tiers
   max_unknown_share: 0.4
+  max_dominant_share: 0.85         # a facet whose top value covers more families than this says little
+  exclusive_facets: [[colour_tone, colour_family]]   # never both in one archetype (same information)
+  require_type_facet: true         # the core includes the node's product-type attribute when it is usable
   min_pooled: 10
+  # a cell is supported with >= 10 pooled families and enough families on at least one side; each side's bar scales
+  # with that side's size, so a 3,000-family competitor sample does not swamp a 100-family Staples node
   min_competitor: 5
-  price_bands: 4
+  min_competitor_share: 0.005      # competitor bar = max(min_competitor, 0.5% of the node's competitor families)
+  min_staples: 8
+  min_staples_share: 0.04          # Staples bar = max(min_staples, 4% of the node's Staples families)
+  # if fewer than core_facets candidates pass every check, the best near-misses are admitted (skewed first, then
+  # partly unknown, then below the validation bar) and flagged in the report, so every archetype keeps 4 attributes
+  admit_near_misses: true
+  rare_value_share: 0.05           # facet values held by < 5% of the node's families are grouped as "other"
+  entropy_weight: 0.25             # score = balanced coverage + weight x mean normalised entropy
+  price_bands: 4                   # node price bands: price insights only, never an archetype attribute
   umap_components: 10
   bootstrap: 20
 
@@ -52,7 +77,7 @@ vector:
   identical_log_price: 0.15
   crs_high: 70
   crs_low: 30
-  aas_low_pct: 10                # percentile of Staples' own AAS
+  aas_low_pct: 10                  # percentile of Staples' own AAS
   aas_high_pct: 35
   ad_threshold: 0.5
   ppr_undercut: 0.85
@@ -72,12 +97,32 @@ gaps:
   mc_draws: 20000
 
 integration:
-  w_vos: 0.5
+  w_vos: 0.5                        # fused rank (ordering only): Final = w_vos * rank(VOS) + w_tg * rank(TG)
   w_tg: 0.5
-  shortlist_n: 5
-  safe_share_min: 0.5
-  reject_share_max: 0.3
   rrf_k: 60
+
+# Safety gates (Phase 2, Sai 2026-10-01; methodology §14.6). Common gates up to the archetypes, then one gate per
+# method on that method's own scores (each with its own cannibalisation check), then one final gate.
+gates:
+  common:
+    min_competitor_families: 5      # C2 valid archetype: >= 4 attributes, nameable (no "other"), enough competitor products
+  method1:                          # M1: product labels from CRS / PPR / AAS / AD
+    lean_approve: true              # REVIEW with AD >= ad_threshold and AAS >= T_high counts as safe (methodology §6.6)
+    min_safe_products: 2
+    min_safe_share: 0.10            # safe / decided (non-REVIEW) products
+    max_reject_share: 0.70          # (SUBSTITUTE + UNDERCUT) / all products
+    top_n: 10                       # per node, by VOS
+  method2:                          # M2: ACR (Attribute Cannibalisation Risk) from attribute twins + price
+    min_credibility: 0.9            # competitor credibly over-indexes (LSR credibility), or the archetype is absent at Staples
+    max_acr: 0.50
+    min_ok_products: 2              # products that are not attribute undercuts / substitutes
+    twin_min_attrs: 2               # a twin needs >= 2 known functional attributes, all equal
+    undercut_ppr: 0.85              # price / twins' median price
+    tradeup_ppr: 1.5
+    top_n: 10                       # per node, by TG
+  final:
+    min_per_node: 3                 # below this, a labelled "Conditional" fill
+    max_per_node: 10
 
 sensitivity:
   draws: 1000
@@ -90,10 +135,10 @@ skus:
   style_extension_n: 5
 
 qa:
-  g1_leaf_acc: 0.90             # Staples leave-one-out k-NN leaf accuracy
-  g1_none_bal: 0.85             # NONE decision, balanced accuracy on known in/out-of-scope products
+  g1_leaf_acc: 0.90               # Staples leave-one-out k-NN node accuracy
+  g1_none_bal: 0.85               # NONE decision, balanced accuracy on known in/out-of-scope products
   g2_field_acc: 0.85
-  g5_max_source_auc: 0.80      # retailer predictability from the source-neutral card
+  g5_max_source_auc: 0.80         # retailer predictability from the source-neutral card
   g6_ari: 0.4
   g6_stability: 0.6
   g7_topn_stability: 0.70
@@ -103,13 +148,3 @@ qa:
 report:
   title: "Staples: Assortment Gap & Recommendation Analysis - Archetype"
   file_stem: Staples_Assortment_Report   # each build writes <stem>_v<N>.html, N = previous highest + 1
-  # Shelf filter for the report only (all shelves are still scored and written to CSV).
-  # Applies ONLY to the L2s listed in max_shelves; any L2 not listed (e.g. new categories) shows every shelf.
-  shelf_filter:
-    max_shelves:
-      "Furniture > Chairs & Seating": 5
-      "Furniture > Desks": 3
-    # R1, R2 are hard gates; R3–R5 are counted, then ties break on recommendations, then agreement.
-    r3_min_high_confidence: 0.85   # R3 reliable placement
-    r4_min_spearman: 0.30          # R4 the two methods agree
-    r5_min_strong: 1               # R5 at least one recommendation backed by both methods (Strong tier)

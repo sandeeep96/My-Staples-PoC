@@ -1,0 +1,64 @@
+node: "Office Supplies > Desk Organizers & Accessories > Desk Organizers"
+noun: desk organizer
+generated_by: "claude-opus-5-5 session draft from Staples spec keys, 2026-10-01 (no competitor data yet: Amazon file has no desk-organizer pages)"
+reviewed_by: null
+
+material_spec_keys: ['Organizer Material']
+style_zero_shot: true
+vocab_overrides:
+  material_class:
+    mode: position
+    values:
+      metal mesh: ['metal mesh', 'wire mesh', 'mesh']
+      metal: ['metal', 'steel', 'alumin(i)?um', 'iron', 'wire']
+      wood/bamboo: ['wood', 'wooden', 'bamboo', 'walnut', 'acacia', 'oak']
+      faux leather: ['faux leather', 'pu leather', 'vegan leather', 'leather']
+      fabric/felt: ['felt', 'fabric', 'linen', 'canvas']
+      silicone: ['silicone']
+      acrylic/clear: ['acrylic', 'clear', 'transparent']
+      plastic: ['plastic', 'polystyrene', 'polypropylene', 'resin']
+
+tier2:
+  organizer_type:
+    mode: priority
+    spec_keys: ['Desk Organizer Type']
+    spec_role: indicator
+    values:
+      pen cup: ['pen cups?', 'pencil cups?', 'pen holders?', 'pencil holders?']
+      letter tray: ['letter trays?', 'paper trays?', 'desk trays?', 'document trays?']
+      file sorter: ['file (sorter|organizer|holder)s?', 'magazine', 'sorter', 'mail']
+      drawer organizer: ['drawer organizers?', 'drawer inserts?']
+      accessory tray: ['accessory trays?', 'catch-?all', 'valet tray', 'tray']
+      monitor stand/shelf: ['monitor stand', 'desk shelf', 'riser', 'shelf']
+      storage drawers: ['drawers?']
+      multi-compartment organizer: ['compartments?', 'caddy', 'organizer', 'carousel']
+  rotating:
+    mode: priority
+    values: {"yes": ['rotat\w+', 'spinning', '360', 'lazy susan', 'carousel']}
+    spec_keys: ['Rotating']
+    spec_map: {Rotating: "yes", Non-Rotating: "no"}
+  stackable:
+    mode: priority
+    values: {"yes": ['stack\w*']}
+    spec_keys: ['Stackable']
+    spec_map: {Stackable: "yes", Non-Stackable: "no"}
+
+size_bands: null
+
+archetype_facets:
+  tier1: [material_class, colour_tone, colour_family]
+  tier2: [organizer_type, rotating, stackable]
+  tier3: [style_family, vibe]
+name_order: [style_family, vibe, material_class, organizer_type]
+type_attrs: [organizer_type]
+functional_core: [organizer_type, rotating, stackable]
+facet_labels: {organizer_type: Type, rotating: Rotating, stackable: Stackable}
+material_tiers: {plastic: 1, acrylic/clear: 2, metal mesh: 1, metal: 2, silicone: 2, fabric/felt: 2, faux leather: 3, wood/bamboo: 3}
+
+dfi_anchors:
+  design:
+    - "a stylish desk organizer in walnut and brass for a curated home office"
+    - "a minimalist designer desk tidy in pastel silicone or felt with a soft modern look"
+  utility:
+    - "a basic black wire mesh desk organizer for an office"
+    - "a plain plastic letter tray, functional"

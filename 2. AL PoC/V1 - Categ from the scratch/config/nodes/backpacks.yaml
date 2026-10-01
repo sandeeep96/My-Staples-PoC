@@ -1,0 +1,96 @@
+node: "Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks"
+noun: backpack
+generated_by: "claude-opus-5-5 session draft from Staples spec keys + Amazon sample, 2026-10-01"
+reviewed_by: null
+
+material_spec_keys: ['Backpack Material']
+style_zero_shot: false
+vocab_overrides:
+  material_class:
+    mode: position
+    values:
+      faux leather: ['faux leather', 'pu leather', 'vegan leather', 'leatherette', 'polyurethane', 'pu']
+      leather: ['genuine leather', 'full[- ]grain', 'top[- ]grain', 'real leather', 'leather']
+      nylon: ['nylon', 'rip[- ]?stop', 'cordura', 'ballistic']
+      polyester: ['polyester', 'recycled polyester', '\d{3,4}d', 'oxford', 'fabric', 'microfiber']
+      canvas/cotton: ['canvas', 'cotton', 'waxed']
+      clear/vinyl: ['clear', 'transparent', 'pvc', 'vinyl', 'mesh']
+
+tier2:
+  pack_type:
+    mode: priority
+    values:
+      rolling: ['rolling', 'wheels?', 'wheeled', 'trolley']
+      hiking/outdoor: ['hiking', 'trekking', 'camping', 'trail', 'hydration', 'outdoor', 'climbing', 'daypack']
+      travel/carry-on: ['travel', 'carry[- ]on', 'airline', 'flight approved', 'personal item', 'weekender', 'duffel']
+      school/kids: ['school', 'kids', 'book ?bag', 'book ?pack', 'toddler', 'preschool', 'children', 'boys?', 'girls?']
+      mini/sling: ['mini', 'sling', 'crossbody', 'convertible', 'purse']
+      laptop/work: ['laptop', 'business', 'work', 'commut\w+', 'computer', 'office']
+  water_resistant:
+    mode: priority
+    values: {"yes": ['water[- ]?(resistant|proof|repellent)']}
+    spec_keys: ['Waterproof or Water Resistant']
+    spec_map: {Water Resistant: "yes", Waterproof: "yes"}
+  usb_port:
+    mode: priority
+    values: {"yes": ['usb', 'charging port']}
+  anti_theft:
+    mode: priority
+    values: {"yes": ['anti[- ]theft', 'rfid', 'lockable', 'tsa']}
+
+numeric:
+  laptop_in:
+    spec_keys: ['Laptop Size Compatibility']
+    text_regex: ['(\d{2}(?:\.\d)?)\s*(?:"|”|''''|-?\s?inch(?:es)?\b|in\b)[^.|]{0,25}?laptop', 'laptop[^.|]{0,25}?(\d{2}(?:\.\d)?)\s*(?:"|”|-?\s?inch|in\b)', 'fits?[^.|]{0,20}?(\d{2}(?:\.\d)?)\s*(?:"|”|-?\s?inch)']
+    min: 10
+    max: 19
+  capacity_l:
+    spec_keys: ['Capacity (liters)']
+    text_regex: ['(\d{1,2})\s*(?:l|liters?|litres?)\b']
+    min: 5
+    max: 70
+numeric_bands:
+  laptop_fit: {source: laptop_in, bands: {"up to 14 in": ['0', '14.95'], "15-16 in": ['14.95', '16.95'], "17 in+": ['16.95', '30']}}
+  capacity_band: {source: capacity_l, bands: {"up to 20 L": ['0', '20.5'], "21-30 L": ['20.5', '30.5'], "31 L+": ['30.5', '100']}}
+size_bands: null
+
+tier3:
+  pattern:
+    mode: priority
+    spec_keys: ['Backpack Pattern']
+    default: solid
+    values:
+      character/licensed: ['disney', 'marvel', 'harry potter', 'star wars', 'pok[eé]mon', 'minecraft', 'sanrio', 'hello kitty', 'bluey', 'paw patrol', 'frozen', 'spider-?man', 'mickey', 'pixar', 'barbie', 'sonic', 'super mario', 'licensed']
+      camo: ['camo\w*']
+      floral: ['floral', 'flowers?', 'botanical']
+      novelty/animal: ['unicorn', 'dinosaur', 'shark', 'animal', 'novelty', 'costume', 'snail', 'cat ears']
+      print/pattern: ['print', 'pattern', 'plaid', 'geometric', 'tie[- ]dye', 'stripes?', 'polka', 'graphic', 'artwork', 'heathered']
+  audience:
+    mode: priority
+    spec_keys: ['Age Group']
+    default: general
+    values:
+      kids: ['kids', 'children', 'toddler', 'preschool', 'youth', 'boys?', 'girls?', 'elementary']
+      women: ['women', "women's", 'womens', 'ladies']
+      men: ["\\bmen\\b", "men's", '\bmens\b']
+
+archetype_facets:
+  tier1: [material_class, colour_tone, colour_family]
+  tier2: [pack_type, laptop_fit, capacity_band, water_resistant, usb_port, anti_theft]
+  tier3: [pattern, audience, vibe]
+name_order: [pattern, audience, material_class, pack_type]
+type_attrs: [pack_type]
+functional_core: [pack_type, laptop_fit, capacity_band, water_resistant, usb_port, anti_theft]
+labels:
+  pattern: {solid: solid}
+  audience: {general: ''}
+facet_labels: {pack_type: Type, laptop_fit: Laptop fit, capacity_band: Capacity, water_resistant: Water-resistant, usb_port: USB port, anti_theft: Anti-theft, pattern: Pattern, audience: Audience}
+material_tiers: {clear/vinyl: 1, polyester: 1, nylon: 2, canvas/cotton: 2, faux leather: 2, leather: 4}
+
+dfi_anchors:
+  design:
+    - "a minimalist premium backpack in vegan leather with a sleek modern silhouette for city commuters"
+    - "a stylish designer daypack in muted earth tones with clean lines and premium hardware"
+  utility:
+    - "a basic black polyester school backpack with multiple pockets"
+    - "a standard laptop backpack for office workers, functional and plain"

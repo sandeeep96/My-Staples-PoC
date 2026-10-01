@@ -1,0 +1,93 @@
+# Per-node generated artefact (methodology §1.4, §14): attribute vocabularies, archetype facet candidates by tier,
+# naming labels and DFI anchors. Draft: flagged provisional in the report until `reviewed_by` is filled.
+node: "Furniture > Chairs & Seating > Accent & Waiting Room Chairs"
+noun: chair
+generated_by: "claude-opus-5-5 session draft from Staples spec keys + Wayfair sample, 2026-09-28 (Phase-2 revision 2026-10-01)"
+reviewed_by: null
+
+material_spec_keys: ['Furnishing Material', 'Chair Back Material']
+style_zero_shot: true
+vocab_overrides:
+  material_class:            # upholstery first: "vinyl seat with wood arms" is a vinyl chair
+    mode: priority
+    values:
+      boucle: ['bouclé', 'boucle', 'sherpa', 'teddy', 'shearling', 'faux fur', 'faux sheepskin']
+      velvet: ['velvet', 'velour', 'velvety']
+      bonded leather: ['bonded leather']
+      faux leather: ['faux leather', 'pu leather', 'vegan leather', 'leatherette', 'polyurethane', 'leathersoft', 'luxura', 'caressoft\w*', 'luxhide', 'pu']
+      leather: ['genuine leather', 'top[- ]grain', 'full[- ]grain', 'real leather', 'italian leather', 'leather']
+      vinyl: ['vinyl', 'pvc']
+      mesh: ['mesh']
+      fabric: ['fabric', 'polyester', 'microfiber', 'twill', 'tweed', 'linen', 'cotton', 'chenille', 'olefin', 'textile', 'cloth', 'felt', 'upholster(ed|y)']
+      wicker/rattan: ['rattan', 'wicker', 'cane', 'seagrass', 'jute', 'woven rope']
+      plastic: ['plastic', 'polypropylene', 'resin', 'polycarbonate', 'acrylic', 'molded shell']
+      wood: ['solid wood', 'hardwood', 'bamboo', 'wood', 'wooden']
+      metal: ['metal', 'steel', 'alumin(i)?um', 'iron', 'chrome']
+
+
+tier2:
+  form_factor:
+    mode: priority
+    spec_keys: ['Accent & Waiting Room Chair Type']
+    spec_role: indicator            # Staples' type vocabulary differs from product copy: measured by text on both sides
+    spec_map: {Guest: guest/side, Reception: guest/side, Lounge: lounge/club, Club: lounge/club, Accent: armchair, Conference: guest/side}
+    values:
+      multi-seat: ['bench', 'tandem', 'beam seating', '[2-5][- ]seat(er)?', 'loveseat', 'sofa', 'settee']
+      recliner/rocker: ['recliner', 'reclining', 'rocker', 'rocking', 'glider', 'convertible chair']
+      chaise: ['chaise']
+      barrel: ['barrel']
+      wingback: ['wingback', 'wing chair', 'wing back']
+      slipper: ['slipper']
+      chesterfield: ['chesterfield']
+      lounge/club: ['lounge chair', 'club chair', 'lounge', 'leisure chair', 'chair and a half']
+      guest/side: ['guest chair', 'side chair', 'reception chair', 'waiting room chair', 'visitor', 'conference chair', 'guest']
+      armchair: ['accent chair', 'armchair', 'arm chair']
+  arm_type:
+    mode: priority
+    values:
+      armless: ['armless', 'without arms', 'no arms']
+      with arms: ['arms?', 'armrests?', 'armchair', 'arm chair']
+    spec_keys: ['Arm Type']
+    spec_map: {Armless: armless, Fixed: with arms, Height Adjustable: with arms, All Adjustable: with arms}
+  base_type:
+    mode: priority
+    values:
+      casters: ['casters?', 'wheels?', 'rolling']
+      sled: ['sled']
+      swivel base: ['swivel base', 'pedestal', 'tulip base', 'round base', 'disc base']
+      legs: ['legs?', 'four[- ]leg', '4[- ]leg', 'tapered']
+    spec_keys: ['Chair Base Type']
+    spec_map: {Casters: casters, Legs: legs, Sled Base: sled, Feet: legs}
+  swivel:
+    mode: priority
+    values: {"yes": ['swivel', "360"]}
+    spec_keys: ['Swivel']
+    spec_map: {Swivel: "yes", No Swivel: "no"}
+  stackable:
+    mode: priority
+    values: {"yes": ['stack\w*', 'nesting']}
+    spec_keys: ['Stackable']
+    spec_map: {Stackable: "yes", Non-Stackable: "no"}
+
+archetype_facets:
+  tier1: [material_class, colour_tone, colour_family]
+  tier2: [form_factor, arm_type, base_type, swivel]
+  tier3: [style_family, vibe]
+name_order: [style_family, vibe, material_class, arm_type, form_factor]
+type_attrs: [form_factor]
+functional_core: [form_factor, arm_type, base_type, swivel, stackable]
+labels:
+  arm_type: {armless: armless, with arms: with-arms}
+  base_type: {casters: on casters, legs: on legs, sled: sled-base, swivel base: pedestal-base}
+facet_labels: {form_factor: Form, arm_type: Arms, base_type: Base, swivel: Swivel, stackable: Stackable}
+material_tiers: {plastic: 1, vinyl: 1, mesh: 1, metal: 1, engineered wood: 1, fabric: 2, faux leather: 2, bonded leather: 2, glass: 2, wood: 3, wicker/rattan: 3, velvet: 3, boucle: 3, leather: 4}
+
+dfi_anchors:
+  design:
+    - "a modern designer accent chair with a sculptural silhouette for a residential interior, boucle or velvet upholstery"
+    - "a mid-century modern lounge chair with tapered wooden legs and a curved shell"
+    - "a stylish statement chair for a living room in soft neutral colors with an organic curved form"
+  utility:
+    - "a black vinyl guest chair for corporate waiting rooms"
+    - "a basic stacking chair for training rooms with a plastic seat and steel frame"
+    - "a heavy-duty commercial reception chair with a vinyl seat and utilitarian design"

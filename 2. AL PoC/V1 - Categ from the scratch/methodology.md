@@ -1,8 +1,8 @@
 # Staples Assortment PoC: Node-Level Assortment Gap and Recommendation Methodology
 
-**Status:** Draft v1.1 for review · 2026-09-27 · Owner: Sai (LatentView). v1.1 adds Sai's §11 answers and makes scope data-driven (§1.3–1.4). v1.2 keeps VOS and TG as separate method scores with a shared gate and fused re-rank (§6.5.6, §7), and sets the output format to code + PNG figures + a static 2-tab HTML report (§9).
+**Status:** v1.3 (Phase 2) · 2026-10-01 · Owner: Sai (LatentView). The body describes the pipeline **as built and run in Phase 2**: 12 focus nodes, stages S0–S9, archetypes of 4–6 attributes, a separate price view, and **two-method safety gates** (common gates → one gate per method → final gate). History: v1.1 (2026-09-27) Sai's §11 answers and data-driven scope; v1.2 separate VOS/TG scores and the code + PNG + static-HTML output; v1.3 Phase 2. §13 (Phase 1 build) and §14 (Phase 2) are the dated change logs with the evidence behind each decision; where an older paragraph and §14 disagree, §14 wins.
 **Supersedes:** Track B/C in `Documents/Staples PoC - Approach & Methodolgy -Initial Exploration.docx`, and the 6-step method shared in chat.
-**Scope of this document:** the methodology to review. Code comes after sign-off.
+**Scope of this document:** the method and the reasoning behind every rule. Thresholds live in `config/pipeline.yaml`; the latest run's numbers are in §14.6 and the HTML report.
 
 ---
 
@@ -29,7 +29,7 @@
 | 8 | New **STYLE-EXTENSION** label | This is the user's "flavours" ask: functionally the same as a Staples product but in a colour, material or style Staples lacks. Under the old rules these fell into SUBSTITUTE and were rejected |
 | 9 | Components without data are **dropped or replaced** | Nothing in the data supports the Personalised-PageRank complement graph, the "also-viewed" `sub` term, image-based SigLIP DFI, or review-count demand. §6 gives a replacement for each and §11 lists the data requests |
 | 10 | Brand fragmentation becomes **recruitability** | Wayfair's `vendor` is mostly Wayfair house brands (Latitude Run, Ebern Designs, Inbox Zero, George Oliver: the top 15 by volume are all house labels). HHI on those measures Wayfair's labelling, not the seller market |
-| 11 | Method 1 and Method 2 each keep a **final score (VOS, TG)**, share **one safety gate**, and are **re-ranked together** | Separate scores keep each method readable and make agreement visible. The shared gate stops a large attribute gap that is really a substitute from being recommended. The fused rank gives the final list (§7) |
+| 11 | Method 1 and Method 2 each keep a **final score (VOS, TG)** and **their own safety gate** (each with its own cannibalisation check), then a final gate takes the union of their lists (Phase 2, §7) | Separate scores keep each method readable and make agreement visible. The shared gate stops a large attribute gap that is really a substitute from being recommended. The fused rank gives the final list (§7) |
 | 12 | Thresholds are **anchored by calibration**, not by percentile alone | Pure percentile thresholds put a fixed fraction of candidates into each label whatever the reality. Before Pat's session, Staples-vs-Staples pairs give a weakly supervised anchor (§6.6) |
 
 ---
@@ -59,23 +59,23 @@ The current samples are a starting point. They will be enriched with more catego
 
 §1.4 lists what is generated per node and what stays fixed.
 
-**First vertical slice:** a run-time choice, not a code path. With today's data it is *Chairs & Seating → Accent & Waiting Room Chairs* (the White Chair thesis node: 199 Staples SKUs against Wayfair *Accent Chairs*, *Custom Accent Chairs*, *Waiting Room & Reception Chairs* and *Reception Seating*), with *Office Chairs* as the contrast node. Then all other in-scope nodes.
+**Phase 2 scope (2026-10-01):** 12 focus nodes chosen by Sai (exact Staples L3/L4 paths, `config/nodes.yaml`), each compared with its **Primary 1** competitor (Amazon, Wayfair or Scheels). Nodes whose competitor has no data yet run as Staples-only profiles. The method itself stays scope-agnostic: any Staples leaf in the data becomes a node.
+
+**First vertical slice (Phase 1):** a run-time choice, not a code path. With today's data it is *Chairs & Seating → Accent & Waiting Room Chairs* (the White Chair thesis node: 199 Staples SKUs against Wayfair *Accent Chairs*, *Custom Accent Chairs*, *Waiting Room & Reception Chairs* and *Reception Seating*), with *Office Chairs* as the contrast node. Then all other in-scope nodes.
 
 ### 1.4 Scope-agnostic design: what is generated per node vs fixed
 Anything category-specific is **generated from the data** (usually an LLM draft from a sample, then a quick human review) and stored as a versioned config file per node or per L2. The code only reads those files. Examples in this document (chair types, desk shapes, boucle) are illustrations, not rules.
 
-| Component | Generic (same everywhere) | Generated per L2 / node from data |
+| Component | Generic (same everywhere) | Generated per node / retailer from data (config) |
 |---|---|---|
-| Ingest (S0) | Retailer adapter: column map, price parser, PII stripping | New retailer = new adapter entry |
-| Families (S1) | Grouping rule (brand + series + name stem, colour segment removed) | Colour-word list is extended from the observed spec colour values |
-| Analysis nodes (S2) | Pseudo-L5 split rule (size + coverage thresholds) | The split facet is chosen automatically: the Staples spec key matching `*Type*/*Shape*/*Design*` with the highest coverage × entropy |
-| Mapping (S3) | Classifier + LLM adjudication cascade | Competitor page → candidate Staples leaves crosswalk (LLM draft from page and tree names, human review) |
-| Schema (S4) | Tier 1 (universal) and Tier 3 (lifestyle) field *definitions* | Tier 2 functional attributes and all controlled vocabularies: seeded from that L2's Staples spec keys, extended by LLM schema induction on a competitor sample, then frozen |
-| Extraction (S5) | Prompt template, validation against Staples specs | Spec-key → schema synonym table (LLM-proposed for new keys) |
-| DFI | 1–5 scale and validation protocol | Rubric anchors per L2 ("design-forward" means something different for labels than for chairs) |
-| Archetypes (S6) | Grid + back-off + HDBSCAN validation | Candidate grid facets per node (LLM proposes merchant-relevant facets; information criteria pick 3–5) |
-| Scores (S7–S9) | All formulas, decision tree, weights | Thresholds and PPR bands, calibrated per L2 |
-| Recruitability (S10) | `brand_on_staples` logic | Competitor house-brand list, per retailer |
+| Ingest (S0) | Retailer adapter: column map, price parser, PII stripping | New retailer = new entry in `retailers.yaml` |
+| Families & nodes (S1) | One grouping rule for all retailers (brand + name stem, colour segments removed); node = Staples leaf | Focus list and competitor order (`nodes.yaml`) |
+| Mapping (S2) | Page prior + product-level k-NN scope check + NONE threshold (+ planned LLM adjudication) | Page-path prefix → Staples leaf crosswalk per retailer (`crosswalk/<retailer>.yaml`) |
+| Schema & extraction (S3) | Tier 1 and Tier 3 definitions; matchers; text parity; validation against Staples specs | Per node (`nodes/<node>.yaml`): Tier-2 and Tier-3 vocabularies, spec keys and maps, numeric bands, vocabulary overrides |
+| DFI | Anchor contrast on the neutral card, pooled percentile | Design / utility anchors per node |
+| Archetypes (S4) | 4–6-attribute search with tier mix, refinement, long tail, HDBSCAN cross-check | Facet candidates by tier, naming order and labels per node |
+| Scores & gates (S5–S7) | All formulas, decision tree, ACR, safety gates, weights | Thresholds (calibrated per L2), gate parameters (`pipeline.yaml` → `gates`), material tiers per node |
+| SKUs & sellers (S8) | Exemplar scoring, `brand_on_staples` logic | Competitor house-brand list, per retailer |
 
 Every generated artefact carries a `generated_by` (model and prompt version) and `reviewed_by` field. Categories with no review yet run with a **provisional** flag shown in all outputs.
 
@@ -85,7 +85,7 @@ Every generated artefact carries a `generated_by` (model and prompt version) and
 
 Profiled on 2026-09-27. These findings drive most of the design choices.
 
-### 2.1 Staples: `Staples product level dataset latest - Samples.xlsx`
+### 2.1 Staples (Phase 1 file): `Staples product level dataset latest - Samples.xlsx`
 - 31,979 rows, 26,861 unique `product_id`. 4,781 are exact duplicate rows and 141 products sit in more than one leaf.
 - Columns: `L1–L4`, `Final level Category`, `product_id`, `product_name`, `price`, `product_link`, `model_number`, `reviews`, `description`.
 - Chairs & Seating plus Desks: **4,725 unique SKUs → about 2,860 name-stem families**. Colour variants are separate SKUs (for example *Arozzi Arena Gaming Desk* has 10 colour SKUs).
@@ -96,7 +96,7 @@ Profiled on 2026-09-27. These findings drive most of the design choices.
 - Brands: Flash Furniture (1,214), Boss, Bush, Offices To Go, HON and others. **Staples private label is about 1.4%**, so "1P" here means *items Staples sells*, not *Staples-brand items*.
 - The navigation tree has no L5 (L5 is empty for all 1,877 rows). The deepest level is L4.
 
-### 2.2 Wayfair: `Wayfair product level dataset latest - Samples.xlsx`
+### 2.2 Wayfair (Phase 1 file): `Wayfair product level dataset latest - Samples.xlsx`
 - 12,255 rows, 11,468 unique `product_id`. 787 are duplicate rows and 156 products appear on more than one listing page.
 - Columns: `category` (the listing page, with "&" mangled to 3 spaces), `product_id`, `product_name`, `price`, `url` (60% carry a `piid` variant id), `vendor`, `selected_choice` (the displayed variant: colour or material, 57% filled), `description`.
 - **No structured specs, rating, review count, image URL or option list.**
@@ -123,6 +123,15 @@ Profiled on 2026-09-27. These findings drive most of the design choices.
 | Absolute depth | Wayfair site totals and sampling design (the sample is a convenience set of successful scrapes) | Share-based metrics with credibility only | None for now (answered in §11) |
 
 ---
+
+### 2.5 Phase 2 inputs (profiled 2026-10-01)
+| File | Rows / unique products | What matters |
+|---|---|---|
+| `Staples product level dataset - 12 Choosen L3s - Final Samples.xlsx` | 5,673 / 4,891 SKUs → 3,416 families | The 12 focus leaves (L4 empty); same serialized description dict as Phase 1; spec keys differ by node (e.g. `Cover Material`, `Backpack Material`, `Clock Display`) |
+| `Amazon product level dataset - 6 Chosen L3s - Final Samples.xlsx` | 20,092 / 13,954 ASINs → 13,485 families | Only planners, backpacks, lunch bags and coffee organizers (**no desk organizers or desk pads**). `description` is a ~110-character subtitle (58% empty); `brand/vendor` 70% empty with noise ("Learn more", size codes); prices like "2 sizes"; sponsored redirect URLs; colour variants as separate ASINs |
+| `Wayfair product level dataset - 5 Chosen L3s - Final Samples.xlsx` | 12,280 / 11,175 products → 10,841 families | Clocks, accent chairs, desks, room dividers / office partitions, desk lamps. Same description + review (PII) format as Phase 1; colour/size variants are separate ids with the same title + vendor; page names are facet labels ("Type: Folding"), so a page is identified by its L1–L6 path |
+
+**Columns used (Sai):** only the Phase-1 columns: id, title, price, url, brand/vendor, selected choice, description, listing page and its path. Ratings, review counts, ranks, badges, list prices, images and the new Wayfair `specifications` column are never read.
 
 ## 3. Critique of the proposed methodologies
 
@@ -165,80 +174,70 @@ Profiled on 2026-09-27. These findings drive most of the design choices.
 ## 4. Pipeline overview
 
 ```
- S0  Ingest & clean ─► S1  Family grouping & dedup ─► S2  Analysis-node definition (pseudo-L5)
-                                                              │
- S3  Product-level mapping  (Wayfair family → Staples node | NONE → backlog)
-                                                              │
- S4  Attribute schema (3 tiers, frozen) ─► S5  Extraction + normalisation + QA
-                                                              │
- S6  Archetype construction (facet grid → cluster validation → naming)
-                                                              │
-        ┌─────────────────────────────┴──────────────────────────────┐
- S7  METHOD 1 · Vector space                         S8  METHOD 2 · Attribute gaps
-     VW · AAS · CRS · AD · PPR → labels                   LSR · PPG · CG · MSG · DFG
-     final score: VOS                                     final score: TG
-        └─────────────────────────────┬──────────────────────────────┘
- S9  Integration: shared safety gate → fused re-rank of VOS & TG + agreement tier
-                                      │
- S10 SKU stage: exemplars, nearest-Staples comparison, brand & recruitability
-                                      │
- S11 Outputs: node scorecards · archetype table · attribute insights · SKU recs · report
+ S0  Ingest & clean ─► S1  Families & nodes ─► S2  Competitor mapping          [C1 node scope]
+                                                          │
+ S3  Attributes (3 tiers, per-node vocabularies, text parity, validation G2)
+                                                          │
+ S4  Archetypes (4–6 attributes mixing the tiers; no price band)                  [C2 valid archetype]
+        ┌─────────────────────────────────┴─────────────────────────────────┐
+ S5  METHOD 1 · vector view                               S6  METHOD 2 · attribute view
+     VW · AAS · CRS · AD · PPR → product labels                LSR · PPG · CG · MSG · DFG → TG
+     score: VOS                                                ACR: attribute twins + price
+     [Method 1 gate] → Method 1 list (top n by VOS)            [Method 2 gate] → Method 2 list (top n by TG)
+        └─────────────────────────────────┬─────────────────────────────────┘
+ S7  [Final gate] union of the two lists → tier (Strong / Vector-led / Gap-led / Conditional) → 3–10 per node
+                                          │
+ S8  SKU picks (safe under the recommending method) · nearest Staples product · brands and sellers
+                                          │
+ S9  Report: one static HTML file, PNG figures, CSV tables
 ```
 
-Every stage writes a versioned intermediate table, so each can be re-run and inspected on its own.
+Every stage writes a versioned intermediate table, so each can be re-run and inspected on its own (`run_pipeline.py --from / --to / --only`).
 
----
+**Two kinds of gate.** *Safety gates* (§7: C1, C2, Method 1, Method 2, final) decide what is recommended. *Quality gates* (§10: G1–G8) are a scorecard on how trustworthy each step is; they are reported in the report and never remove a recommendation.
 
-## 5. Stages S0–S3: data preparation, analysis nodes and mapping
+## 5. Stages S0–S2: data preparation, nodes and mapping
 
-**What these stages are for.** They produce no recommendations. They make the Staples-vs-competitor comparison fair. Every later stage compares "share of X at Wayfair" with "share of X at Staples" *within the same shelf*, which needs three things settled first:
+**What these stages are for.** They produce no recommendations. They make the Staples-vs-competitor comparison fair: every later stage compares "share of X at the competitor" with "share of X at Staples" *within the same node*.
 
 | Stage | Question it settles | What goes wrong without it |
 |---|---|---|
-| S1 Families | *What is one product?* | Staples lists each colour as its own SKU (one desk = 10 rows) and Wayfair lists one product with options. Staples' depth is inflated about 1.7× and colour-heavy lines look like whole archetypes |
-| S2 Analysis nodes | *Which shelf are we comparing on?* | Big leaves such as *Office Chairs* (about 900 SKUs) mix executive, task and gaming chairs, so gaps average out. S2 splits them using Staples' own type facet |
-| S3 Mapping | *Which shelf does each Wayfair product belong on?* | Wayfair pages are rooms and uses, not product types, so page-name mapping failed. S3 places each product on a Staples shelf, or on a NONE backlog |
+| S1 Families | *What is one product?* | Staples, Amazon and Wayfair all list colour/size variants as separate ids; raw counts would inflate whichever retailer splits most |
+| S1 Nodes | *Which node are we comparing on?* | Phase 2 compares exact Staples L3/L4 leaves (Sai's focus list) |
+| S2 Mapping | *Which node does each competitor product belong on?* | Competitor pages mix in products of other Staples categories (wall calendars on a planner page, standing desks on a desk page) |
 
-Side outputs that are useful on their own: colourway counts per family (S1, used for STYLE-EXTENSION), identical products already carried (S1, prevents false whitespace), and the backlog of Wayfair products with no Staples shelf (S3, handed to the category-level workstream).
+Side outputs: colourway counts per family (STYLE-EXTENSION), identical products already carried (prevents false whitespace), and the backlog of competitor products with no focus node.
 
 ### 5.1 S0 Ingest and clean
-- Parse prices to float. Flag `per item` as pack pricing and use the unit price.
-- Parse the Staples `description` dict into `paragraph`, `bullets` and `specs` (a long table: `product_id, name, value, grpName`).
-- Parse the Staples rating (`"4.57 stars"` → 4.57). The review count is null and is kept null.
-- Wayfair: split `description` at the first `" | "`. The left side is the product description. The right side is review text, which is **dropped** (PII) and not used in any score.
-- Fix mojibake (`ftfy`, or a latin-1 → utf-8 round-trip). Normalise the Wayfair page name (triple space → " & ").
-- Assign each Staples SKU its canonical leaf from the navigation tree, keeping cross-listings as secondary leaves.
+- One adapter per retailer (`config/retailers.yaml`): column map, page-path columns, vendor noise rules, URL template.
+- Prices must carry a `$` amount ("2 sizes" is not a price); `per item` is flagged as pack pricing.
+- Staples `description` dict → `paragraph`, `bullets`, `specs`. Ratings are not parsed or used.
+- Competitor `description`: Wayfair is split at the first `" | "` and the right side (review text with name, city, date: PII) is **dropped**; Amazon's subtitle has no review.
+- Mojibake fixed (`ftfy`); Wayfair page names: triple space → " & ". A competitor page is identified by its full L1–L6 path. Amazon links are rebuilt as `/dp/<ASIN>`; vendor noise ("Learn more", size codes) is blanked.
 
 ### 5.2 S1 Family grouping and dedup
-- **Staples family:** group by `(brand, Series/Collection spec if present, name stem)`. The name stem is the product name with the trailing colour segment and `(MODEL)` removed. Resolve ambiguous merges with a card-embedding cosine > 0.95 plus the same W/D/H within 5%. Keep `n_colourways` and the colour list per family.
-- **Wayfair family:** `product_id` (for example `W112121311`, `ABFR3973`). Collapse repeated rows and keep every observed `selected_choice` and `piid`.
-- **Cross-retailer identical products** (the same product on both sites, often behind a house brand): block on `(node, W/D/H within 5%, price within 15%)`, then card-embedding cosine > 0.93. Audit 100 flagged pairs by hand. Identical pairs are flagged `ALREADY_CARRIED`, so they are never reported as whitespace.
+- **One rule for every retailer:** same brand + same name stem (title without the trailing model code and without short segments that only name a colour). Staples families are also kept within one leaf.
+- **Competitor variants** additionally need the same description start (first 80 characters): house-brand titles are generic ("Metal Desk Lamp").
+- **Brand:** the vendor when present; otherwise a title prefix, accepted only if it is a known brand (a Staples brand or a vendor the retailer shows elsewhere). Single colour, material or generic words are never brands.
+- `brand_on_staples` = the competitor brand also sells on Staples (quick-win supplier).
+- **Cross-retailer identical products** are flagged in S5 (title-card cosine ≥ 0.95 and price within ±15%) and labelled EXCLUDE.
 - **Counting unit** for every share: the family. Colourway breadth is a separate attribute (§6.7.4).
 
-### 5.3 S2 Analysis-node definition (the granular level)
-- Start from the Staples **leaf** (L3 or L4).
-- **Pseudo-L5 split:** if a leaf has ≥ 250 families and a Staples type facet with ≥ 80% coverage after extraction, split on that facet. Examples:
-  - *Office Chairs* → Executive / Task / Computer & Desk / Manager / Conference (Chair Type).
-  - *Office Desks* → Computer / Workstation / Executive / Writing / Reception (Desk Type) or by shape (Rectangular / L / U).
-  - *Accent & Waiting Room Chairs* → Guest / Lounge / Accent / Reception.
-- **Minimum size:** ≥ 30 Staples families and ≥ 30 Wayfair families for full analysis. Below that the node is **thin** and gets a descriptive profile only, rolled up to its parent for scoring.
-- Output: `analysis_nodes.csv` (node_id, path, parent, split facet, Staples and Wayfair family counts).
+### 5.3 Analysis nodes
+- **Node = the exact Staples leaf** (Phase 2 focus list). The Phase-1 pseudo-L5 split (large leaves split by Staples' type facet) is dropped: the focus list already names the granular node.
+- Status: **scored** (≥ 30 families on each side), **thin** (descriptive only) or **Staples-only** (no competitor data yet: a Staples profile is shown).
+- The node's competitor is the first competitor in `config/nodes.yaml` with mapped products on it; a leaf not in the list uses the competitor that maps the most products to it.
 
-### 5.4 S3 Product-level mapping (Wayfair family → Staples node)
-A three-stage cascade:
-1. **Page prior (crosswalk).** Hand-map the 32 Wayfair pages to *candidate* Staples leaves, many-to-many, with an LLM draft and human review. *Office Chairs* → {Office Chairs, Big & Tall, Gaming, Drafting}. *Meeting Space Seating* → {Accent & Waiting, Stacking & Folding, Benches, Breakroom}. *Outdoor Door Mats* → {∅}.
-2. **Product classifier.** Train a classifier (k-NN or logistic on card embeddings plus key attributes) on **Staples SKUs labelled with their own leaf**: 4.7k free labels. Predict a probability over the candidate set for each Wayfair family. Watch for domain shift, since Staples cards train the model and Wayfair cards are scored.
-3. **LLM adjudication** when the top-1 margin is below *m*, the classifier disagrees with the page prior, or the family is in a room or space page. Use a closed candidate list plus `NONE` and a one-line reason.
-   - Model: Sonnet 5 for adjudication and Haiku 4.5 for bulk, both with enforced JSON output.
-- **Pseudo-L5 assignment** uses the extracted type attribute (S5).
-- **Gold set:** 200 Wayfair families, stratified by page, labelled by two people. Target ≥ 90% top-1 accuracy on in-scope families and ≥ 85% precision on `NONE`. Report the confusion matrix.
-- `NONE` results go to `new_node_backlog.csv` (with the nearest Staples L2 for adjacency), which is handed to the CL workstream.
+### 5.4 S2 Competitor mapping (competitor family → node | NONE) — gate C1
+1. **Page prior.** `config/crosswalk/<retailer>.yaml` maps page-path **prefixes** to a Staples focus leaf, or to `[]` when Staples shelves those products under a different (sibling) leaf or not at all; the longest matching prefix wins. Pages matching no prefix get automatic candidates (flagged provisional).
+2. **Product-level scope check.** A similarity-weighted k-NN (k = 15) over **all** Staples families (every node) predicts each product's node from its mapping card (title + first 40 description words).
+3. **Mapped** only if the predicted node is the page's node AND the product's affinity to that node (mean of its 5 closest Staples families) ≥ τ. τ = Youden's J between known in-scope products (single-candidate pages, predicted correctly) and known out-of-scope products (`[]` pages), **floored to keep ≥ 95% of the in-scope products**: whole out-of-scope pages are already removed by the crosswalk, so the product check only has to catch mis-shelved items.
+4. Status: `mapped`, `none_page`, `none_misshelved`, `none_far`; NONE products go to `new_node_backlog.csv`. Products mapped to a node whose chosen competitor is another retailer are kept out.
+5. **Encoder bake-off** (bge-small vs bge-base) on Staples leave-one-out node accuracy + NONE balanced accuracy; the winner is used everywhere. LLM adjudication of close calls (top vote < 60%) is planned (needs an API key); they are flagged instead.
 
----
+## 6. Stages S3–S6: attributes, archetypes and the two methods
 
-## 6. Stages S4–S8: attributes, archetypes and the two methods
-
-### 6.1 S4 Attribute schema (3 tiers, closed vocabularies)
+### 6.1 S3 Attribute schema (3 tiers, closed vocabularies)
 Seed the schema from **Staples' own spec keys**. The result stays in the Staples merchandising team's vocabulary, and attributes Staples does not track (such as style on 53% of SKUs) become insights in their own right. Extend it with lifestyle attributes. Run schema induction on about 300 Wayfair families per L2 (Sonnet 5 proposes values with frequencies), then review by hand and **freeze**. Every field allows `unknown`. Nothing is imputed.
 
 **Tier 1: universal (all nodes)**
@@ -272,7 +271,9 @@ Generated per L2 (§1.4). The two lists below are what we expect induction to pr
 
 Tier 1 and Tier 2 feed archetypes and substitution. Tier 3 feeds the lifestyle gap and naming.
 
-### 6.2 S5 Extraction, normalisation and QA
+**As built (Phase 2).** Each node has a config (`config/nodes/<node>.yaml`, provisional until `reviewed_by` is filled) with: vocabulary overrides (e.g. backpack or planner materials), Tier-2 functional attributes (with Staples spec keys and maps where they exist; `spec_role: indicator` when Staples' spec vocabulary differs from product copy, so the attribute is read by text on both sides), Tier-3 node attributes (design theme, pattern, audience…, with a default such as "plain" when nothing is mentioned), numeric fields and bands (laptop fit, capacity, pod capacity, diameter, panels), the node's size band, archetype facet candidates **by tier**, naming labels, material tiers (TRADE-UP) and DFI anchors. Universal Tier-3 adds a single-valued **vibe** = the first aesthetic tag in priority order, else "plain". Yes/no features are "mentioned in the text" measures on both sides ("no" is shown as "not stated").
+
+### 6.2 S3 Extraction, normalisation and QA
 
 #### 6.2.1 Sources and precedence
 - **Staples:** deterministic mapping of spec keys to the schema through a synonym table (`True Color`/`Furnishing Color`/`Color Family` → colour, and so on). The LLM fills only the remaining gaps and Tier 3.
@@ -280,7 +281,8 @@ Tier 1 and Tier 2 feed archetypes and substitution. Tier 3 feeds the lifestyle g
 
 #### 6.2.2 The same instrument on both sides (critical)
 - Tier 3 (style, aesthetic, DFI, use-context) and `style_family` are extracted **by the same LLM prompt from the same kind of input (title plus a text summary) on both sides**, even when Staples has a spec value. A Staples "Furnishing Style: Contemporary" and an LLM's "mid-century" come from different instruments, and the gap would reflect that difference rather than the assortment.
-- For Tier 1 and Tier 2 physical facts (dimensions, material, colour, arm type), Staples specs are the truth and Wayfair values come from the LLM. We validate that the two agree (next step).
+- For Tier 1 and Tier 2 physical facts (dimensions, material, colour, arm type), Staples specs are the truth and competitor values come from text. We validate that the two agree (next step).
+- **Text parity (Phase 2).** Text-measured fields read Staples text (title + paragraph + bullets) cut to the **median description length of that node's competitor** (Amazon ≈ 110 characters, Wayfair ≈ 450–850), so "not mentioned" means the same on both sides. The G2 validation runs on this cut text too.
 
 #### 6.2.3 Extractor validation: Staples specs as free ground truth
 - Hide the specs and run the Wayfair-style text-only extractor on 300 Staples families, stratified by node.
@@ -308,24 +310,18 @@ Tier 1 and Tier 2 feed archetypes and substitution. Tier 3 feeds the lifestyle g
 - Prefer JSON-schema-enforced (tool-use) output.
 - Cache raw LLM responses to disk so that re-runs cost nothing.
 
-### 6.3 S6 Archetype construction (grid first, clusters as validation)
-1. **Choose grid facets per node (3–5).** Candidates come from Tier 1 and Tier 2 plus price band and style_family. Select by:
-   - merchant relevance, from a pre-agreed list per node;
-   - under 40% unknown on both sides;
-   - information: normalised entropy and mutual information with the HDBSCAN clusters from step 4.
+### 6.3 S4 Archetype construction: 4–6 attributes, three tiers, no price — gate C2
+1. **Candidates.** The node's facet list per tier (Tier 1 material / colour tone / colour family / size; Tier 2 node functional attributes and bands; Tier 3 style / vibe / node theme), minus facets that failed validation (G2), are unknown for > 40% of either retailer, or have one value covering > 85% of families. Values held by < 5% of the node's families are grouped as "other".
+2. **Core of 4.** The 4-facet combination with ≥ 1 facet from each tier that puts the largest *balanced* share of both retailers' families into supported cells; score = balanced coverage + 0.25 × mean normalised entropy. Colour tone and colour family never appear together, and the node's product-type attribute is required when usable. A cell is supported with ≥ 10 pooled families and either ≥ max(5, 0.5% of the competitor's families) competitor families or ≥ max(8, 4% of Staples' families) Staples families. A tier with no usable facet is relaxed (shown in the report); if fewer than 4 facets pass every check, the best near-misses are admitted and flagged.
+3. **Refinement to 5 and 6.** The next facet splits a cell only if ≥ 2 children are supported and the rest of the cell is supported (kept as "<facet>: other") or empty; refinement stops before a node exceeds 40 archetypes. There is no back-off below 4 attributes: families in no supported cell form the node's **long tail** (reported, never recommended).
+4. **Price band is not an attribute.** Price is read in PPG (inside TG), PPR (Method 1 labels) and the node's price view (§6.7.2).
+5. **Naming.** A short merchant name from the node's `name_order` plus the full attribute combo; every output shows **Archetype (Attributes combo)**.
+6. **Gate C2 (valid archetype).** An archetype can be recommended only if it has ≥ 4 attributes, no "other (mixed)" value and ≥ 5 competitor families.
+7. **Cross-check.** UMAP (10 dims) + HDBSCAN on the source-neutral card; ARI / AMI vs the archetypes and 20-bootstrap stability (G6).
 
-   Example for *Accent & Waiting Room Chairs*: `form_factor × material_class × colour_tone × style_family × price_band`.
-2. **Assign families to cells.** Merge cells hierarchically: if a cell has fewer than 10 pooled families (or fewer than 5 Wayfair families), drop the least-informative facet for that branch and merge upward. Stop when every live cell meets support. The expected result is about 8–25 archetypes per node.
-3. **Descriptors.** Non-grid attributes (aesthetic tags, use-context, DFI distribution, dimensions) are summarised per archetype. They describe it but do not define it.
-4. **Validate** with UMAP (n_components = 15–20, for clustering only) on fused card embeddings, then HDBSCAN (`min_cluster_size` scaled to node size, `leaf` selection). Report AMI/ARI between the clusters and the grid cells.
-   - If ARI is below 0.4, inspect the split clusters and add the missing facet (swivel, boucle, and so on).
-   - Bootstrap 20 × 80% resamples; target mean ARI ≥ 0.6.
-   - Cross-check with k-prototypes (Gower).
-5. **Name** each archetype with Sonnet 5, using its facet values plus 5 medoid titles. Run the nameability test: a merchant-literate colleague should be able to describe each of 5 cards in under 30 seconds without seeing the facet table.
+**Note on "all attributes combined":** the full attribute vector still enters through the embedding in Method 1 and the per-attribute distribution gaps in Method 2; the archetype attributes only decide how archetypes are named and counted.
 
-**Note on "all attributes combined":** the full attribute vector still enters the analysis through (a) the fused embedding in Method 1 and (b) the per-attribute distribution gaps in Method 2. The grid only decides how archetypes are *named and counted*.
-
-### 6.4 Embedding space (shared by S3, S6 and Method 1)
+### 6.4 Embedding space (shared by S2, S4 and Method 1)
 - **Canonical card** (identical template on both sides; no price; no raw spec dump):
   `"{node} | {form_factor} | {title_clean} | colour: {colour_family}/{colour_tone} | material: {material_class} | style: {style_family} | features: {key T2 values} | vibe: {aesthetic_tags} | use: {use_context} | {≤60-word LLM summary}"`
 - **Views:**
@@ -338,7 +334,7 @@ Tier 1 and Tier 2 feed archetypes and substitution. Tier 3 feeds the lifestyle g
 - **Source-mixing diagnostic:** on the known cross-retailer identical pairs (S1), the partner must be in the top-3 neighbours at least 80% of the time. If it is not, the card still carries source style and needs fixing.
 - **Vector store:** local Qdrant (reused from CL PoC), with one collection per retailer and node/attribute payload filters. At about 11k vectors this is a convenience, not a requirement; numpy or FAISS would be equivalent.
 
-### 6.5 S7 METHOD 1: Vector space (VW, AAS, CRS, AD, PPR → VOS)
+### 6.5 S5 METHOD 1: Vector space (VW, AAS, CRS, AD, PPR → VOS)
 All components are computed per Wayfair family *c* in analysis node *n*, then aggregated to archetypes. They combine into Method 1's final score, **VOS** (§6.5.6).
 
 #### 6.5.1 Vector Whitespace (VW): how empty Staples' region is
@@ -353,6 +349,7 @@ Within an existing node, adjacency is partly given. AAS now measures **fit with 
 - `A_ctx(c)` = weighted Jaccard between c's `use_context ∪ end_user_segment` and the node's Staples tag distribution. A kids' nursery rocker scores low in *Accent & Waiting Room*, and a reception lounge chair scores high.
 - `AAS = 100 × (0.6·pct_L2(A_sem) + 0.4·A_ctx)`.
 - Dropped: the PageRank complement term (no co-view data) and the separate JTBD term (folded into A_ctx).
+- **As built:** A_sem uses the *functional* card; the Staples reference distribution excludes Staples families with an **identical** functional card (colour twins and repeated profiles would set the bar at "an exact copy"); A_ctx is measured against the use contexts Staples serves **across all its nodes in the data** (fit with Staples' customer is store-wide). Thresholds T_A_low / T_A_high = 10th / 35th percentile of Staples' own AAS per L2.
 
 #### 6.5.3 Cannibalization Risk Score (CRS): would it take a Staples sale? (price-agnostic)
 - `S_max(c)` = mean cosine to the **top-3** Staples families **in the same analysis node**, on a *functional* embedding view (a card built from Tier 2 plus form_factor, with no colour, style or aesthetic tags). Max-pooling asks whether one specific Staples product is replaced.
@@ -388,8 +385,9 @@ VOS(a) = 100 × [ 0.45·pct(VW(a)) + 0.30·AAS(a)/100 + 0.25·pct(AD(a)) ] × (1
      2b. PPR ≥ 1.5 and (ΔDFI ≥ δ_D or material upgrade) → TRADE-UP          (approve, margin note)
      2c. AD ≥ T_AD (new colour/material/style)         → STYLE-EXTENSION     (approve; the "flavours" case)
      2d. otherwise                                     → SUBSTITUTE          (reject)
-3. T_C_low ≤ CRS < T_C_high                           → REVIEW               (goes to Pat calibration queue;
-                                                                              AD ≥ T_AD & AAS ≥ T_A_high → REVIEW-lean-approve)
+3. T_C_low ≤ CRS < T_C_high
+     3a. AD ≥ T_AD AND AAS ≥ T_A_high                  → LEAN-APPROVE         (counts as safe; flagged for Pat)
+     3b. otherwise                                      → REVIEW               (Pat calibration queue; undecided)
 4. CRS < T_C_low
      4a. AAS ≥ T_A_high                               → CURATE               (approve; true whitespace)
      4b. T_A_low ≤ AAS < T_A_high                      → EDGE / VERTICAL EXT. (hold for phase 2)
@@ -402,13 +400,13 @@ Each branch is exclusive and every case gets exactly one label. The "(DATA ERROR
    - *negatives* = Staples families from different analysis nodes, and same-node families with different form_factor.
 
    Fit a logistic `cal(S_max)`. Set the first cut of `T_C_high` and `T_C_low` at P(substitute) = 0.7 and 0.3. Set the AAS thresholds from the distribution of Staples' own families, whose AAS against the rest of Staples marks "on-brand" (for example the 10th percentile of Staples' own AAS gives `T_A_low`).
-2. **Pat calibration session** (from the doc, kept). Use 60 side-by-side pairs, stratified across the CRS range with extra pairs in the REVIEW band, 20 of them stratified by PPR. Hide the scores. Ask "would this take sales from that?" and "would you rather carry it at this price?". Refit `cal()`, the PPR bands and T_AD, then show Pat the resulting label distribution.
+2. **Pat calibration session** (from the doc, kept; still open). Use 60 side-by-side pairs, stratified across the CRS range with extra pairs in the REVIEW band, 20 of them stratified by PPR. Hide the scores. Ask "would this take sales from that?" and "would you rather carry it at this price?". Refit `cal()`, the PPR bands and T_AD, then show Pat the resulting label distribution.
 
 **Hygiene rules (kept from the doc):** no raw cosine in any deliverable; all thresholds are re-fitted when the encoder changes; PPR bands are set per L2.
 
-**Archetype roll-up:** an archetype's label mix is the share of member families per label. Its **Safe Share** is the share labelled CURATE, STYLE-EXTENSION or TRADE-UP. Archetype CRS, AAS and PPR are the member medians. An archetype is **shortlist-eligible** when Safe Share ≥ 0.5 and UNDERCUT + SUBSTITUTE < 0.3.
+**Archetype roll-up (Method 1 gate, §7):** per archetype, `n_safe` = CURATE + STYLE-EXTENSION + TRADE-UP + LEAN-APPROVE products; safe share = safe ÷ decided (non-REVIEW) products; reject share = (SUBSTITUTE + UNDERCUT) ÷ all products. Archetype CRS, AAS, AD and PPR are member medians; VW is the member mean.
 
-### 6.7 S8 METHOD 2: Attribute-level gap metrics
+### 6.7 S6 METHOD 2: Attribute-level gap metrics
 All metrics are computed per node, both per archetype and per attribute value, on **family shares**.
 
 #### 6.7.1 Share gap (replaces Depth Gap and Coverage Ratio)
@@ -420,7 +418,8 @@ All metrics are computed per node, both per archetype and per attribute value, o
 
 #### 6.7.2 Price Position Gap (PPG)
 - `PPG_mag(a) = W1(log price_W, log price_S)` within the archetype (0 if either side has fewer than 3 families; then the archetype-level band gap below is used). Direction: `PPG_dir = sign(median_W − median_S)`.
-- **Node-level price-band coverage:** per price band *b*, the share gap `p_W(b) − p_S(b)` with credibility. This is where "Staples has no $120–250 accent chairs" shows up.
+- **Node-level price-band coverage:** per price band *b* (node quartiles, rounded), the share gap `p_W(b) − p_S(b)` with credibility. This is where "Staples has no $120–250 accent chairs" shows up.
+- **Price view (Phase 2):** price is kept out of the archetype definitions and read per node: price-band coverage plus a **price ladder** (each archetype's median price on both sides, the ratio, and premium ≥ 1.5× / parity / cheaper < 0.85×).
 
 #### 6.7.3 Attribute Distribution Gap (ADG): colour gap generalised
 For each categorical attribute *k* (colour_family, colour_tone, material_class, style_family, aesthetic_tags, use_context, size_class, and Tier 2 features):
@@ -446,42 +445,49 @@ TG(a) = 0.35·pct(LSR) + 0.20·pct(PPG_mag) + 0.15·pct(CG) + 0.15·pct(MSG) + 0
 - Only credible LSR (Pr ≥ 0.9) contributes fully. Non-credible LSR is shrunk by ×0.5.
 - **Sensitivity:** draw 1,000 weight vectors from Dirichlet(α = 20·w). Report each archetype's probability of staying in the node top-5 and Kendall τ against the base ranking. Also report the user's original 4-term weighting (0.35/0.25/0.20/0.20) side by side for comparison.
 
+#### 6.7.7 Attribute Cannibalisation Risk (ACR): Method 2's own cannibalisation check
+TG measures gaps only; on its own it cannot tell "Staples lacks this" from "the competitor sells cheaper copies of a Staples product". ACR gives Method 2 its own check, from **attributes and price only** (no Method 1 score):
+- **Attribute twin:** a Staples family anywhere in the node with the same value on every known, validated functional (Tier-2) attribute, with ≥ 2 attributes compared. Searched node-wide, because cannibalisation is about function and price, not look (archetypes also carry look attributes).
+- **Product label:** price ÷ the twins' median price < 0.85 → **ATTR-UNDERCUT**; < 1.5 with the same colour tone → **ATTR-SUBSTITUTE**; ≥ 1.5 → ATTR-TRADE-UP; otherwise ATTR-STYLE-EXT; no twin → NO-TWIN.
+- **ACR(a)** = (ATTR-UNDERCUT + ATTR-SUBSTITUTE) ÷ competitor products in the archetype. It gates (§7); it is not part of TG.
+- Limitation: coarser than CRS (it sees only the extracted attributes), so it leans conservative where few attributes validate.
+
 **Attribute-level Total Gap:** for attribute value *v* of attribute *k* in node *n*, `TG_attr(k,v) = pct(δ_{k,v}) × credibility`. This ranks "which values to add" independently of archetypes and answers the attribute-level question directly.
 
 ---
 
-## 7. S9 Integration: two scores kept separate, one shared gate, fused re-rank
+## 7. Safety gates: common → per method → final (S2–S8)
 
-The two methods keep their own final scores, and each is reported and explained on its own:
-- **Method 1 → VOS** (vector view: whitespace, fit, visible difference, safety), §6.5.6.
-- **Method 2 → TG** (attribute view: share, price, colour, material/style and design-forward gaps), §6.7.6.
+The two methods keep their own final scores, **VOS** (Method 1, §6.5.6) and **TG** (Method 2, §6.7.6), and they are never blended into one formula. Up to the archetypes the pipeline is common. From there the two methods are treated as two models: each has **its own safety gate on its own scores**, including its own cannibalisation check, so one method's metric never filters the other's recommendations. A final gate combines them (Sai, 2026-10-01; evidence in §14.6). All thresholds are under `gates` in `config/pipeline.yaml`.
 
-They are not blended into one formula. Insights are written from both. The final recommendation list is a re-ranking that combines the two rankings.
+| Gate | Stage | Applies to | Rule |
+|---|---|---|---|
+| **C1 Node scope** | S2 | products | page maps to a focus node AND predicted node = page node AND affinity ≥ τ (§5.4) |
+| **C2 Valid archetype** | S4 | archetypes | ≥ 4 attributes AND no "other (mixed)" value AND ≥ 5 competitor families |
+| **M1-a Product labels** | S5 | products | decision tree §6.6 on CRS / PPR / AAS / AD (incl. LEAN-APPROVE); safe = CURATE, STYLE-EXTENSION, TRADE-UP, LEAN-APPROVE |
+| **M1-b Method 1 gate** | S5 | archetypes | ≥ 2 safe products AND safe share ≥ 10% of decided (non-REVIEW) products AND (SUBSTITUTE + UNDERCUT) < 70% of all products |
+| **M1-c Method 1 list** | S5 | archetypes | top 10 per node by VOS among those passing M1-b |
+| **M2-a Product labels** | S6 | products | attribute twin + price → ATTR-UNDERCUT / ATTR-SUBSTITUTE / ATTR-TRADE-UP / ATTR-STYLE-EXT / NO-TWIN (§6.7.7) |
+| **M2-b Method 2 gate** | S6 | archetypes | (LSR credibility ≥ 0.9 OR absent at Staples) AND ACR < 50% AND ≥ 2 non-cannibalising products |
+| **M2-c Method 2 list** | S6 | archetypes | top 10 per node by TG among those passing M2-b |
+| **F1 Union & tier** | S7 | archetypes | union of the two lists; **Strong** = on both, **Vector-led** = Method 1 only, **Gap-led** = Method 2 only; ordered Strong first, then by the fused rank `Final = 0.5·pctrank(VOS) + 0.5·pctrank(TG)` among valid archetypes in the node |
+| **F2 Per-node size** | S7 | archetypes | 3 to 10 per node; below 3, a labelled **Conditional** fill: best remaining valid archetypes holding a product safe under either method (most safe products, then Final) |
+| **F3 SKU picks** | S8 | products | only products safe under the method(s) that recommended the archetype: Method 1 safe labels for Vector-led; not ATTR-UNDERCUT / ATTR-SUBSTITUTE (and not EXCLUDE) for Gap-led; both for Strong (falling back to either when fewer than 3) |
 
-**Step 1: shared safety gate.** An archetype enters the final ranking only if it is **shortlist-eligible** (§6.6 roll-up): Safe Share ≥ 0.5 and UNDERCUT + SUBSTITUTE < 0.3. The gate applies to both methods, because TG measures gaps only: without the gate, a large TG gap could be a cheaper copy of a Staples product. Archetypes that fail the gate keep both scores in every table, with the reason they were excluded.
+**Reading the tiers.** Strong = both methods see an opportunity and both cannibalisation checks pass: the most robust. Vector-led = whitespace in the vector view that passes Method 1's checks (e.g. a style extension Method 2 sees as a cheaper twin). Gap-led = a credible attribute gap with few cheaper or same-look Staples twins; Method 2 has no fit-with-Staples check, so read these as "check fit". Conditional = only to reach the per-node minimum.
 
-**Step 2: fused re-rank.** Within each node, over the eligible archetypes:
-```
-Final(a) = w₁·pctrank_node(VOS(a)) + w₂·pctrank_node(TG(a))     (w₁ = w₂ = 0.5, configurable)
-```
-- Ranks are fused rather than raw scores, so neither method's scale dominates. Reciprocal-rank fusion (`Σ 1/(60 + rank)`) is computed as a robustness check. If the two orderings disagree on the node's top 3, it is flagged.
-- **Agreement tier** (shown next to every recommendation):
-  - **Strong:** top tercile in both methods.
-  - **Gap-led:** top tercile in TG only. The gap is real, but the vector view sees it as crowded, off-brand or close to Staples items. Read it together with its label mix.
-  - **Vector-led:** top tercile in VOS only. There is whitespace in embedding space that the attribute grid does not capture, which usually means a facet is missing from the archetype grid. It is fed back to S6.
-  - **Weak:** otherwise.
-- **Method agreement per node:** Spearman ρ between the VOS and TG rankings, reported in the node header.
-- **Shortlist:** per node, the top N by Final (N = 3–5) with tier Strong, Gap-led or Vector-led, plus a separate **STYLE-EXTENSION list** (colour or material variants of existing Staples families, from the SKU labels).
-- **Demand:** D is off until review counts or rank position exist. When it is on, it enters as a third ranking in the fusion (w₃ = 0.3, with the others rescaled), not inside either method's score.
-- **Headline chart per node:** TG (x) vs VOS (y), one point per archetype, coloured by agreement tier. Gated-out archetypes are shown hollow.
+**Also reported.** Spearman ρ between VOS and TG per node (method agreement); reciprocal-rank fusion as a robustness check; Dirichlet weight sensitivity of both scores (top-5 retention, G7). Every non-recommended archetype carries its reason from each method's gate.
 
----
+**Demand.** D stays off until review counts or rank position exist (and those columns are deliberately not used, §2.5). If added later, it enters as a third ranking in the final ordering, not inside either method's score or gate.
 
-## 8. S10 SKU stage: exemplars and sellers
+**Headline chart per node:** TG (x) vs VOS (y), one point per archetype, coloured by tier; hollow = not recommended.
 
-### 8.1 Exemplar selection (3–5 per shortlisted archetype)
-- Candidates are Wayfair families in the archetype labelled CURATE, STYLE-EXTENSION or TRADE-UP.
-- Rank by `0.5·(1 − SKU-CRS) + 0.3·centroid proximity + 0.2·DFI` and pick with MMR diversity (λ = 0.7), so the exemplars are not five near-identical chairs.
+## 8. S8 SKU stage: exemplars and sellers
+
+### 8.1 Exemplar selection (up to 3 per recommended archetype)
+- Candidates are the archetype's products that are safe under the method(s) that recommended it (gate F3, §7).
+- Rank by `0.5·(1 − CRS/100) + 0.3·centroid proximity + 0.2·DFI` and pick with MMR diversity (λ = 0.7), so the exemplars are not near-identical. Each card says which method it is safe under.
+- **Style extensions:** per node, the 5 STYLE-EXTENSION products with the largest AD, independent of the recommendations.
 
 ### 8.2 Evidence card per exemplar
 Title, price, URL, display brand, key attributes, DFI, label, and **the nearest Staples family side by side** (title, price, URL) with CRS, PPR and AD. This is the same format as Pat's calibration pairs, so the recommendations read the way Pat already judged them.
@@ -493,12 +499,12 @@ Title, price, URL, display brand, key attributes, DFI, label, and **the nearest 
 
 ---
 
-## 9. S11 Insights and outputs
+## 9. S9 Insights and outputs
 
 ### 9.1 Deliverables (current phase)
-1. **Python code**: the pipeline stages S0–S11, config-driven (§1.4).
+1. **Python code**: the pipeline stages S0–S9, config-driven (§1.4).
 2. **PNG figures**: one set per analysis node plus the overview figures, in `outputs/figures/`.
-3. **One self-contained static HTML report**: `outputs/report/Staples_Assortment_Report.html`.
+3. **One self-contained static HTML report**: `outputs/report/Staples_Assortment_Report_v<N>.html`; every build writes the next version and earlier versions are never overwritten or deleted.
 
 No Excel workbook or deck for now. Intermediate tables (CSV or parquet) are pipeline artefacts for debugging and re-runs, not deliverables.
 
@@ -507,37 +513,39 @@ No Excel workbook or deck for now. Intermediate tables (CSV or parquet) are pipe
 - The page is generated from the pipeline outputs by a template (Jinja2), so a re-run on new data rebuilds it with no manual editing.
 - Must work in light and dark mode and at laptop and phone widths. Must print cleanly (each node section prints on its own).
 
-**Tab 1: Approach & Methodology.** How we approached it, readable by a non-specialist first, with detail below:
-- The business question and Pat's mandate (one paragraph), and what "core-adjacent" and "cannibalization" mean here.
-- A flow diagram of S0 → S11, with one line per stage on what it does and why.
-- Data coverage: retailers, sample sizes, in-scope nodes, Staples-only nodes and the backlog, plus data caveats (convenience sample, no demand data).
-- The two methods side by side: the components of VOS and of TG, the shared gate, the decision labels with plain-English meanings, and how the final re-rank works.
-- QA gate results (§10), with pass/fail and the actual values.
-- Assumptions, and anything flagged *provisional*.
+**Wording (Sai, Phase 2).** "Node", never "shelf". Every archetype is shown as **Archetype (Attributes combo)**. Every metric abbreviation carries its full name, e.g. "TG (Total Gap)", "ACR (Attribute Cannibalisation Risk)". Tab 1 says "competitor", never a retailer name; Tab 2 names the node's competitor.
 
-**Shelf filter (report only, added 2026-09-28).** For the two L2s that are already dense (Chairs & Seating, Desks), the dropdown is capped at 5 and 3 shelves. R1 enough data (scored, ≥ 30 families per side) and R2 at least one recommended archetype are hard gates; R3 high-confidence mapping ≥ 85%, R4 Spearman VOS↔TG ≥ 0.30 (on the displayed 2-dp value) and R5 at least one Strong-tier recommendation are counted. Rank = R3–R5 passed, then number of recommendations, then Spearman. L2s without a cap (every future category) list all their shelves. All shelves are still scored, and the rule results are written to `shelf_selection.csv`. The caps and thresholds live in `config/pipeline.yaml` → `report.shelf_filter`.
+**Tab 1: Approach & Methodology.**
+- The business question and Pat's mandate; the **12 focus nodes** (segment · play, Staples path, family counts, status; no retailer names).
+- A flow chart of S0 → S9 (one box per stage: purpose, steps, outputs, gate, tech).
+- Archetype rules (4–6 attributes, three tiers, no price); the two methods side by side (VOS and TG components, ACR); Method 1 and Method 2 label tables; "from two scores to one list" (the gates of §7).
+- **Quality gates** (§10) as a scorecard, and a separate **Safety gates** table grouped Common / Method 1 / Method 2 / Final with this run's counts; encoder bake-off and calibration.
+- Assumptions and caveats (columns used, convenience samples, text parity, provisional vocabularies).
 
-**Tab 2: Gaps & Recommendations** (renamed from Node-Level Analysis). A **single-select dropdown** at the top lists every analysis node by full path (for example `Furniture → Chairs & Seating → Gaming Chairs`, or `Furniture → Chairs & Seating → Office Chairs → Task` for a pseudo-L5 node). Thin nodes are listed but marked. Choosing a node shows only that node's content:
+**Tab 2: Gaps & Recommendations.** A single-select dropdown lists all focus nodes in focus order (thin and Staples-only nodes marked). Choosing a node shows, in this order:
 
 | Section | Content |
 |---|---|
-| **Node header** | Path; Staples and Wayfair family counts; mapping confidence; VOS↔TG agreement (ρ); provisional or thin flags |
-| **Key insights** | 3–6 plain-English findings generated from the numbers (for example "Wayfair's mix is 24% white/cream vs 6% at Staples; credible"), each tied to the table or chart that supports it |
-| **Coverage charts** | Price-band coverage (Staples vs Wayfair shares), DFI density, attribute-gap heatmap (JSD per attribute) |
-| **Attribute-level gaps** | Top value-level gaps per attribute with credibility (§6.7.3), plus colourway breadth (§6.7.4) |
-| **Method 1: vector view** | Archetype table with VW, AAS, CRS, AD, PPR band, label mix and **VOS**; decision scatter (AAS vs CRS, coloured by label) |
-| **Method 2: attribute view** | Archetype table with LSR (credibility), PPG, CG, MSG, DFG and **TG**; weight-sensitivity summary |
-| **Final recommendations** | TG vs VOS chart; the fused ranking with agreement tier and gate status; shortlisted archetypes with name, definition and the reason they rank where they do |
-| **SKU recommendations** | Evidence cards (§8.2): competitor product next to its nearest Staples product, with price, link, label, CRS, PPR and AD. Plus the STYLE-EXTENSION list |
-| **Vendor / seller view** | Display brands in recommended archetypes: `brand_on_staples` (quick-win recruit), `wayfair_house_brand` (source the archetype, not the SKU), brand fragmentation |
-| **Excluded and caveats** | Gated-out archetypes with reasons; backlog items that came from this node's pages; data caveats specific to the node |
+| **Node header** | Path; segment · play; competitor; family counts; mapping confidence and products set aside; archetype attributes with tiers; number of archetypes and long-tail share; provisional flag |
+| **Key insights** | Plain-English findings grouped (where the competitor is deeper, where Staples is deeper, price, design, recommendations by tier, Method 1 and Method 2 cannibalisation counts) |
+| **Coverage** | DFI density, attribute divergence (JSD), largest credible attribute-value gaps |
+| **Attribute-level gaps** | Credible value-level gaps grouped by attribute |
+| **Price insights** | Price-band coverage chart, price lines, and the archetype price ladder |
+| **Final recommendations** | Ranked archetypes with tier, whether each method listed it, VOS, TG, Method 1 safe products and ACR; TG-vs-VOS chart and Method 1 label mix |
+| **SKU recommendations** | Evidence cards per recommended archetype (competitor product beside its nearest Staples product: price, link, label, CRS, PPR, AD, Method 2 label, safe-under basis), then style extensions |
+| **Vendor / seller view** | Display brands of the products shown: already on Staples (quick win), competitor house brand (source the archetype), independent seller |
+| **Excluded archetypes** | Every non-recommended archetype with its reason from each method's gate |
+| **Method 1 results** (bottom) | VOS components chart, decision scatter, and per archetype VW, AAS, AD, CRS, PPR, safe products, safe share, substitute + undercut, M1 gate and reason |
+| **Method 2 results** (bottom) | TG components chart, and per archetype shares, LSR and credibility, PPG, CG, MSG, DFG, ACR, non-cannibalising products, M2 gate and reason |
+
+Staples-only nodes show a Staples profile (price bands and top attribute values) until competitor data arrives. The Phase-1 "shelf filter" (capping the dropdown) was removed in Phase 2.
 
 ### 9.3 Figures (PNG, per node unless noted)
-Price-band coverage · DFI density · attribute-gap heatmap · top value-level gaps (diverging bar) · decision scatter (AAS vs CRS) · TG vs VOS agreement chart · weight-sensitivity (top-5 stability) · overview: node coverage and label mix across all nodes · QA: mapping confusion and extractor accuracy per field.
+Price-band coverage · DFI density · attribute divergence (JSD) · largest credible attribute-value gaps · decision scatter (AAS vs CRS) · TG vs VOS by tier · Method 1 label mix · VOS components · TG components · extractor accuracy per field · overview: families per node.
 
----
+## 10. Quality gates G1–G8 (a scorecard; they never cut recommendations)
 
-## 10. Validation and QA gates (the pipeline does not advance past a failed gate)
+Quality gates check how far each step can be trusted. In the PoC they are computed on every run and reported in Tab 1 with PASS / FAIL / PENDING; a failure is reported plainly, not worked around. They **do not** remove products or recommendations (that is the job of the safety gates, §7), with one side effect: fields failing G2 are kept out of the gap scores and archetype attributes.
 
 | Gate | Metric | Target |
 |---|---|---|
@@ -549,6 +557,8 @@ Price-band coverage · DFI density · attribute-gap heatmap · top value-level g
 | G6 Archetypes | ARI grid vs HDBSCAN; bootstrap stability; nameability | ≥ 0.4 / ≥ 0.6 / 5 of 5 |
 | G7 Scores | TG and VOS top-5 stability under Dirichlet weights; PPR and CRS calibration AUC | ≥ 70% / AUC ≥ 0.8 |
 | G8 Sanity | DATA-ERROR share; spot-check of 20 recommendations by a merchant-literate reviewer | ≤ 2% / ≥ 16 of 20 judged sensible |
+
+**As computed in the PoC (proxies until the human gold sets exist):** G1 = Staples leave-one-out node accuracy ≥ 90% AND NONE balanced accuracy ≥ 85%; G2 = per node and field, accuracy-when-found ≥ 85% on length-matched Staples text; G5 = retailer predictability (5-fold AUC) from the neutral card ≤ 0.80; G6 = median ARI ≥ 0.4 AND median bootstrap stability ≥ 0.6; G7 = TG and VOS top-5 retention ≥ 70% AND minimum CRS calibration AUC ≥ 0.8; G8 = share of products with AAS < T_A_low and CRS ≥ 70 ≤ 2%. G3 and G4 are PENDING (human labels).
 
 ---
 
@@ -592,11 +602,13 @@ Price-band coverage · DFI density · attribute-gap heatmap · top value-level g
 
 Each phase runs on the vertical slice before any bulk LLM spend. The bulk extraction run happens only after the P2 prompts pass validation on the slice.
 
+**Status (2026-10-01):** P0–P7 are built and run for the Phase-2 focus nodes (report v8). Open: Pat's calibration session (CRS bands, PPR thresholds, AAS thresholds, the gate parameters), human gold sets (G1, G3, G4), the Claude extraction / adjudication backend (needs an API key), and competitor data for Desk Organizers, Desk Pads and Water Bottles.
+
 **Re-run on new data:** when enriched or new-category samples arrive, the same pipeline runs from S0. New L2s get their generated artefacts (§1.4) drafted automatically and flagged *provisional* until reviewed. Existing reviewed artefacts are reused.
 
 ---
 
-## 13. Implementation notes (PoC build, 2026-09-28)
+## 13. Implementation notes (Phase 1 build, 2026-09-28; Phase-1 stage numbers S0–S11)
 
 These decisions were made while building the pipeline. Each one either tightens a rule above or fills a gap that only showed up in the data. The code in `src/alpoc/` follows them.
 
@@ -618,3 +630,92 @@ These decisions were made while building the pipeline. Each one either tightens 
 - G6 **fails**. The embedding clusters split on product sub-form (barrel, wingback, club), which the grid does not use. Candidate facet for the next iteration: `form_factor` with finer accent-chair values.
 - G8 **fails**. The DATA-ERROR share is about 12%. These products sit close to a few Staples items but far from the wider Staples catalogue or its use contexts. They are to be reviewed in Pat's calibration.
 - Recommendations skew to **premium price bands**, because cheaper look-alikes are labelled UNDERCUT (PPR < 0.85). This protects 1P as intended, but the band is the first thing Pat's calibration should test.
+
+---
+
+## 14. Phase 2 changes (2026-10-01)
+
+**Scope.** Phase 2 narrows the PoC to 12 focus nodes (exact Staples L3/L4 paths, Sai's selection), each compared with its **Primary 1** competitor: Amazon (planners, desk organizers, backpacks, lunch bags, desk pads, coffee organizers), Wayfair (office desks, accent chairs, desk lamps, clocks, partitions) and Scheels (water bottles). The node list, segment · play and competitor order live in `config/nodes.yaml`. A node whose competitor has no data runs as a **Staples-only profile** until data arrives, with no code change. Where this section conflicts with §4–§9, §14 wins.
+
+**Columns.** Only the Phase-1 columns are read: id, title, price, url, brand/vendor, selected choice, description, listing page (and the L1–L6 path of that page, used only to identify it, because many page names are facet labels such as "Type: Folding"). Ratings, review counts, ranks, badges, list prices, images and the new Wayfair `specifications` column are not used.
+
+### 14.1 Stage simplification (S0–S9)
+
+| Phase 2 | Phase 1 | Change |
+|---|---|---|
+| S0 Ingest | S0 | Generic competitor adapter (Amazon added); prices must carry a `$` ("2 sizes" is not a price); vendor noise ("Learn more", size codes) blanked; Amazon links rebuilt as `/dp/<ASIN>`; Staples rating no longer parsed |
+| S1 Families & nodes | S1 + S2 | **Same grouping rule for every retailer** (brand + name stem), because Amazon and Wayfair now list colour/size variants as separate ids too. Competitor variants also need the same description start (house-brand titles are generic). A title prefix counts as a brand only if it is a known brand. **Node = exact Staples leaf**: the pseudo-L5 split is dropped (the focus list already names the granular node) |
+| S2 Mapping | S3 + S2 finalize | Each page now points to at most one node, so the multi-leaf classifier is replaced by: longest-prefix **page-path crosswalk** → node or [] (pages whose products Staples shelves under a *sibling* leaf, e.g. calendars, briefcases, standing desks, desktop dividers) → **product-level scope check**: k-NN over all Staples nodes, mapped only if the predicted node is the page's node and the product is close enough. The NONE cut is Youden's J but never rejects more than 5% of known in-scope products (the page crosswalk already removes whole out-of-scope pages) |
+| S3 Attributes | S4–S5 | Per-node vocabularies (`config/nodes/*.yaml`) incl. material overrides, Tier-3 node attributes (design theme, pattern, audience…), numeric fields and bands. **Text parity**: text-measured fields read Staples text cut to the median description length of that node's competitor (Amazon subtitles ≈ 110 characters vs thousands of Staples bullet characters), so "not mentioned" means the same on both sides; G2 validation also runs on this cut text. `spec_role: indicator` marks Tier-2 fields whose Staples spec vocabulary differs from product copy (measured by text on both sides, spec for validation only). Derived single-valued `vibe` facet = first aesthetic tag in priority order, else "plain" |
+| S4 Archetypes | S6 | Redesigned, §14.2 |
+| S5 / S6 / S7 / S8 | S7 / S8 / S9 / S10 | Same formulas. Per-node competitor, cards and functional core. S6 adds the price view (§14.3) |
+| S9 Report | S11 | Node filter removed (all 12 nodes listed); §14.4 |
+
+### 14.2 Archetypes: 4–6 attributes, three tiers, no price (Sai)
+- **Every archetype is defined by 4 to 6 attribute values.** Candidates per node are listed by tier in the node config: Tier 1 universal look/physical (material, colour tone/family, size), Tier 2 functional (type, features, size bands), Tier 3 lifestyle (style, vibe, theme/pattern/audience).
+- **Core (4):** the combination with ≥ 1 attribute from each tier that puts the largest *balanced* share of both retailers' families into supported cells (support: ≥ 10 pooled families and ≥ 5 competitor or ≥ 8 Staples families); ties go to higher mean entropy. If no combination meets the tier mix, the constraint is relaxed tier by tier and the relaxation is shown.
+- **Refinement (5th, 6th):** a cell is split by the next attribute only if ≥ 2 children are supported and the rest of the cell is supported (kept as "<attribute>: other") or empty. There is no back-off below 4 attributes: families in no supported 4-attribute cell form the node's **long tail** (reported, not scored).
+- **Price band is not an attribute**, so archetypes do not collapse into price tiers. Price stays in PPG (inside TG), in PPR (labels) and in the separate price view.
+- **Naming:** a short merchant name from the node's `name_order` plus the full attribute combo; every output shows "Archetype (Attributes combo)".
+
+### 14.3 Price view (separate from archetypes)
+Per node: price-band coverage (node quartiles, rounded) with credibility, and a **price ladder**: each archetype's median price on both sides, the ratio, and a reading (premium ≥ 1.5×, cheaper < 0.85×, parity).
+
+### 14.4 Report
+"Node" replaces "shelf" everywhere. Every metric abbreviation is shown with its full name, e.g. "TG (Total Gap)". Tab 2 order: header → key insights → coverage → attribute-level gaps → price insights → final recommendations → SKU recommendations and style extensions → sellers → excluded → Method 1 and Method 2 detail (bottom). Tab 1 lists the 12 nodes with segment · play and data status, without naming retailers.
+
+### 14.5 Build decisions (Phase 2 run, 2026-10-01)
+Each fixes a problem the first Phase-2 run exposed; none is tuned to a target number. All are config switches in `config/pipeline.yaml`.
+
+| # | Where | Decision | Why (evidence) |
+|---|---|---|---|
+| 1 | S1 | An inferred title-prefix brand is kept only if it is a known brand (a Staples brand or a vendor the retailer shows); single colour/material/generic words are never brands | 83% of Amazon products have no brand; title prefixes were "Coffee Pod", "2 Pack", "Black" and created false "sells on Staples" flags |
+| 2 | S2 | NONE threshold floored at 95% in-scope recall | The Youden cut would reject 8–9% more in-scope products; out-of-scope products are "hard negatives" (wall calendars vs planners) already removed by the page crosswalk |
+| 3 | S3 | Desk and chair material read by priority (surface / upholstery first) | Text named the metal frame or wood arms first; Staples specs name the top / upholstery |
+| 4 | S3 | Desk type, chair form, planner / lunch / clock / coffee / divider type are `spec_role: indicator` | Staples' type vocabulary ("Workstations", "Table", "Guest") differs from product copy; measured by text on both sides |
+| 5 | S4 | Facet guards: colour tone and colour family never together; the product-type facet is required; facets with one value > 85% are dropped; values < 5% grouped as "other"; support scales per side (competitor ≥ 0.5% of its families, Staples ≥ 4%); ≤ 40 archetypes per node from refinement | The unguarded search picked near-constant facets ("USB port: not stated", "vibe: plain") and duplicate colour facets, and a fixed support of 10 gave 122 desk archetypes |
+| 6 | S4 | If fewer than 4 facets pass every check, the best near-misses are admitted (skewed first, then partly unknown, then below the G2 bar) and flagged; a tier with no usable facet is relaxed and shown | Keeps Sai's 4-attribute minimum; several nodes have no usable Tier-1 facet because colour/material fail G2 on short Amazon text |
+| 7 | S7 | Archetypes containing a grouped "other (mixed)" value are scored and shown but never recommended | Not nameable |
+| 8 | S5 | AAS reference excludes Staples families with an identical functional card | Repeated Staples profiles (colour twins, identical planner specs) set the bar at "an exact copy"; 37% of competitor products were OFF-BRAND |
+| 9 | S5 | A_ctx uses the use contexts Staples serves across all its nodes in the data | Fit with Staples' *customer* is store-wide; node-only context labelled 68% of Wayfair accent chairs (the White-Chair products) off-brand; 18% after |
+| 10 | S5/S7 | *(Superseded by §14.6.)* Safe Share is taken over decided products (REVIEW excluded) and needs ≥ 40% decided; the substitute + undercut cap stays over all products | REVIEW is "awaiting Pat's calibration"; counting it as unsafe blocked nodes whose products sit in the middle CRS band |
+| 11 | Display | For yes/no features "no" is shown as "not stated" | They are "mentioned in the text" measures |
+
+**What the Phase-2 run shows (for review):** competitor ranges in desks, partitions, lunch bags, planners and backpacks are dominated by functional substitutes, cheaper look-alikes (UNDERCUT, e.g. Wayfair folding screens at ~0.25× Staples' price) or off-profile products (Amazon journals and travel/hiking packs), so few archetypes pass the shared gate there. Recommendations concentrate in clocks, desk lamps, accent chairs and coffee organizers. Pat's calibration of the CRS bands and PPR thresholds is the lever most likely to change this.
+
+### 14.6 Two-method safety gates (Sai, 2026-10-01; replaced the earlier shared gate and §14.5 #10; now the body's §7)
+Up to the archetypes the pipeline is common; from there the two methods are treated as two models, each with its own safety gate on its own scores, and one final gate combines them. Quality gates (G1–G8, §10) remain a scorecard: they never remove recommendations.
+
+| Gate | Stage | Rule (config `gates`) |
+|---|---|---|
+| **C1 Node scope** | S2 | page on a focus node AND predicted node = page node AND affinity ≥ τ (unchanged) |
+| **C2 Valid archetype** | S4 | ≥ 4 attributes AND no "other (mixed)" value AND ≥ 5 competitor families |
+| **M1-a Product labels** | S5 | decision tree of §6.6 on CRS / PPR / AAS / AD, plus **LEAN-APPROVE** (§6.6 rule 3, now implemented): 30 ≤ CRS < 70 AND AD ≥ 0.5 AND AAS ≥ T_high counts as safe |
+| **M1-b Archetype gate** | S5 | ≥ 2 safe products AND safe share ≥ 10% of decided (non-REVIEW) products AND substitute + undercut < 70% |
+| **M1-c Method 1 list** | S5 | top 10 per node by VOS |
+| **M2-a Product labels** | S6 | **attribute twin** = a Staples family anywhere in the node with the same values on every known, validated functional attribute (≥ 2 compared). Price ÷ twins' median < 0.85 → ATTR-UNDERCUT; < 1.5 with the same colour tone → ATTR-SUBSTITUTE; ≥ 1.5 → ATTR-TRADE-UP; otherwise ATTR-STYLE-EXT; no twin → NO-TWIN. Attributes and price only, no Method 1 scores |
+| **M2-b Archetype gate** | S6 | (LSR credibility ≥ 0.9 OR absent at Staples) AND **ACR (Attribute Cannibalisation Risk)** < 50% AND ≥ 2 non-cannibalising products; ACR = (ATTR-UNDERCUT + ATTR-SUBSTITUTE) ÷ competitor products in the archetype |
+| **M2-c Method 2 list** | S6 | top 10 per node by TG |
+| **F1 Union & tier** | S7 | union of the two lists; Strong = both, Vector-led = Method 1 only, Gap-led = Method 2 only; ordered Strong first, then by the fused rank 0.5·rank(VOS) + 0.5·rank(TG) |
+| **F2 Per-node size** | S7 | 3–10 per node; below 3, a labelled **Conditional** fill (best remaining valid archetypes with a product safe under either method) |
+| **F3 SKU picks** | S8 | only products safe under the method(s) that recommended the archetype: Method 1 labels for Vector-led, not an attribute undercut/substitute for Gap-led, both for Strong (falling back to either) |
+
+Why: a single gate built from Method 1's product labels let Method 1's weaknesses (e.g. its fit score on Amazon planners and travel packs) suppress real Method 2 gaps, and the methods could not be tuned separately. ACR mirrors Method 1's CRS + PPR logic from Method 2's own inputs, so each method carries its own 1P protection.
+
+Twins are searched across the whole node because cannibalisation is about function and price, not look (an archetype also carries look attributes). ACR is coarser than CRS: it sees only the extracted attributes, so it leans conservative where few attributes validate. Gap-led recommendations have no fit-with-Staples check, so they read as "credible attribute gap, check fit"; Strong recommendations (both methods) are the most robust. Iterations behind the thresholds (what-if simulations, 2026-10-01): the shared gate gave 8 recommendations in 4 of 9 nodes; threshold loosening alone could not lift backpacks, lunch bags, partitions, planners or coffee organizers above 0, because almost no individual product there is Method-1-safe.
+
+**Result of the Phase-2 run with §14.6 (report v8):** C1 keeps 16,035 of 24,326 competitor products; C2 213 of 298 archetypes valid. Method 1: 3,601 products safe (22%), 90 archetypes pass, 60 listed. Method 2: 5,786 attribute undercuts and 1,165 attribute substitutes, 4,074 products with no Staples twin; 72 archetypes pass, 58 listed. Final: **75 recommendations (20 Strong, 26 Vector-led, 29 Gap-led)**, 4–10 per scored node, no Conditional fill needed:
+
+| Node | Strong | Vector-led | Gap-led | Total |
+|---|---|---|---|---|
+| Accent & Waiting Room Chairs | 3 | 4 | 3 | 10 |
+| Clocks & Timers | 4 | 2 | 4 | 10 |
+| Office Desks | 3 | 5 | 2 | 10 |
+| Lunch Bags & Boxes | 4 | 0 | 6 | 10 |
+| Backpacks | 0 | 0 | 10 | 10 |
+| Desk Lamps | 3 | 5 | 1 | 9 |
+| Coffee Organizers & Dispensers | 3 | 3 | 1 | 7 |
+| Office Partitions & Dividers | 0 | 5 | 0 | 5 |
+| Planners & Personal Organizers | 0 | 2 | 2 | 4 |
+
+Reading: backpacks are all Gap-led (hiking, travel and sling packs Staples does not carry; Method 1 calls them off-profile); partitions are Vector-led only (Method 1 sees style extensions, Method 2 sees cheaper functional twins). Weight-sensitivity top-5 retention: TG 92%, VOS 93%.

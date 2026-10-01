@@ -1,0 +1,66 @@
+node: "Coffee, Water & Snacks > Coffee, Coffee Makers & Supplies > Coffee Organizers & Dispensers"
+noun: coffee organizer
+generated_by: "claude-opus-5-5 session draft from Staples spec keys + Amazon sample, 2026-10-01"
+reviewed_by: null
+
+material_spec_keys: ['Material of Item']
+style_zero_shot: true
+vocab_overrides:
+  material_class:
+    mode: position
+    values:
+      acrylic/clear: ['acrylic', 'clear', 'transparent', 'plexiglass']
+      metal/wire: ['metal', 'wire', 'steel', 'iron', 'mesh', 'chrome', 'stainless']
+      wood/bamboo: ['wood', 'wooden', 'bamboo', 'acacia', 'walnut', 'pine', 'mango wood']
+      glass: ['glass']
+      plastic: ['plastic', 'abs', 'polypropylene', 'pp', 'resin']
+
+tier2:
+  organizer_type:
+    mode: priority
+    spec_keys: ['Coffee Organizer & Dispenser Type']
+    spec_role: indicator
+    spec_map: {Drawer: pod drawer, Organizer: station/condiment organizer, Station: station/condiment organizer, Dispenser: dispenser}
+    values:
+      pod drawer: ['drawers?']
+      carousel/rotating: ['carousel', 'rotating', 'revolving', 'spinning', '360', 'lazy susan', 'spin']
+      dispenser: ['dispensers?']
+      station/condiment organizer: ['coffee station', 'coffee bar', 'station', 'condiments?', 'syrup', 'cup (and|&) lid', 'tiers?', 'compartments?', 'caddy']
+      basket/bin: ['baskets?', 'bowls?', 'bins?', 'box(es)?', 'jars?', 'canister', 'container']
+      stand/rack: ['stand', 'rack', 'holder', 'tower', 'wall[- ]mount\w*']
+  pod_system:
+    mode: priority
+    values:
+      nespresso: ['nespresso', 'vertuo\w*', 'original ?line', 'dolce gusto']
+      k-cup: ['k[- ]?cups?', 'keurig', 'kcup']
+      multi-item: ['condiments?', 'tea bags?', 'sugar', 'creamer', 'syrup', 'snacks?', 'cups? (and|&) lids?', 'stir']
+
+numeric:
+  pod_capacity:
+    spec_keys: ['Single Serve Pod Capacity']
+    text_regex: ['(\d{2,3})\s*(?:k[- ]?cups?|pods?|capsules?|coffee pods?)\b', '(?:holds?|capacity(?: of)?|stores?|up to)\s*(\d{2,3})']
+    min: 6
+    max: 400
+numeric_bands:
+  capacity_band: {source: pod_capacity, bands: {"under 30 pods": ['0', '30'], "30-49 pods": ['30', '50'], "50+ pods": ['50', '10000']}}
+size_bands: null
+
+archetype_facets:
+  tier1: [material_class, colour_tone, colour_family]
+  tier2: [organizer_type, pod_system, capacity_band]
+  tier3: [style_family, vibe]
+name_order: [style_family, vibe, material_class, pod_system, organizer_type]
+type_attrs: [organizer_type]
+functional_core: [organizer_type, pod_system, capacity_band]
+labels:
+  pod_system: {nespresso: Nespresso, k-cup: K-Cup, multi-item: multi-item}
+facet_labels: {organizer_type: Type, pod_system: Pods, capacity_band: Capacity}
+material_tiers: {plastic: 1, acrylic/clear: 2, metal/wire: 2, glass: 3, wood/bamboo: 3}
+
+dfi_anchors:
+  design:
+    - "a stylish coffee bar organizer in natural wood and matte black metal for a curated kitchen counter"
+    - "a sleek designer pod holder in clear acrylic and brass with a minimalist look"
+  utility:
+    - "a basic black plastic coffee pod drawer for an office breakroom"
+    - "a plain plastic condiment organizer for a breakroom counter, functional"

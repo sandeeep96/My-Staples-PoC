@@ -13,11 +13,14 @@ import numpy as np
 import pandas as pd
 from scipy.stats import gaussian_kde
 
+from .common import m
+
 INK = {"primary": "#0b0b0b", "secondary": "#52514e", "muted": "#898781", "grid": "#e1e0d9",
        "axis": "#c3c2b7", "surface": "#fcfcfb"}
 C_STAPLES, C_COMP = "#2a78d6", "#eb6834"
 GROUP = {"Approve": "#1baf7a", "Review / hold": "#eda100", "Reject": "#4a3aa7"}
-TIER = {"Strong": "#1baf7a", "Gap-led": "#4a3aa7", "Vector-led": "#eda100", "Weak": "#b5b3ab"}
+TIER = {"Strong": "#1baf7a", "Gap-led": "#4a3aa7", "Vector-led": "#eda100", "Conditional": "#c2477f",
+        "Not listed": "#b5b3ab"}
 SINGLE = "#4a3aa7"
 DPI = 110
 
@@ -34,6 +37,13 @@ plt.rcParams.update({
 def esc(s) -> str:
     """Matplotlib treats paired '$' as math; escape them in any text drawn from data."""
     return str(s).replace("$", r"\$")
+
+
+def arch_label(name: str, combo: str, width: int = 62) -> str:
+    """Archetype (Attributes Combo) for chart axes: name on the first line, the combo wrapped below."""
+    import textwrap
+    lines = textwrap.wrap(f"({combo})", width=width) if combo else []
+    return esc(chr(10).join([name] + lines[:3]))
 
 
 def _grid(ax, axis="y"):
@@ -88,8 +98,8 @@ def dfi_density(s: pd.Series, c: pd.Series, comp_name: str, path):
     ax.set_xlim(0, 1)
     ax.set_yticks([])
     ax.spines["left"].set_visible(False)
-    ax.set_xlabel("Design-Forward Index (0 = utilitarian, 1 = design-led; pooled percentile)")
-    ax.set_title("Design-forward distribution")
+    ax.set_xlabel(f"{m('DFI')}: 0 = utilitarian, 1 = design-led (pooled percentile)")
+    ax.set_title(f"Design-forward distribution, {m('DFI')}")
     ax.legend(loc="upper left")
     return _save(fig, path)
 
@@ -101,7 +111,7 @@ def attribute_jsd(df: pd.DataFrame, path):
     for i, v in enumerate(d.values):
         ax.text(v + 0.005, i, f"{v:.2f}", va="center", fontsize=7.5, color=INK["secondary"])
     _grid(ax, "x")
-    ax.set_xlabel("Jensen-Shannon divergence (0 = same mix, 1 = no overlap)")
+    ax.set_xlabel(f"{m('JSD')}: 0 = same mix, 1 = no overlap")
     ax.set_title("How different is the mix, by attribute")
     return _save(fig, path)
 
@@ -147,8 +157,8 @@ def decision_scatter(cand: pd.DataFrame, T: dict, v: dict, path):
         ax.axhline(yv, color=INK["axis"], linewidth=1)
     ax.set_xlim(0, 100)
     ax.set_ylim(0, 100)
-    ax.set_xlabel("CRS: cannibalisation risk (price- and look-agnostic)")
-    ax.set_ylabel("AAS: fit with Staples")
+    ax.set_xlabel(f"{m('CRS')}: price- and look-agnostic")
+    ax.set_ylabel(f"{m('AAS')}: fit with Staples")
     ax.set_title("Decision surface: every competitor product in this node")
     ax.legend(loc="lower left", fontsize=8)
     return _save(fig, path)
@@ -156,9 +166,11 @@ def decision_scatter(cand: pd.DataFrame, T: dict, v: dict, path):
 
 def agreement(fa: pd.DataFrame, path):
     fig, ax = plt.subplots(figsize=(6.4, 4.0))
-    for t in ["Weak", "Vector-led", "Gap-led", "Strong"]:
-        d = fa[fa["tier"] == t]
-        e, ne = d[d["eligible"]], d[~d["eligible"]]
+    for t in ["Not listed", "Conditional", "Vector-led", "Gap-led", "Strong"]:
+        d = fa[(fa["tier"] == t) & (fa["depth"] > 0)]
+        if d.empty:
+            continue
+        e, ne = d[d["shortlisted"]], d[~d["shortlisted"]]
         ax.scatter(e["tg"], e["vos"], s=46, color=TIER[t], edgecolor=INK["surface"], linewidth=1.2, label=t)
         ax.scatter(ne["tg"], ne["vos"], s=40, facecolor="none", edgecolor=TIER[t], linewidth=1.2)
     sl = fa[fa["shortlisted"]].sort_values("final_rank")
@@ -166,10 +178,10 @@ def agreement(fa: pd.DataFrame, path):
         ax.annotate(f"#{int(r.final_rank)}", (r.tg, r.vos), textcoords="offset points", xytext=(6, 4), fontsize=8,
                     color=INK["primary"], weight="semibold")
     _grid(ax, "both")
-    ax.set_xlabel("TG: Total Gap (Method 2, attribute view)")
-    ax.set_ylabel("VOS: Vector Opportunity (Method 1)")
-    ax.set_title("Two methods, one view (hollow = failed the safety gate)")
-    ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.16), ncols=4, fontsize=8)
+    ax.set_xlabel(f"{m('TG')}, Method 2 (attribute view)")
+    ax.set_ylabel(f"{m('VOS')}, Method 1")
+    ax.set_title("Two methods, one view (hollow = not recommended)")
+    ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.16), ncols=5, fontsize=8)
     return _save(fig, path)
 
 
@@ -179,20 +191,20 @@ def label_mix(fa: pd.DataFrame, path, n=12):
     d = d.sort_values(["sort", "tg"], ascending=False).head(n).iloc[::-1]
     if d.empty:
         return None
-    appr = d[["share_CURATE", "share_STYLE-EXTENSION", "share_TRADE-UP"]].sum(axis=1)
+    appr = d[[c for c in ("share_CURATE", "share_STYLE-EXTENSION", "share_TRADE-UP", "share_LEAN-APPROVE") if c in d]].sum(axis=1)
     hold = d[["share_REVIEW", "share_EDGE"]].sum(axis=1)
     rej = 1 - appr - hold
-    fig, ax = plt.subplots(figsize=(6.4, 0.34 * len(d) + 1.0))
+    names = [arch_label(n, c, 56) for n, c in zip(d["name"], d["combo"])]
+    fig, ax = plt.subplots(figsize=(7.4, 0.2 * sum(s.count(chr(10)) + 1 for s in names) + 0.25 * len(d) + 1.0))
     y = np.arange(len(d))
-    names = [esc(s if len(s) <= 52 else s[:50] + "…") for s in d["name"]]
     left = np.zeros(len(d))
     for vals, g in ((appr, "Approve"), (hold, "Review / hold"), (rej, "Reject")):
         ax.barh(y, vals, left=left, height=0.6, color=GROUP[g], edgecolor=INK["surface"], linewidth=1.5, label=g)
         left += vals.values
-    ax.set_yticks(y, names, fontsize=7.5)
+    ax.set_yticks(y, names, fontsize=6.8)
     _pct_axis(ax, "x")
     ax.set_xlim(0, 1)
-    ax.set_title("Label mix of competitor products per archetype")
+    ax.set_title("Method 1 label mix of competitor products per archetype")
     ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.08), ncols=3, fontsize=8)
     return _save(fig, path)
 
@@ -208,7 +220,7 @@ def node_coverage(nodes: pd.DataFrame, comp_name: str, path):
     ax.set_yticks(y, [l + ("  (thin)" if s == "thin" else "") for l, s in zip(d["label"], d["status"])], fontsize=7.5)
     _grid(ax, "x")
     ax.set_xlabel("product families")
-    ax.set_title("Families per analysis node")
+    ax.set_title("Product families per node")
     ax.legend(loc="lower right")
     return _save(fig, path)
 
@@ -225,7 +237,7 @@ def extractor_accuracy(val: dict, bar: float, path):
         ax.text(v + 0.01, i, f"{v:.0%}", va="center", fontsize=7.5, color=INK["secondary"])
     _pct_axis(ax, "x")
     ax.set_xlim(0, 1.1)
-    ax.set_title("Text instrument vs Staples specs (accuracy when found)")
+    ax.set_title("Text extractor vs Staples specs (accuracy when found)")
     return _save(fig, path)
 
 
@@ -238,7 +250,8 @@ def _component_bars(d: pd.DataFrame, parts: list[tuple[str, str, str]], score: s
                     path, note: pd.Series | None = None):
     """Horizontal stacked bars, highest score on top; failed-gate archetypes drawn faded."""
     d = d.iloc[::-1]
-    fig, ax = plt.subplots(figsize=(6.8, 0.34 * len(d) + 1.5))
+    names = [arch_label(n, c, 56) for n, c in zip(d["name"], d["combo"])]
+    fig, ax = plt.subplots(figsize=(8.2, 0.2 * sum(s.count(chr(10)) + 1 for s in names) + 0.25 * len(d) + 1.6))
     y = np.arange(len(d))
     alpha = np.where(d["eligible"].fillna(False).astype(bool), 1.0, 0.35)
     left = np.zeros(len(d))
@@ -250,10 +263,9 @@ def _component_bars(d: pd.DataFrame, parts: list[tuple[str, str, str]], score: s
         left += vals
     for i, (s, ok) in enumerate(zip(d[score], d["eligible"].fillna(False))):
         extra = "" if note is None else f"  {note.iloc[i]}"
-        ax.text(left[i] + left.max() * 0.015, i, f"{s:.0f}" + extra + ("" if ok else " · failed gate"), va="center",
+        ax.text(left[i] + left.max() * 0.015, i, f"{s:.0f}" + extra + ("" if ok else " · failed method gate"), va="center",
                 fontsize=7.5, color=INK["primary"] if ok else INK["muted"])
-    names = [esc(s if len(s) <= 50 else s[:48] + "…") for s in d["name"]]
-    ax.set_yticks(y, names, fontsize=7.5)
+    ax.set_yticks(y, names, fontsize=6.8)
     ax.set_xlim(0, float(left.max()) * (1.55 if note is not None else 1.3))
     _grid(ax, "x")
     ax.set_xlabel(xlabel)
@@ -269,16 +281,17 @@ def vos_components(fa: pd.DataFrame, w: dict, gamma: float, path, n: int = 15):
     d = fa[fa["depth"] > 0].dropna(subset=["vos"]).nlargest(n, "vos").copy()
     if d.empty:
         return None
+    d["eligible"] = d["m1_gate"]          # faded = failed the Method 1 gate
     damp = (1 - d["crs"] / 100) ** gamma
     d["c_vw"] = 100 * w["vw"] * d["pct_vw"] * damp
     d["c_aas"] = 100 * w["aas"] * d["aas"] / 100 * damp
     d["c_ad"] = 100 * w["ad"] * d["pct_ad"] * damp
     pre = 100 * (w["vw"] * d["pct_vw"] + w["aas"] * d["aas"] / 100 + w["ad"] * d["pct_ad"])
     note = pre.map(lambda x: f"({x:.0f} before risk)")
-    return _component_bars(d, [("c_vw", COMP_COL["vw"], "Whitespace (VW)"), ("c_aas", COMP_COL["aas"], "Fit (AAS)"),
-                               ("c_ad", COMP_COL["ad"], "Look difference (AD)")],
-                           "vos", f"Method 1: VOS by archetype (top {len(d)})",
-                           "VOS (0–100) = segments after the cannibalisation-risk discount", path, note=note.iloc[::-1])
+    return _component_bars(d, [("c_vw", COMP_COL["vw"], m("VW")), ("c_aas", COMP_COL["aas"], m("AAS")),
+                               ("c_ad", COMP_COL["ad"], m("AD"))],
+                           "vos", f"Method 1: {m('VOS')} by archetype (top {len(d)})",
+                           f"VOS (0–100) = segments after the {m('CRS')} discount", path, note=note.iloc[::-1])
 
 
 def tg_components(fa: pd.DataFrame, w: dict, credible: float, shrink: float, path, n: int = 15):
@@ -286,10 +299,11 @@ def tg_components(fa: pd.DataFrame, w: dict, credible: float, shrink: float, pat
     d = fa[fa["depth"] > 0].dropna(subset=["tg"]).nlargest(n, "tg").copy()
     if d.empty:
         return None
+    d["eligible"] = d["m2_gate"]          # faded = failed the Method 2 gate
     sh = np.where(d["lsr_credibility"] >= credible, 1.0, shrink)
     for k in ("lsr", "ppg", "cg", "msg", "dfg"):
         d[f"c_{k}"] = 100 * w[k] * d[f"pct_{k}"] * (sh if k == "lsr" else 1.0)
-    return _component_bars(d, [("c_lsr", COMP_COL["lsr"], "Share (LSR)"), ("c_ppg", COMP_COL["ppg"], "Price (PPG)"),
-                               ("c_cg", COMP_COL["cg"], "Colour (CG)"), ("c_msg", COMP_COL["msg"], "Material/style (MSG)"),
-                               ("c_dfg", COMP_COL["dfg"], "Design-forward (DFG)")],
-                           "tg", f"Method 2: TG by archetype (top {len(d)})", "TG (0–100); bar length = score", path)
+    return _component_bars(d, [("c_lsr", COMP_COL["lsr"], m("LSR")), ("c_ppg", COMP_COL["ppg"], m("PPG")),
+                               ("c_cg", COMP_COL["cg"], m("CG")), ("c_msg", COMP_COL["msg"], m("MSG")),
+                               ("c_dfg", COMP_COL["dfg"], m("DFG"))],
+                           "tg", f"Method 2: {m('TG')} by archetype (top {len(d)})", "TG (0–100); bar length = score", path)

@@ -1,0 +1,88 @@
+node: "Furniture > Decor > Clocks & Timers"
+noun: clock
+generated_by: "claude-opus-5-5 session draft from Staples spec keys + Wayfair sample, 2026-10-01"
+reviewed_by: null
+
+material_spec_keys: ['Clock Case Material', 'Material of Item']
+style_zero_shot: true
+vocab_overrides:
+  material_class:
+    mode: position
+    values:
+      wood: ['wood', 'wooden', 'walnut', 'oak', 'mdf', 'bamboo', 'pine', 'mahogany', 'cherry wood', 'rosewood', 'maple', 'hand[- ]carved']
+      metal: ['metal', 'iron', 'wrought iron', 'steel', 'stainless', 'alumin(i)?um', 'brass', 'galvanized', 'copper', 'tin']
+      glass/mirror: ['glass', 'crystal', 'mirror\w*']
+      ceramic/stone: ['ceramic', 'porcelain', 'marble', 'stone', 'concrete']
+      plastic/resin: ['plastic', 'resin', 'polyresin', 'abs', 'acrylic', 'polystone']
+
+tier2:
+  clock_type:
+    mode: priority
+    spec_keys: ['Clock & Timer Type']
+    spec_role: indicator
+    spec_map: {Wall Clock: wall, Alarm Clock: alarm, Wall/Table Clock: wall, Desk Clock: mantel/tabletop, Table Clock: mantel/tabletop, Weather Clock: weather station}
+    values:
+      cuckoo: ['cuckoo']
+      grandfather/floor: ['grandfather', 'floor clock', 'longcase', 'grandmother']
+      weather station: ['weather station', 'forecast', 'thermometer', 'hygrometer', 'barometer']
+      projection: ['projection']
+      alarm: ['alarm']
+      pendulum: ['pendulum']
+      mantel/tabletop: ['mantel', 'mantle', 'tabletop', 'table clock', 'desk clock', 'shelf clock', 'desktop']
+      wall: ['wall clocks?', 'wall']
+  display:
+    mode: priority
+    spec_keys: ['Clock Display']
+    spec_map: {Analog: analog, Digital: digital}
+    values:
+      digital: ['digital', 'led display', 'lcd', 'led clock']
+      analog: ['analog', 'analogue', 'quartz', 'roman numerals?', 'arabic numerals?', 'hands', 'pendulum', 'cuckoo', 'mechanical', 'dial']
+  atomic:
+    mode: priority
+    values: {"yes": ['atomic', 'radio[- ]controlled', 'self[- ]setting', 'auto(matic)?[- ]set\w*', 'wi-?fi', 'sets itself']}
+    spec_keys: ['Time Keeping Source']
+    spec_map: {Atomic: "yes", Quartz: "no"}
+  silent:
+    mode: priority
+    values: {"yes": ['silent', 'non[- ]ticking', 'quiet', 'sweep', 'noiseless']}
+
+numeric:
+  diameter:
+    spec_keys: ['Diameter in Inches']
+    text_regex: ['(\d{1,2}(?:\.\d+)?)\s*(?:"|”|in\.?|inch(?:es)?|-inch)\s*(?:dia\w*|round|wall clock|clock|x)', 'diameter[^\d]{0,12}(\d{1,2}(?:\.\d+)?)']
+    min: 3
+    max: 60
+size_bands: {source: diameter, bands: {"small (<10 in)": ['0', '10'], "medium (10-14 in)": ['10', '14.5'], "large (14-20 in)": ['14.5', '20.5'], "oversized (20 in+)": ['20.5', '1000']}}
+
+tier3:
+  theme:
+    mode: priority
+    spec_keys: ['Clock Theme']
+    default: none
+    values:
+      kids/cartoon: ['kids', 'children', 'cartoon', 'disney', 'mickey', 'minnie', 'nursery']
+      sports/licensed: ['nfl', 'mlb', 'nba', 'nhl', 'ncaa', 'team', 'licensed', 'football', 'baseball']
+      nautical/coastal: ['nautical', 'coastal', 'beach', 'anchor', 'ship', 'maritime', 'lighthouse', 'compass']
+      nature/animals: ['birds?', 'deer', 'animals?', 'trees?', 'floral', 'flowers?', 'nature', 'forest', 'leaves', 'owl']
+      vintage/ornate: ['antique', 'vintage', 'ornate', 'victorian', 'baroque', 'heirloom', 'old world', 'gothic']
+
+archetype_facets:
+  tier1: [material_class, colour_tone, colour_family, size_class]
+  tier2: [clock_type, display, atomic, silent]
+  tier3: [style_family, theme, vibe]
+name_order: [style_family, theme, material_class, display, clock_type]
+type_attrs: [clock_type, display]
+functional_core: [clock_type, display, atomic, silent, size_class]
+labels:
+  theme: {none: ''}
+  clock_type: {wall: wall, alarm: alarm, mantel/tabletop: tabletop, grandfather/floor: floor, weather station: weather-station, cuckoo: cuckoo, pendulum: pendulum, projection: projection}
+facet_labels: {clock_type: Type, display: Display, atomic: Atomic, silent: Silent, size_class: Size, theme: Theme}
+material_tiers: {plastic/resin: 1, metal: 2, glass/mirror: 2, wood: 3, ceramic/stone: 3}
+
+dfi_anchors:
+  design:
+    - "a sculptural designer wall clock in natural wood and brass for a stylish living room"
+    - "an oversized statement wall clock with a minimalist modern face for a curated interior"
+  utility:
+    - "a basic round plastic office wall clock with a white face and black numbers"
+    - "a simple digital alarm clock, functional and plain"

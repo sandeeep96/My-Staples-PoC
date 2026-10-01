@@ -1,0 +1,82 @@
+node: "Furniture > Desks > Office Desks"
+noun: desk
+generated_by: "claude-opus-5-5 session draft from Staples spec keys + Wayfair sample, 2026-09-28 (Phase-2 revision 2026-10-01)"
+reviewed_by: null
+
+material_spec_keys: ['Desk Top Material', 'Furnishing Material']
+style_zero_shot: true
+vocab_overrides:
+  material_class:            # desk-top material first: "laminate top on a metal frame" is a laminate desk
+    mode: priority
+    values:
+      glass: ['tempered glass', 'glass top', 'glass']
+      wicker/rattan: ['rattan', 'wicker', 'cane']
+      engineered wood: ['laminate', 'laminated', 'mdf', 'particle ?board', 'engineered wood', 'melamine', 'veneer', 'manufactured wood', 'chipboard', 'thermofoil']
+      wood: ['solid wood', 'hardwood', 'solid oak', 'solid pine', 'rubberwood', 'solid walnut', 'acacia', 'bamboo', 'wood', 'wooden']
+      faux leather: ['faux leather', 'pu leather', 'leather']
+      metal: ['metal', 'steel', 'alumin(i)?um', 'iron']
+      plastic: ['plastic', 'acrylic', 'resin']
+
+
+tier2:
+  desk_type:
+    mode: priority
+    spec_keys: ['Home & Computer Desk Type']
+    spec_role: indicator            # Staples' type vocabulary (Workstations, Table) differs from product copy
+    spec_map: {Computer: computer, Workstations: workstation, Executive: executive, Table: writing/table, Reception: reception, Writing: writing/table, Credenza: credenza, Secretary: secretary}
+    values:
+      vanity: ['vanity', 'makeup']
+      armoire/hideaway: ['armoire', 'hideaway', 'cabinet desk', 'fold[- ]?away', 'fold[- ]out', 'expandable']
+      gaming: ['gaming']
+      reception: ['reception']
+      credenza: ['credenza']
+      secretary: ['secretary']
+      ladder: ['ladder desk', 'ladder']
+      floating/wall: ['floating', 'wall[- ]mount\w*', 'wall desk']
+      executive: ['executive', 'double pedestal', 'bullet desk']
+      workstation: ['workstation', 'benching', 'desk shell', 'return shell']
+      writing/table: ['writing desk', 'writing table', 'table desk', 'console desk', 'desk table']
+      computer: ['computer desk', 'pc desk', 'laptop desk', 'office desk', 'study desk', 'desk']
+  shape:
+    mode: priority
+    spec_keys: ['Desk Shape']
+    spec_map: {Rectangular: rectangular, L-Shaped: L-shaped, U-Shaped: U-shaped, Corner: corner, Bow: bow-front}
+    values:
+      U-shaped: ['u[- ]shaped?']
+      L-shaped: ['l[- ]shaped?', 'corner l', 'l[- ]desk', 'l[- ]workstation']
+      corner: ['corner desk', 'corner']
+      bow-front: ['bow front', 'bow[- ]shaped', 'bullet']
+      rectangular: ['rectangular', 'rectangle']
+  drawers:
+    mode: priority
+    values: {"yes": ['drawers?']}
+  storage:
+    mode: priority
+    values: {"yes": ['shel(f|ves)', 'storage', 'cabinet', 'hutch', 'bookcase', 'cubb(y|ies)']}
+  keyboard_tray:
+    mode: priority
+    values: {"yes": ['keyboard tray']}
+
+numeric_bands:
+  width_band: {source: width, bands: {"<40 in": ['0', '40'], "40-48 in": ['40', '48'], "48-60 in": ['48', '60'], "60-72 in": ['60', '72'], "72+ in": ['72', '1000']}}
+size_bands: null
+
+archetype_facets:
+  tier1: [material_class, colour_tone, colour_family]
+  tier2: [desk_type, shape, width_band, drawers, storage]
+  tier3: [style_family, vibe]
+name_order: [style_family, vibe, material_class, shape, desk_type]
+type_attrs: [desk_type]
+functional_core: [desk_type, shape, drawers, storage, keyboard_tray, width_band]
+facet_labels: {desk_type: Type, shape: Shape, width_band: Width, drawers: Drawers, storage: Storage, keyboard_tray: Keyboard tray}
+material_tiers: {plastic: 1, engineered wood: 1, metal: 1, glass: 2, wood: 3, wicker/rattan: 3, leather: 4}
+
+dfi_anchors:
+  design:
+    - "a mid-century modern writing desk with tapered solid wood legs for a stylish home office"
+    - "a sleek minimalist designer desk in warm walnut and brass for a residential interior"
+    - "a sculptural statement desk with curved edges and natural materials such as rattan"
+  utility:
+    - "a basic laminate office desk for corporate cubicles in a gray finish"
+    - "a heavy-duty steel workstation desk for commercial offices"
+    - "a simple rectangular computer desk in black laminate, utilitarian"

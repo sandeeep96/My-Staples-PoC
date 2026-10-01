@@ -1,0 +1,90 @@
+node: "Coffee, Water & Snacks > Water & Beverages > Water Bottles, Tumblers & Travel Mugs"
+noun: bottle / tumbler
+generated_by: "claude-opus-5-5 session draft from Staples spec keys, 2026-10-01 (no competitor data yet: Scheels or Amazon pending)"
+reviewed_by: null
+
+material_spec_keys: ['Water Bottle, Tumbler & Mug Material']
+style_zero_shot: false
+vocab_overrides:
+  material_class:
+    mode: position
+    values:
+      stainless steel: ['stainless steel', 'stainless', '18/8', 'steel', 'vacuum insulated']
+      aluminum: ['alumin(i)?um']
+      glass: ['glass', 'borosilicate']
+      ceramic: ['ceramic', 'porcelain', 'stoneware']
+      silicone: ['silicone', 'collapsible']
+      plastic/tritan: ['plastic', 'tritan', 'polypropylene', 'bpa[- ]free', 'polycarbonate', 'pet']
+
+tier2:
+  vessel_type:
+    mode: priority
+    spec_keys: ['Water Bottle, Tumbler & Mug Type']
+    spec_role: indicator
+    values:
+      tumbler: ['tumblers?']
+      travel mug: ['travel mugs?', 'coffee mugs?', 'mugs?']
+      can cooler: ['can coolers?', 'koozie', 'colster', 'can insulator']
+      water bottle: ['water bottles?', 'bottles?', 'flask', 'jug']
+  insulation:
+    mode: priority
+    values: {"yes": ['vacuum', 'double[- ]wall\w*', 'insulat\w*', 'keeps? .{0,15}(cold|hot)']}
+  lid_type:
+    mode: priority
+    values:
+      straw: ['straw']
+      chug/spout: ['chug', 'spout', 'sip', 'flip[- ]top', 'flip']
+      screw cap: ['screw', 'twist', 'cap']
+      slide/press: ['slide', 'press', 'splash[- ]proof']
+  handle:
+    mode: priority
+    values: {"yes": ['handle']}
+
+numeric:
+  capacity_oz:
+    spec_keys: ['Capacity (in ounces)']
+    text_regex: ['(\d{1,2}(?:\.\d)?)\s*(?:oz|ounces?|fl\.? oz)\b']
+    min: 4
+    max: 128
+numeric_bands:
+  capacity_band: {source: capacity_oz, bands: {"under 16 oz": ['0', '16'], "16-24 oz": ['16', '24.5'], "25-40 oz": ['24.5', '40.5'], "40 oz+": ['40.5', '1000']}}
+size_bands: null
+
+tier3:
+  pattern:
+    mode: priority
+    spec_keys: ['Water Bottle, Tumbler & Mug Pattern']
+    default: solid
+    values:
+      character/licensed: ['disney', 'marvel', 'harry potter', 'star wars', 'pok[eé]mon', 'minecraft', 'sanrio', 'hello kitty', 'bluey', 'paw patrol', 'frozen', 'spider-?man', 'mickey', 'pixar', 'barbie', 'licensed']
+      floral: ['floral', 'flowers?', 'botanical']
+      print/pattern: ['print', 'pattern', 'geometric', 'tie[- ]dye', 'stripes?', 'marble', 'glitter', 'ombre', 'gradient']
+  audience:
+    mode: priority
+    spec_keys: ['Age Group']
+    default: general
+    values:
+      kids: ['kids', 'children', 'toddler', 'youth', 'boys?', 'girls?', 'funtainer']
+      women: ['women', "women's", 'womens', 'ladies']
+      men: ["\\bmen\\b", "men's", '\bmens\b']
+
+archetype_facets:
+  tier1: [material_class, colour_tone, colour_family]
+  tier2: [vessel_type, insulation, capacity_band, lid_type, handle]
+  tier3: [pattern, audience, vibe]
+name_order: [pattern, audience, material_class, capacity_band, vessel_type]
+type_attrs: [vessel_type]
+functional_core: [vessel_type, insulation, capacity_band, lid_type, handle]
+labels:
+  pattern: {solid: solid}
+  audience: {general: ''}
+facet_labels: {vessel_type: Type, insulation: Insulated, capacity_band: Capacity, lid_type: Lid, handle: Handle, pattern: Pattern, audience: Audience}
+material_tiers: {plastic/tritan: 1, silicone: 2, aluminum: 2, glass: 3, ceramic: 3, stainless steel: 3}
+
+dfi_anchors:
+  design:
+    - "a stylish insulated tumbler in a muted matte finish with a minimalist premium design"
+    - "an elegant glass water bottle with a bamboo lid and a clean aesthetic"
+  utility:
+    - "a basic plastic water bottle, functional and plain"
+    - "a standard stainless travel mug with a black lid for commuting, utilitarian"

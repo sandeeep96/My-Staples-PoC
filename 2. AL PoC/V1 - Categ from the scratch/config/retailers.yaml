@@ -1,22 +1,46 @@
-# Retailer adapters (S0). A new competitor = a new entry here plus a crosswalk file.
+# Retailer adapters (S0). A new competitor = a new entry here plus a crosswalk file (and its house brands).
+# Only the Phase-1 columns are read (Sai, 2026-10-01): no ratings, review counts, badges, ranks, list prices,
+# images or specification columns. The L1..L6 columns are the path of the listing page (`category`); they are
+# used only to identify that page, because many page names are facet labels ("Type: Folding").
 staples:
   role: base
-  file: "Staples product level dataset latest - Samples.xlsx"
+  display: Staples
+  file: "Staples product level dataset - 12 Choosen L3s - Final Samples.xlsx"
   columns:
     id: product_id
     title: product_name
     price: price
-    url: product_link
+    url: url
     description: description        # serialized dict {paragraph, bullets, specification}
-    rating: reviews
     model: model_number
   path_columns: [L1, L2, L3, L4]
   leaf_column: "Final level Category"
   description_format: staples_dict
 
+amazon:
+  role: competitor
+  display: Amazon
+  file: "Amazon product level dataset - 6 Chosen L3s - Final Samples.xlsx"
+  columns:
+    id: product_id
+    title: product_name
+    price: price                    # "$x.xx", or "2 sizes" / "1 text input" when no single price is shown
+    url: url
+    vendor: brand/vendor            # 70% empty; "Learn more" and size codes are scrape noise
+    description: description        # short subtitle (<= ~150 chars), 58% empty, no review text
+    page: category
+  path_columns: [L1, L2, L3, L4, L5, L6]
+  description_format: text
+  url_template: "https://www.amazon.com/dp/{id}"   # sponsored redirect links are replaced by the product page
+  vendor_junk: ['^learn more$', '^[ab]\d$', '^\d+(\.\d+)?$', '^visit the store$']
+  vendor_strip: ['^by\s*', '^visit the\s+', '\s+store$']
+  crosswalk: crosswalk/amazon.yaml
+  house_brands_key: amazon
+
 wayfair:
   role: competitor
-  file: "Wayfair product level dataset latest - Samples.xlsx"
+  display: Wayfair
+  file: "Wayfair product level dataset - 5 Chosen L3s - Final Samples.xlsx"
   columns:
     id: product_id
     title: product_name
@@ -26,6 +50,7 @@ wayfair:
     choice: selected_choice
     description: description        # prose + optional " | " customer review (dropped: PII)
     page: category
+  path_columns: [L1, L2, L3, L4, L5, L6]
   description_format: text_with_review
   page_name_fixes: {"   ": " & "}
   crosswalk: crosswalk/wayfair.yaml

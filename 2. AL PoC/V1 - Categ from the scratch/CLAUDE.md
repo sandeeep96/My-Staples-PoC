@@ -1,80 +1,106 @@
-# CLAUDE.md: Staples Assortment (AL) PoC, V1
+# CLAUDE.md: Staples Assortment (AL) PoC, V2 (Phase 2)
 
-Guidance for Claude working in this folder. Read `methodology.md` before any analytical or code work. It is the source of truth for method decisions. If this file and `methodology.md` disagree, `methodology.md` wins; flag the conflict.
+Guidance for Claude working in this folder. Read `methodology.md` before any analytical or code work. It is the source of truth for method decisions (body = current method; §13 and §14 = dated change logs with evidence). If this file and `methodology.md` disagree, `methodology.md` wins; flag the conflict.
 
 ## Project in one paragraph
-LatentView PoC for **Staples Marketplace** (stakeholder: Pat, Head of Staples Marketplace; Q1 2027 planning). Owner: Sai. Team: Teja, Barath, Ayan. The question: within Staples' most granular navigation nodes (L3/L4, plus pseudo-L5 splits), which product archetypes and attribute variants (colour, material, style, price tier, size, use-context, "vibe") does a competitor (Wayfair for now) carry that Staples lacks, and which of them can Staples add through the marketplace **without cannibalizing its existing assortment**. The thesis is "White Chair" / core-adjacent: design-forward and lifestyle extensions of core items. **Constraint: external data only.** There is no internal Staples sales, margin or traffic data.
+LatentView PoC for **Staples Marketplace** (stakeholder: Pat, Head of Staples Marketplace; Q1 2027 planning). Owner: Sai. Team: Teja, Barath, Ayan. The question: within 12 granular Staples nodes (exact L3/L4 paths), which product archetypes and attribute variants (colour, material, style, size, use-context, "vibe") does the node's competitor (Amazon, Wayfair or Scheels) carry that Staples lacks, and which of them can Staples add through the marketplace **without cannibalizing its existing assortment**. The thesis is "White Chair" / core-adjacent: design-forward and lifestyle extensions of core items. **Constraint: external data only.** There is no internal Staples sales, margin or traffic data.
+
+## Where things stand (2026-10-01)
+- **Phase 2 is built and run** on the 12 focus nodes. Current report: `outputs/report/Staples_Assortment_Report_v8.html` (v5–v7 are same-day intermediate builds; v1–v4 are Phase 1). Never delete or overwrite report versions.
+- **Result:** 9 scored nodes, 3 Staples-only (Desk Organizers and Desk Pads: the Amazon file has no such pages; Water Bottles: Scheels/Amazon data pending). **75 recommended archetypes** (20 Strong, 26 Vector-led, 29 Gap-led), 4–10 per scored node. Quality gates: G7 PASS; G2 PARTIAL; G1, G5, G6, G8 FAIL (explained in methodology §13/§14); G3, G4 PENDING (human labels).
+- **Open items:** Pat's calibration session (CRS bands, PPR thresholds, AAS thresholds, gate parameters); competitor data for the 3 pending nodes; human gold sets (G1/G3/G4); Claude extraction/adjudication backend (no `ANTHROPIC_API_KEY`); review of the drafted node vocabularies and page crosswalks (`reviewed_by: null` → shown as provisional).
+- **Things a reader must know about v8:** Gap-led picks have no fit-with-Staples check (all 10 backpack picks are Gap-led: hiking, travel, sling packs); partitions are Vector-led only (Method 2 sees cheaper attribute twins, ACR 84–100%); planners have only 4 picks.
+
+## Running the pipeline
+```bash
+cd "d:/Testing/My-Staples-PoC/2. AL PoC/V2 - Categ from the scratch"
+PYTHONIOENCODING=utf-8 python -W ignore run_pipeline.py              # all stages S0-S9
+PYTHONIOENCODING=utf-8 python -W ignore run_pipeline.py --from s5    # from Method 1 onward (re-uses earlier outputs)
+PYTHONIOENCODING=utf-8 python -W ignore run_pipeline.py --from s3 --to s8
+PYTHONIOENCODING=utf-8 python -W ignore run_pipeline.py --only s9    # rebuild the report only -> next v<N>
+```
+- **Run times (12-core CPU, warm embedding cache):** S0 ~40 s · S1 ~2 min · S2 ~1 min (≈45 min cold: the bge-base bake-off encodes ~27k cards; set `encoder.bakeoff: false` to skip) · S3 ~4 min · S4 ~2.5 min · S5 ~9 min · S6 ~2 min · S7 ~1 min · S8 ~1.5 min · S9 ~1 min. Long runs: launch in the background and wait for the log.
+- **What to re-run after a change:** vocabularies / node configs → from `s3`; archetype settings → from `s4`; Method 1 thresholds → from `s5`; Method 2 / ACR → from `s6`; final gate (min/max per node) → from `s7`; report text/template only → `--only s9`. New or changed input files → from `s0`.
+- **Before changing gates or thresholds**, simulate first if Sai asks for numbers: read the stage parquet in `data/interim/`, re-apply rules in a scratch script, report per-node counts, and only change code/config after approval (Sai's working style in this project).
 
 ## Folder map
 | Path | What | Rules |
 |---|---|---|
-| `Documents/*.docx` | Objective & Goal (Pat's mandate), Initial-Exploration methodology (Track B/C), Examples (Scheels/Michaels/Best Buy depth analogies) | Read-only |
-| `Excels/1. Staples_Navigation_Tree_repaired.xlsx` | Staples tree (1,877 nodes, L1–L4, **no L5**), leaf counts, Cross-Listings sheet | Read-only |
-| `Excels/3. Wayfair_Navigation_Tree_v3.xlsx` | Wayfair tree: Consumer + Professional (B2B) + Professional Shop-by-Space; no item counts | Read-only |
-| `Excels/Staples product level dataset latest - Samples.xlsx` | 31,979 rows / 26,861 SKUs across many L2s (18 MB) | Read-only. Slow to load: cache to parquet/pickle under `data/interim/` |
-| `Excels/Wayfair product level dataset latest - Samples.xlsx` | 12,255 rows / 11,468 products across 32 Wayfair listing pages (seating, desks, mats) | Read-only |
-| `Excels/Vlookup - Manual Trail … [Failed - DO NOT USE].xlsx` | Failed name-based page→leaf mapping | **Do not use as input.** It is evidence only |
+| `Documents/*.docx` | Objective & Goal (Pat's mandate), Initial-Exploration methodology (Track B/C), Examples | Read-only |
+| `Excels/Staples product level dataset - 12 Choosen L3s - Final Samples.xlsx` | **Phase 2 Staples input**: 5,673 rows / 4,891 SKUs → 3,416 families in the 12 focus leaves (+ a Pivot sheet, ignored) | Read-only |
+| `Excels/Amazon product level dataset - 6 Chosen L3s - Final Samples.xlsx` | 20,092 rows / 13,954 ASINs: planners, backpacks, lunch bags, coffee organizers only | Read-only |
+| `Excels/Wayfair product level dataset - 5 Chosen L3s - Final Samples.xlsx` | 12,280 rows / 11,175 products: clocks, accent chairs, desks, room dividers/partitions, desk lamps | Read-only |
+| `Excels/1. Staples_Navigation_Tree_repaired.xlsx` | Staples tree (1,877 nodes, L1–L4, no L5) | Read-only; used to decide crosswalk siblings |
+| `Excels/3. Wayfair_Navigation_Tree_v3.xlsx` | Wayfair tree; no item counts | Read-only |
+| `Excels/0. Staples product level dataset - Full Samples [DO NOT USE].xlsx` | Phase-1 Staples file | **Do not use** |
 | `Excels/~$*.xlsx` | Excel lock files | Ignore |
-| `methodology.md` | Finalised methodology (draft v1 under Sai's review) | Edit only when asked |
-| `../../1. CL PoC/V2 - with all 5 Competitors/staples_category_poc_v2_code/code/` | Earlier category-level PoC: encoder bake-off, Qdrant, calibration, figure style | Reuse patterns; do not modify |
+| `methodology.md` | The method (v1.3, Phase 2) | Edit only when asked; record decisions in §14 |
+| `run_pipeline.py`, `src/alpoc/` | S0 `s0_ingest` · S1 `s1_families` · S2 `s2_mapping` · S3 `s3_attributes` · S4 `s4_archetypes` · S5 `s5_vector` · S6 `s6_gaps` · S7 `s7_integrate` · S8 `s8_skus` · S9 `s9_report` (+ `figures.py`, `cards.py`, `vocab.py`, `common.py`, `embed.py`, `templates/report.html.j2`, `templates/card.html.j2`) | |
+| `config/pipeline.yaml` | All thresholds and weights; **safety gates under `gates`** (common / method1 / method2 / final); report title and file stem | Change thresholds here, never in code |
+| `config/retailers.yaml` | Retailer adapters (file, column map, page-path columns, vendor noise, URL template) | New competitor = new entry |
+| `config/nodes.yaml` | The 12 focus nodes: rank, segment · play, competitors (Primary 1 first) | |
+| `config/nodes/<node>.yaml` | Per-node vocabularies: Tier-2/Tier-3 attributes, spec keys/maps, numeric bands, size band, archetype facets by tier, naming labels, material tiers, DFI anchors | Drafts (`reviewed_by: null`) |
+| `config/crosswalk/<retailer>.yaml` | Page-path **prefix** → Staples leaf, or `[]` (longest prefix wins) | Drafts |
+| `config/schema_universal.yaml`, `config/house_brands.yaml` | Universal vocabularies; competitor house brands | |
+| `data/interim/` | Stage parquet + `qa_*.json` (git-ignored). Key files: `families`, `mapping`, `nodes`, `attributes`, `family_table`, `archetypes`, `archetype_members`, `candidates` (Method 1 labels), `m2_labels`, `archetype_m1`, `archetype_m2`, `final_archetypes`, `sku_recs` | Regenerable |
+| `data/cache/` | Embedding cache per encoder (git-ignored) | Keep: saves ~45 min |
+| `outputs/report/`, `outputs/figures/<node>/`, `outputs/tables/` | Versioned HTML reports, PNGs, CSVs (incl. `new_node_backlog.csv`, `final_archetypes.csv`) | Never delete report versions |
+| `../../1. CL PoC/V2 - with all 5 Competitors/...` | Earlier category-level PoC | Reuse patterns; do not modify |
 
-Built (2026-09-28): `run_pipeline.py` (`--from sX` / `--only sX`), `src/alpoc/` (one module per stage + `figures.py`, `cards.py`, `vocab.py`, `templates/`), `config/` (`pipeline.yaml` thresholds/weights, `retailers.yaml`, `schema_universal.yaml`, `l2/*.yaml`, `crosswalk/wayfair.yaml`, `house_brands.yaml`), `data/interim/` (stage parquet + `qa_*.json`, git-ignored), `data/cache/` (embeddings, git-ignored), `outputs/` (report, figures, tables). See README.md.
+## Phase 2 rules from Sai (2026-10-01)
+- **12 focus nodes, Primary 1 competitor only** (`config/nodes.yaml`). A node without competitor data shows a Staples-only profile.
+- **Use only the Phase-1 columns:** id, title, price, url, brand/vendor, selected_choice, description, category (+ its L1–L6 path to identify the page). **Never** ratings, review counts, rank, badges, bought_past_month, list_price, image_url or the Wayfair `specifications` column.
+- **Archetypes = 4 to 6 attributes mixing Tier 1 / Tier 2 / Tier 3; never price band.** Price is analysed separately (price-band coverage, price ladder, PPG, PPR).
+- **Report wording:** "node", never "shelf"; every archetype as "Archetype (Attributes combo)"; every metric as "ABBR (Full name)", e.g. "TG (Total Gap)"; Tab 2 order = header → insights → coverage → attribute gaps → price → final recommendations → SKUs → sellers → excluded → Method 1 → Method 2.
+- **Gates:** quality gates (G1–G8) are a scorecard and never cut recommendations; the **safety gates** do: common (C1 node scope, C2 valid archetype) → Method 1 gate on its own labels → Method 2 gate on its own ACR → final gate (union, tiers, 3–10 per node). Methodology §7.
 
-## Data quirks (verified 2026-09-27; don't rediscover)
-- **Staples `description` is a serialized Python dict** `{paragraph, bullets, specification:[{name,value,grpName,dscr}]}`. Parse with `ast.literal_eval` (100% parse). Specs are rich: colour 97%, material 94%, W/D/H 91%, style 47%.
-- Staples `reviews` = `"4.57 stars ( reviews)"`. Rating only; **the review count is always empty**.
-- Staples lists **colour variants as separate SKUs**: Chairs+Desks is 4,725 SKUs but only about 2,860 families. Count **families**, not rows.
-- Staples has 4,781 exact-duplicate rows. 141 SKUs sit in more than one leaf (use the canonical nav-tree path).
-- Staples private label is only about 1.4% in furniture. "1P" means *items Staples sells* (Flash Furniture, Boss, Bush, HON…).
-- Wayfair `category` = listing page, with "&" mangled to 3 spaces. Pages include rooms and spaces (*Meeting Space Seating*, *Hospitality Seating*). 156 products sit on more than one page, and some products are mis-shelved. **Map at product level, never by page name.**
-- Wayfair `description`: 41% have a customer review appended after `" | "`, with **reviewer name, city and date (PII)**. Split on the first `" | "`, keep the left side, drop the rest, and never output review text.
-- Wayfair `vendor` = display brand, mostly **Wayfair house brands** (Latitude Run, Ebern Designs, Inbox Zero, …), with mojibake (`Â®`). It is not the manufacturer or seller.
-- Wayfair has **no specs, rating, review count, images or option lists**. `selected_choice` is a single displayed variant (57% filled). 12 prices are `"per item"`.
-- Wayfair is a **convenience sample** (every page that scraped successfully; failures dropped) with no site totals, while Staples is close to a census (85–100% of site counts). **Compare shares, never raw counts.** Samples will be enriched later, so nothing may be tuned to today's counts.
-- *Today's* Wayfair–Staples overlap is Furniture → **Chairs & Seating** and **Desks**. Door mats, bean bags, patio dining, theatre seating, restaurant sets and chiavari go to the new-node backlog. This is a property of the current data, not of the method (see guardrail 0).
+## Data quirks (verified; don't rediscover)
+- **Staples `description` is a serialized Python dict** `{paragraph, bullets, specification:[{name,value,grpName,dscr}]}`; parse with `ast.literal_eval`. Spec keys differ per node (`Cover Material`, `Backpack Material`, `Clock Display`, `Desk Top Material`, …).
+- All three retailers list **colour/size variants as separate ids** → count **families** (S1). Wayfair variants share title + vendor; competitor variants merge only if the description also starts the same.
+- **Amazon:** `description` is a ~110-char subtitle (58% empty); `brand/vendor` 70% empty with noise ("Learn more", "A5") → title-prefix brands are accepted only if they are known brands; prices like "2 sizes" are not prices; sponsored redirect URLs → rebuilt as `/dp/<ASIN>`; titles carry mojibake (`Ã—`, fixed by ftfy).
+- **Wayfair:** `description` may have a customer review after `" | "` with **name, city and date (PII)** → split on the first `" | "`, keep the left side, never output review text. `vendor` is mostly Wayfair house brands (Latitude Run, Ebern Designs…), with mojibake (`Â®`). Page names are facet labels ("Type: Folding") → identify pages by their L1–L6 path.
+- **Competitor pages mix in other Staples categories** (wall calendars on planner pages, briefcases, standing desks, desk dividers, stanchions, can coolers) → the crosswalk sends those pages to `[]` (backlog) because Staples shelves them under a sibling leaf.
+- **Text length differs a lot** (Amazon subtitle vs Staples bullets) → text-measured fields use Staples text cut to the competitor's median description length (text parity).
+- Competitor data are **convenience samples**; Staples is close to a census. **Compare shares, never raw counts.** Nothing may be tuned to today's counts.
+- Staples private label is small; "1P" means *items Staples sells* (any brand).
 
 ## Method guardrails (non-negotiable unless Sai changes them)
-- **Build-time decisions are in `methodology.md` §13** (cross-source NONE threshold, source-neutral cards, functional AAS, peer sets). Read it before changing S3/S5/S7.
-0. **Scope-agnostic.** Never hard-code categories (chairs, desks, …), attribute lists, vocabularies, split facets, DFI anchors or house-brand lists in code. In-scope nodes are found from the data on each run. Category-specific artefacts are generated per L2 (LLM draft + human review), stored as versioned config, and flagged *provisional* until reviewed (`methodology.md` §1.3–1.4). New categories or competitors must run with no code change.
-1. Unit of analysis = **product family**. Analysis node = Staples leaf, split into pseudo-L5 by Staples' own type facet when large (§5.3).
-2. **Product-level mapping** (Wayfair family → Staples node | NONE) through page prior + classifier trained on Staples SKUs + LLM adjudication. Gold-set accuracy ≥ 90% before moving on.
-3. **Same instrument on both sides** for any attribute that feeds a gap metric. Staples specs are ground truth for validating the text extractor.
-4. Embed a **canonical product card** (same template on both sides, no price, no raw spec dump), never raw descriptions.
-5. **CRS is price-agnostic and aesthetic-agnostic.** Price goes through PPR only; aesthetics through AD/ΔDFI only. Otherwise TRADE-UP and STYLE-EXTENSION become unreachable.
-6. Gaps are **share-based** (Beta-smoothed log share ratio + credibility), defined even when Staples = 0. No `log1p(count)` depth gaps.
-7. Decision labels come from the **exhaustive ordered tree** in §6.6: BACKLOG, EXCLUDE, OFF-BRAND, UNDERCUT, TRADE-UP, STYLE-EXTENSION, SUBSTITUTE, REVIEW, CURATE, EDGE.
-8. **No raw cosine values in any deliverable.** Thresholds come from calibration (weak supervision from Staples-vs-Staples pairs, then Pat). Re-fit when the encoder changes. PPR bands are per L2.
-9. **Two method scores stay separate:** Method 1 → **VOS** (VW + AAS + AD, damped by CRS) and Method 2 → **TG**. They are never blended into one formula. Final recommendations = **shared safety gate** (label mix), then a **fused re-rank** of the two percentile ranks, with an agreement tier (Strong / Gap-led / Vector-led / Weak). PPR is never inside a score. Weights always ship with a Dirichlet sensitivity analysis (top-5 stability).
-10. Every recommendation shows the **nearest Staples family side by side** with CRS/PPR/AD.
-11. Never claim demand. The data measures assortment supply. The D term stays off until review counts or rank exist.
-12. Wayfair house brands ≠ recruitable sellers. Flag `brand_on_staples` (existing supplier = quick win) and `wayfair_house_brand`.
+- **Read `methodology.md` §7 (safety gates), §6.3 (archetypes) and §14 (Phase 2 decisions with evidence) before changing S2–S8.**
+0. **Scope-agnostic.** Never hard-code categories, attribute lists, vocabularies, facets, DFI anchors or house-brand lists in code. They live in config (per node / per retailer), drafted then reviewed, flagged *provisional* until reviewed. New nodes or competitors must run with no code change.
+1. Unit of analysis = **product family**. Node = the exact Staples leaf (no pseudo-L5 split in Phase 2).
+2. **Product-level mapping**: page-path crosswalk + k-NN scope check over all Staples nodes + NONE threshold (Youden's J floored at 95% in-scope recall); LLM adjudication planned. Never map by page name alone.
+3. **Same instrument on both sides** for any attribute that feeds a gap metric, with **text parity**. Staples specs are ground truth only for validating the text extractor (G2); fields < 85% accurate stay out of gaps and archetype attributes.
+4. Embed a **canonical, source-neutral product card** (extracted fields only; same template on both sides; no price), never raw descriptions.
+5. **CRS is price-agnostic and aesthetic-agnostic.** Price goes through PPR only; aesthetics through AD/ΔDFI only.
+6. Gaps are **share-based** (Jeffreys-smoothed log share ratio + credibility), defined even when Staples = 0.
+7. Method 1 product labels come from the **exhaustive ordered tree** (methodology §6.6): EXCLUDE, OFF-BRAND, UNDERCUT, TRADE-UP, STYLE-EXTENSION, SUBSTITUTE, LEAN-APPROVE, REVIEW, CURATE, EDGE. Method 2 labels: ATTR-UNDERCUT, ATTR-SUBSTITUTE, ATTR-TRADE-UP, ATTR-STYLE-EXT, NO-TWIN.
+8. **No raw cosine values in any deliverable.** Thresholds come from calibration (Staples-vs-Staples weak supervision, then Pat). Re-fit when the encoder changes.
+9. **Two method scores stay separate, each with its own safety gate**: Method 1 → **VOS** gated on its own labels; Method 2 → **TG** gated on its own **ACR** (Attribute Cannibalisation Risk). Never blend them into one formula and never gate one method with the other's metric. Final gate = union of the two lists; tier Strong (both) / Vector-led (M1) / Gap-led (M2) / Conditional (fill); 3–10 per node; ordered by the fused rank. PPR is never inside a score. Weights always ship with a Dirichlet sensitivity analysis.
+10. Every recommended SKU shows the **nearest Staples product side by side** with CRS/PPR/AD, and only products safe under the recommending method(s) are shown.
+11. Never claim demand. The data measures assortment supply.
+12. Competitor house brands ≠ recruitable sellers. Flag `brand_on_staples` (existing supplier = quick win) and `house_brand`.
 
 ## Environment
-- Windows 11. Shells: PowerShell (primary) and Git Bash. Use forward slashes in Bash and quote paths: the folders contain spaces and dots.
-- Python 3.14, **pandas 3.0** (default string dtype: `astype(str)` keeps NaN as missing, so use `fillna('')` before joining strings), scikit-learn 1.9, openpyxl, `anthropic` SDK 0.109.
-- **Installed 2026-09-28:** torch (CPU), sentence-transformers, umap-learn, matplotlib, jinja2, ftfy, pyarrow. HDBSCAN comes from scikit-learn. **Not installed:** `python-docx` (read .docx by unzipping `word/document.xml`), qdrant-client (numpy is enough at this scale). Ask before installing more.
-- Printing unicode to the console: set `PYTHONIOENCODING=utf-8` (cp1252 console otherwise crashes).
-- HuggingFace is reachable from this machine (checked 2026-09-27) and Sai approved local HF encoders. `torch` and `sentence-transformers` are still to be installed (at P3). No GPU (12 CPU cores), so prefer base-size encoders and try large ones only in the bake-off.
+- Windows 11. Shells: PowerShell (primary) and Git Bash. Use forward slashes in Bash and quote paths: the folders contain spaces and dots. Long multi-line Python edits: write a script to the scratchpad and run it (very long inline heredocs sometimes fail to parse in this shell).
+- Python 3.14, **pandas 3.0** (default string dtype: `astype(str)` keeps NaN as missing, so use `fillna('')` before joining strings), scikit-learn 1.9, openpyxl, `anthropic` SDK 0.109, torch (CPU), sentence-transformers, umap-learn, matplotlib, jinja2, ftfy, pyarrow. **Not installed:** `python-docx` (read .docx by unzipping `word/document.xml`), qdrant-client. Ask before installing more.
+- Set `PYTHONIOENCODING=utf-8` when printing unicode (cp1252 console otherwise crashes).
+- HuggingFace is reachable; encoders: bge-small (chosen by the bake-off) and bge-base. No GPU (12 CPU cores).
 
-## LLM usage
-- Bulk extraction: `claude-haiku-4-5-20251001` through the Batch API with JSON-schema/tool-use output and prompt caching for the frozen schema.
+## LLM usage (when an API key exists)
+- Bulk extraction: `claude-haiku-4-5-20251001` via the Batch API with JSON-schema/tool-use output and prompt caching for the frozen schema.
 - Schema induction, adjudication, DFI rubric and archetype naming: `claude-sonnet-5`. Reserve `claude-opus-5-5` for hard adjudication or review only.
-- Cache every raw LLM response to disk (keyed by prompt version + product id) so re-runs are free. Version the prompts.
-- **Ask Sai before any bulk run** (more than about 500 items or roughly $20+). Pilot on the vertical slice first.
+- Cache every raw LLM response to disk (keyed by prompt version + product id). Version the prompts.
+- **Ask Sai before any bulk run** (more than about 500 items or roughly $20+). Pilot on one node first.
 
 ## Working conventions
-- Build as a **vertical slice first**: *Accent & Waiting Room Chairs* (+ *Office Chairs* as contrast), then all of Chairs & Seating, then Desks.
-- Each stage writes a versioned intermediate table. Stages must be re-runnable independently. Keep thresholds and weights in `config.yaml`, not in code.
-- Respect the QA gates in `methodology.md` §10. Report a failed gate plainly rather than working around it.
-- **Deliverables (current phase): Python code, PNG figures, and ONE self-contained static HTML report.** No Excel or deck unless Sai asks. The report is a single file with no CDN, fonts or server: PNGs embedded as base64, inline vanilla JS, built from a Jinja2 template, under 25 MB. Tab 1 = Approach & Methodology. Tab 2 = Gaps & Recommendations with a single-select dropdown of full node paths, where choosing a node shows all its tables, charts, insights, scores, SKU and vendor recommendations (`methodology.md` §9.2). Tab 1 says "competitor", never a retailer name (the competitor is chosen per shelf; Tab 2 names it). **Report versions:** each S11 run writes `Staples_Assortment_Report_v<N>.html` (next N); never overwrite or delete earlier versions. Title and file stem live in `config/pipeline.yaml` → `report`.
-- Deliverable style: clear tables, charts in the CL PoC V2 figure style, merchant-readable language (archetype names a merchant can say out loud).
-- Git: commit only when Sai asks. Never commit the large Excels again or any file containing review text or PII.
+- Each stage writes an intermediate table and must be re-runnable on its own. Thresholds and weights live in `config/pipeline.yaml`, never in code.
+- Report a failed quality gate plainly rather than working around it.
+- **Deliverables: Python code, PNG figures, and ONE self-contained static HTML report.** No Excel or deck unless Sai asks. The report is a single file (no CDN, fonts or server; PNGs as base64; inline vanilla JS; Jinja2 template; under 25 MB). Tab 1 = Approach & Methodology (says "competitor", never a retailer name). Tab 2 = Gaps & Recommendations (dropdown of all focus nodes; names the node's competitor). Each S9 run writes `Staples_Assortment_Report_v<N>.html` (next N). Title and file stem: `config/pipeline.yaml` → `report`.
+- Merchant-readable language; charts in the CL PoC V2 figure style.
+- After a method change, update `methodology.md` (body + §14 log) and this file's "Where things stand".
+- Git: commit only when Sai asks. Never commit the large Excels or any file containing review text or PII.
 
-## Status
-- 2026-09-27: data audited; `methodology.md` v1 → v1.2 (Sai's §11 answers; separate VOS/TG + fused re-rank; outputs = code + PNG + static 2-tab HTML).
-- 2026-09-28: **PoC built and run end to end** (about 15 min cold; embeddings cached). 18 scored shelves + 5 thin; 22 archetypes shortlisted; 88 exemplar SKUs; report `outputs/report/Staples_Assortment_Report.html` (8.3 MB). Gates: G7 pass; G2 partial; G1/G5/G6/G8 fail (explained in methodology §13); G3/G4 pending human work.
-- 2026-09-28: report **v2** (Sai's review): new title; Tab 2 renamed; flow-chart approach; VOS/TG component charts; shelf order M1 → M2 → final → SKUs (3 per archetype) → style extensions (5 per shelf) → sellers → excluded; mapping shown as high-confidence share.
-- 2026-09-28: report **v3** (Sai's review): tech stack folded into each flow-chart box (name · one-liner ≤ 20 words · steps · labels · Output · Tech); boxes 800px except S7/S8; agreement block = score, one-line insight, scale.
-- **Report shelf filter (Sai, 2026-09-28): the dropdown shows 8 of 23 shelves: Chairs & Seating capped at 5, Desks at 3.** It applies ONLY to those two L2s (config `report.shelf_filter.max_shelves`); any new L2 (bags, bottles, …) shows every shelf. It is report-only: every shelf is still scored, and all rule results go to `outputs/tables/shelf_selection.csv`. R1 enough data (scored, ≥ 30 families per side) and R2 at least one recommended archetype are hard gates; R3 high-confidence mapping ≥ 85%, R4 Spearman VOS↔TG ≥ 0.30 (on the displayed 2-dp value) and R5 at least one Strong-tier recommendation are counted. Rank = R3–R5 passed, then number of recommendations, then Spearman. The current pick is Accent & Waiting Room; Benches & Beam Seating; Bar Stools; Office Chairs > Executive; Breakroom & Dining; and Desks: Computer, Sit & Stand, Table. Only 3 Desks shelves pass R2, so Table is shown despite ρ = −0.30. Changing thresholds or caps is a config edit; if the pick changes, re-run `--only s11`.
-- Next candidates: wire the Claude extraction/adjudication backend (needs `ANTHROPIC_API_KEY`), human gold sets (G1/G3/G4), a finer accent-chair `form_factor` facet (G6), Pat's calibration (PPR bands, CRS/AAS thresholds).
-- Environment now has torch (CPU), sentence-transformers, umap-learn, matplotlib, jinja2, ftfy, pyarrow installed.
+## History
+- 2026-09-27: data audited; methodology v1 → v1.2.
+- 2026-09-28: Phase 1 built and run (Chairs & Seating + Desks vs Wayfair, 23 nodes incl. pseudo-L5); reports v1–v4.
+- 2026-10-01: Phase 2 (12 focus nodes; S0–S9; page-path crosswalk + scope check; 4–6-attribute archetypes; price view; text parity); then two-method safety gates (methodology §7, §14.6); report v8.
