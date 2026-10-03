@@ -5,11 +5,11 @@ Guidance for Claude working in this folder. Read `methodology.md` before any ana
 ## Project in one paragraph
 LatentView PoC for **Staples Marketplace** (stakeholder: Pat, Head of Staples Marketplace; Q1 2027 planning). Owner: Sai. Team: Teja, Barath, Ayan. The question: within 12 granular Staples nodes (exact L3/L4 paths), which product archetypes and attribute variants (colour, material, style, size, use-context, "vibe") does the node's competitor (Amazon, Wayfair or Scheels) carry that Staples lacks, and which of them can Staples add through the marketplace **without cannibalizing its existing assortment**. The thesis is "White Chair" / core-adjacent: design-forward and lifestyle extensions of core items. **Constraint: external data only.** There is no internal Staples sales, margin or traffic data.
 
-## Where things stand (2026-10-01)
-- **Phase 2 is built and run** on the 12 focus nodes. Current report: `outputs/report/Staples_Assortment_Report_v12.html` (same results as v8, with Sai's Tab 1 and Tab 2 edits; v5–v11 are same-day builds; v1–v4 are Phase 1). Never delete or overwrite report versions.
-- **Result:** 9 scored nodes, 3 Staples-only (Desk Organizers and Desk Pads: the Amazon file has no such pages; Water Bottles: Scheels/Amazon data pending). **75 recommended archetypes** (20 Strong, 26 Vector-led, 29 Gap-led), 4–10 per scored node. Quality gates: G7 PASS; G2 PARTIAL; G1, G5, G6, G8 FAIL (explained in methodology §13/§14); G3, G4 PENDING (human labels).
-- **Open items:** Pat's calibration session (CRS bands, PPR thresholds, AAS thresholds, gate parameters); competitor data for the 3 pending nodes; human gold sets (G1/G3/G4); Claude extraction/adjudication backend (no `ANTHROPIC_API_KEY`); review of the drafted node vocabularies and page crosswalks (`reviewed_by: null` → shown as provisional).
-- **Things a reader must know about v8:** Gap-led picks have no fit-with-Staples check (all 10 backpack picks are Gap-led: hiking, travel, sling packs); partitions are Vector-led only (Method 2 sees cheaper attribute twins, ACR 84–100%); planners have only 4 picks.
+## Where things stand (2026-10-03)
+- **Phase 2 is built and run** on all 12 focus nodes. Current report: `outputs/report/Staples_Assortment_Report_v13.html` (2026-10-03: the new Amazon file adds Water Bottles, Desk Organizers and Desk Pads; v5–v12 are 2026-10-01 builds of the 9-node run; v1–v4 are Phase 1). Never delete or overwrite report versions.
+- **Result:** 12 scored nodes. **74 recommended archetypes** (22 Strong, 17 Vector-led, 32 Gap-led, 3 Conditional): 10 each for chairs, backpacks, clocks, lunch bags and desks; coffee organizers 6; planners 6; partitions 4; desk lamps 3; water bottles 3; desk organizers 2; desk pads 0 (methodology §14.7). Quality gates: G7 PASS; G2 PARTIAL; G1, G5, G6, G8 FAIL (explained in methodology §13/§14); G3, G4 PENDING (human labels).
+- **Open items:** Pat's calibration session (CRS bands, PPR thresholds, AAS thresholds, gate parameters); a small-node archetype support rule (Desk Pads and Desk Organizers miss the 3-per-node minimum, §14.7); optionally freezing τ / parity length / G2 fields so one retailer's data does not move another's nodes (§14.7); human gold sets (G1/G3/G4); Claude extraction/adjudication backend (no `ANTHROPIC_API_KEY`); review of the drafted node vocabularies and page crosswalks (`reviewed_by: null` → shown as provisional).
+- **Things a reader must know about v13:** Gap-led picks have no fit-with-Staples check (all 10 backpack picks are Gap-led: hiking, travel, sling packs); partitions are Vector-led only (Method 2 sees cheaper attribute twins); the three new nodes are small (Amazon 61–194 families), so their archetypes are sparse; Desk Lamps fell from 9 to 3 picks because USB-port accuracy crossed the G2 bar (84.5% vs 85%) after τ re-fitted.
 
 ## Running the pipeline
 ```bash
@@ -28,7 +28,7 @@ PYTHONIOENCODING=utf-8 python -W ignore run_pipeline.py --only s9    # rebuild t
 |---|---|---|
 | `Documents/*.docx` | Objective & Goal (Pat's mandate), Initial-Exploration methodology (Track B/C), Examples | Read-only |
 | `Excels/Staples product level dataset - 12 Choosen L3s - Final Samples.xlsx` | **Phase 2 Staples input**: 5,673 rows / 4,891 SKUs → 3,416 families in the 12 focus leaves (+ a Pivot sheet, ignored) | Read-only |
-| `Excels/Amazon product level dataset - 6 Chosen L3s - Final Samples.xlsx` | 20,092 rows / 13,954 ASINs: planners, backpacks, lunch bags, coffee organizers only | Read-only |
+| `Excels/Amazon product level dataset - 7 Chosen L3s - Final Samples.xlsx` | 34,265 rows / 14,591 ASINs (heavy row repetition): planners, backpacks, lunch bags, coffee organizers, water bottles, desk organizers, desk pads (replaces the 6-L3 file, 2026-10-03) | Read-only |
 | `Excels/Wayfair product level dataset - 5 Chosen L3s - Final Samples.xlsx` | 12,280 rows / 11,175 products: clocks, accent chairs, desks, room dividers/partitions, desk lamps | Read-only |
 | `Excels/1. Staples_Navigation_Tree_repaired.xlsx` | Staples tree (1,877 nodes, L1–L4, no L5) | Read-only; used to decide crosswalk siblings |
 | `Excels/3. Wayfair_Navigation_Tree_v3.xlsx` | Wayfair tree; no item counts | Read-only |
@@ -104,3 +104,4 @@ PYTHONIOENCODING=utf-8 python -W ignore run_pipeline.py --only s9    # rebuild t
 - 2026-09-27: data audited; methodology v1 → v1.2.
 - 2026-09-28: Phase 1 built and run (Chairs & Seating + Desks vs Wayfair, 23 nodes incl. pseudo-L5); reports v1–v4.
 - 2026-10-01: Phase 2 (12 focus nodes; S0–S9; page-path crosswalk + scope check; 4–6-attribute archetypes; price view; text parity); then two-method safety gates (methodology §7, §14.6); report v8.
+- 2026-10-03: new Amazon file (7 L3s) adds Water Bottles (moved from Scheels), Desk Organizers and Desk Pads; all 12 nodes scored; report v13 (methodology §14.7).

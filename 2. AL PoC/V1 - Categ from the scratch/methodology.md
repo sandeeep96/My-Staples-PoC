@@ -59,7 +59,7 @@ The current samples are a starting point. They will be enriched with more catego
 
 §1.4 lists what is generated per node and what stays fixed.
 
-**Phase 2 scope (2026-10-01):** 12 focus nodes chosen by Sai (exact Staples L3/L4 paths, `config/nodes.yaml`), each compared with its **Primary 1** competitor (Amazon, Wayfair or Scheels). Nodes whose competitor has no data yet run as Staples-only profiles. The method itself stays scope-agnostic: any Staples leaf in the data becomes a node.
+**Phase 2 scope (2026-10-01):** 12 focus nodes chosen by Sai (exact Staples L3/L4 paths, `config/nodes.yaml`), each compared with its **Primary 1** competitor (Amazon or Wayfair; Water Bottles moved from Scheels to Amazon on 2026-10-03). Nodes whose competitor has no data run as Staples-only profiles (none since 2026-10-03). The method itself stays scope-agnostic: any Staples leaf in the data becomes a node.
 
 **First vertical slice (Phase 1):** a run-time choice, not a code path. With today's data it is *Chairs & Seating → Accent & Waiting Room Chairs* (the White Chair thesis node: 199 Staples SKUs against Wayfair *Accent Chairs*, *Custom Accent Chairs*, *Waiting Room & Reception Chairs* and *Reception Seating*), with *Office Chairs* as the contrast node. Then all other in-scope nodes.
 
@@ -128,7 +128,7 @@ Profiled on 2026-09-27. These findings drive most of the design choices.
 | File | Rows / unique products | What matters |
 |---|---|---|
 | `Staples product level dataset - 12 Choosen L3s - Final Samples.xlsx` | 5,673 / 4,891 SKUs → 3,416 families | The 12 focus leaves (L4 empty); same serialized description dict as Phase 1; spec keys differ by node (e.g. `Cover Material`, `Backpack Material`, `Clock Display`) |
-| `Amazon product level dataset - 6 Chosen L3s - Final Samples.xlsx` | 20,092 / 13,954 ASINs → 13,485 families | Only planners, backpacks, lunch bags and coffee organizers (**no desk organizers or desk pads**). `description` is a ~110-character subtitle (58% empty); `brand/vendor` 70% empty with noise ("Learn more", size codes); prices like "2 sizes"; sponsored redirect URLs; colour variants as separate ASINs |
+| `Amazon product level dataset - 7 Chosen L3s - Final Samples.xlsx` | 34,265 rows / 14,591 ASINs → 14,070 families (the same ASIN repeats across many rows; S0 keeps one row per id) | Planners, backpacks, lunch bags, coffee organizers and, since 2026-10-03, **water bottles** (Sports Water Bottles, Thermoses, Flasks), **desk organizers** (Pencil Holders, Paper Clip Holders, Desktop & Off-Surface Shelves; Keyboard Drawers and Copyholders go to the backlog) and **desk pads** (Desk Pads & Blotters). Replaces the 6-L3 file. `description` is a ~110-character subtitle (58% empty); `brand/vendor` 70% empty with noise ("Learn more", size codes); prices like "2 sizes"; sponsored redirect URLs; colour variants as separate ASINs |
 | `Wayfair product level dataset - 5 Chosen L3s - Final Samples.xlsx` | 12,280 / 11,175 products → 10,841 families | Clocks, accent chairs, desks, room dividers / office partitions, desk lamps. Same description + review (PII) format as Phase 1; colour/size variants are separate ids with the same title + vendor; page names are facet labels ("Type: Folding"), so a page is identified by its L1–L6 path |
 
 **Columns used (Sai):** only the Phase-1 columns: id, title, price, url, brand/vendor, selected choice, description, listing page and its path. Ratings, review counts, ranks, badges, list prices, images and the new Wayfair `specifications` column are never read.
@@ -603,7 +603,7 @@ Quality gates check how far each step can be trusted. In the PoC they are comput
 
 Each phase runs on the vertical slice before any bulk LLM spend. The bulk extraction run happens only after the P2 prompts pass validation on the slice.
 
-**Status (2026-10-01):** P0–P7 are built and run for the Phase-2 focus nodes (report v8). Open: Pat's calibration session (CRS bands, PPR thresholds, AAS thresholds, the gate parameters), human gold sets (G1, G3, G4), the Claude extraction / adjudication backend (needs an API key), and competitor data for Desk Organizers, Desk Pads and Water Bottles.
+**Status (2026-10-03):** P0–P7 are built and run for all 12 Phase-2 focus nodes (report v13; all 12 scored). Open: Pat's calibration session (CRS bands, PPR thresholds, AAS thresholds, the gate parameters), human gold sets (G1, G3, G4), the Claude extraction / adjudication backend (needs an API key), and a small-node rule for archetype support (§14.7).
 
 **Re-run on new data:** when enriched or new-category samples arrive, the same pipeline runs from S0. New L2s get their generated artefacts (§1.4) drafted automatically and flagged *provisional* until reviewed. Existing reviewed artefacts are reused.
 
@@ -636,7 +636,7 @@ These decisions were made while building the pipeline. Each one either tightens 
 
 ## 14. Phase 2 changes (2026-10-01)
 
-**Scope.** Phase 2 narrows the PoC to 12 focus nodes (exact Staples L3/L4 paths, Sai's selection), each compared with its **Primary 1** competitor: Amazon (planners, desk organizers, backpacks, lunch bags, desk pads, coffee organizers), Wayfair (office desks, accent chairs, desk lamps, clocks, partitions) and Scheels (water bottles). The node list, segment · play and competitor order live in `config/nodes.yaml`. A node whose competitor has no data runs as a **Staples-only profile** until data arrives, with no code change. Where this section conflicts with §4–§9, §14 wins.
+**Scope.** Phase 2 narrows the PoC to 12 focus nodes (exact Staples L3/L4 paths, Sai's selection), each compared with its **Primary 1** competitor: Amazon (planners, desk organizers, backpacks, water bottles, lunch bags, desk pads, coffee organizers) and Wayfair (office desks, accent chairs, desk lamps, clocks, partitions). Water bottles were planned against Scheels; Sai moved them to Amazon on 2026-10-03 when the Amazon file gained those pages. The node list, segment · play and competitor order live in `config/nodes.yaml`. A node whose competitor has no data runs as a **Staples-only profile** until data arrives, with no code change. Where this section conflicts with §4–§9, §14 wins.
 
 **Columns.** Only the Phase-1 columns are read: id, title, price, url, brand/vendor, selected choice, description, listing page (and the L1–L6 path of that page, used only to identify it, because many page names are facet labels such as "Type: Folding"). Ratings, review counts, ranks, badges, list prices, images and the new Wayfair `specifications` column are not used.
 
@@ -720,3 +720,51 @@ Twins are searched across the whole node because cannibalisation is about functi
 | Planners & Personal Organizers | 0 | 2 | 2 | 4 |
 
 Reading: backpacks are all Gap-led (hiking, travel and sling packs Staples does not carry; Method 1 calls them off-profile); partitions are Vector-led only (Method 1 sees style extensions, Method 2 sees cheaper functional twins). Weight-sensitivity top-5 retention: TG 92%, VOS 93%.
+
+### 14.7 Amazon data for the three pending nodes; all 12 nodes scored (Sai, 2026-10-03; report v13)
+**Data.** The Amazon file was replaced by `Amazon product level dataset - 7 Chosen L3s - Final Samples.xlsx`, which adds pages for Water Bottles, Desk Organizers and Desk Pads. Water Bottles' competitor changed from Scheels to Amazon (`config/nodes.yaml`). Only the Phase-1 columns are read, as before. The new pages are small: about 650 new ASINs in total, against 13,954 before.
+
+**Config changes (no code change):**
+
+| File | Change |
+|---|---|
+| `config/retailers.yaml` | Amazon file name |
+| `config/nodes.yaml` | Water Bottles competitors `[amazon]` |
+| `config/crosswalk/amazon.yaml` | Sports Water Bottles, Thermoses, Flasks → Water Bottles, Tumblers & Travel Mugs; Desk Supplies Holders & Dispensers (pencil and paper-clip holders) and Desktop & Off-Surface Shelves → Desk Organizers; Desk Pads & Blotters → Desk Pads; Keyboard Drawers & Platforms → `[]` (Staples: Keyboard Trays leaf); Copyholders → `[]` (Staples: Book & Document Holders leaf). A leaf name with a comma must be quoted in the YAML list |
+| `config/nodes/water_bottles_tumblers_travel_mugs.yaml` | Vessel type `soft flask` (collapsible / hydration / hip flasks) |
+| `config/nodes/desk_organizers.yaml` | Organizer type `clip holder`; desk hutch, bookshelf and printer stand under `monitor stand/shelf` |
+
+**Mapping (C1) on the new pages.** Kept (mapped) families per page:
+- Pencil Holders 100 of 100.
+- Paper Clip Holders 45 of 52.
+- Desktop Shelves 40 of 64 (23 are monitor risers or printer stands that Staples shelves elsewhere).
+- Desk Pads & Blotters 61 of 63.
+- Sports Water Bottles 72 of 73.
+- Thermoses 86 of 86.
+- Flasks 47 of 54.
+
+Node competitor families: Water Bottles 194, Desk Organizers 185, Desk Pads 61.
+
+**Result (full re-run S0–S9).** C1 keeps 16,512 of 24,911 competitor families. C2: 217 of 305 archetypes valid. Method 1: 81 archetypes pass, 50 listed. Method 2: 70 archetypes pass, 58 listed. Final: **74 recommendations (22 Strong, 17 Vector-led, 32 Gap-led, 3 Conditional)** over 12 scored nodes:
+
+| Node | Strong | Vector-led | Gap-led | Conditional | Total | v8 |
+|---|---|---|---|---|---|---|
+| Accent & Waiting Room Chairs | 5 | 2 | 3 | 0 | 10 | 10 |
+| Backpacks | 0 | 0 | 10 | 0 | 10 | 10 |
+| Clocks & Timers | 6 | 1 | 3 | 0 | 10 | 10 |
+| Lunch Bags & Boxes | 2 | 0 | 8 | 0 | 10 | 10 |
+| Office Desks | 4 | 4 | 2 | 0 | 10 | 10 |
+| Coffee Organizers & Dispensers | 4 | 2 | 0 | 0 | 6 | 7 |
+| Planners & Personal Organizers | 0 | 2 | 4 | 0 | 6 | 4 |
+| Office Partitions & Dividers | 0 | 4 | 0 | 0 | 4 | 5 |
+| Desk Lamps | 0 | 2 | 1 | 0 | 3 | 9 |
+| Water Bottles, Tumblers & Travel Mugs | 1 | 0 | 0 | 2 | 3 | new |
+| Desk Organizers | 0 | 0 | 1 | 1 | 2 | new |
+| Desk Pads | 0 | 0 | 0 | 0 | 0 | new |
+
+Weight-sensitivity top-5 retention: TG 95%, VOS 95%.
+
+**Reading and caveats:**
+- **The new nodes are small, so archetypes are sparse.** Desk Pads has 55 Staples + 61 Amazon families; only one 4-attribute cell reaches the 10-family pooled bar, and 81% of families sit in the long tail. Desk Organizers has 6 archetypes and an 80% long tail. The Conditional fill only uses valid archetypes, so the 3-per-node minimum cannot be met: Desk Organizers gets 2 and Desk Pads 0. The fixed `min_pooled: 10` was set for nodes with thousands of families. A support bar that scales with node size is the open fix; it needs Sai's approval.
+- **Water Bottles: one Strong pick** (stainless steel water bottle: Amazon 25 families vs Staples 5, ACR 4%) plus two Conditional picks (16–24 oz and 25–40 oz stainless bottles, where Staples is already deep). Several archetypes share one display name because the attribute that separates them (insulation or vibe) is not in `name_order`.
+- **Unchanged Wayfair nodes moved.** The NONE threshold τ is re-fitted on all retailers' products, so the new Amazon pages shifted τ and a few Wayfair families moved in or out of scope (mapped 9,899 → 9,935). For Desk Lamps this changed the competitor median description length, which drives text parity, and so the Staples parity text. USB-port accuracy went to 84.5% (G2 bar 85%), so USB port left the archetype facets. Colour tone replaced it, and recommendations fell from 9 to 3. This is a knife-edge effect of the G2 bar, not a change in the data. Fixing τ, parity length and the G2 field set per run (frozen calibration) would stop data changes in one retailer from moving another retailer's nodes; that is a candidate method change for Sai.

@@ -20,7 +20,7 @@ staples:
 amazon:
   role: competitor
   display: Amazon
-  file: "Amazon product level dataset - 6 Chosen L3s - Final Samples.xlsx"
+  file: "Amazon product level dataset - 7 Chosen L3s - Final Samples.xlsx"
   columns:
     id: product_id
     title: product_name

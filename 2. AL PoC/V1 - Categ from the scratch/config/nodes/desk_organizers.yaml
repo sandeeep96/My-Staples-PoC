@@ -1,6 +1,6 @@
 node: "Office Supplies > Desk Organizers & Accessories > Desk Organizers"
 noun: desk organizer
-generated_by: "claude-opus-5-5 session draft from Staples spec keys, 2026-10-01 (no competitor data yet: Amazon file has no desk-organizer pages)"
+generated_by: "claude-opus-5-5 session draft from Staples spec keys, 2026-10-01; clip holder and desk hutch added from Amazon titles, 2026-10-03"
 reviewed_by: null
 
 material_spec_keys: ['Organizer Material']
@@ -25,11 +25,12 @@ tier2:
     spec_role: indicator
     values:
       pen cup: ['pen cups?', 'pencil cups?', 'pen holders?', 'pencil holders?']
+      clip holder: ['(paper ?|binder )?clip (holders?|dispensers?)', 'paperclip (holders?|dispensers?)']
       letter tray: ['letter trays?', 'paper trays?', 'desk trays?', 'document trays?']
       file sorter: ['file (sorter|organizer|holder)s?', 'magazine', 'sorter', 'mail']
       drawer organizer: ['drawer organizers?', 'drawer inserts?']
       accessory tray: ['accessory trays?', 'catch-?all', 'valet tray', 'tray']
-      monitor stand/shelf: ['monitor stand', 'desk shelf', 'riser', 'shelf']
+      monitor stand/shelf: ['monitor stand', 'desk shelf', 'desk hutch', 'hutch', 'bookshelf', 'printer stand', 'riser', 'shelf', 'shelves']
       storage drawers: ['drawers?']
       multi-compartment organizer: ['compartments?', 'caddy', 'organizer', 'carousel']
   rotating:

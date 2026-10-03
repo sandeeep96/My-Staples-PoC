@@ -1,6 +1,6 @@
 node: "Coffee, Water & Snacks > Water & Beverages > Water Bottles, Tumblers & Travel Mugs"
 noun: bottle / tumbler
-generated_by: "claude-opus-5-5 session draft from Staples spec keys, 2026-10-01 (no competitor data yet: Scheels or Amazon pending)"
+generated_by: "claude-opus-5-5 session draft from Staples spec keys, 2026-10-01; soft flask added from Amazon titles, 2026-10-03"
 reviewed_by: null
 
 material_spec_keys: ['Water Bottle, Tumbler & Mug Material']
@@ -25,6 +25,7 @@ tier2:
       tumbler: ['tumblers?']
       travel mug: ['travel mugs?', 'coffee mugs?', 'mugs?']
       can cooler: ['can coolers?', 'koozie', 'colster', 'can insulator']
+      soft flask: ['soft ?flasks?', 'collapsible .{0,20}flasks?', 'hydration flasks?', 'hip flasks?']
       water bottle: ['water bottles?', 'bottles?', 'flask', 'jug']
   insulation:
     mode: priority

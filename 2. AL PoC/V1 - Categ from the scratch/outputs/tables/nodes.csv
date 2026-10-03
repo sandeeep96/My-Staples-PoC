@@ -1,13 +1,13 @@
 node_id,leaf,l2_key,competitor,competitors_planned,segment,rank,n_staples,n_competitor,status,node_config,node_config_reviewed
-Office Supplies > Calendars & Planners > Planners & Personal Organizers,Planners & Personal Organizers,Office Supplies > Calendars & Planners,amazon,amazon,Hero · EXTEND,1,805,1089,scored,True,False
-Office Supplies > Desk Organizers & Accessories > Desk Organizers,Desk Organizers,Office Supplies > Desk Organizers & Accessories,,amazon,Hero · EXTEND,2,239,0,staples_only,True,False
-"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",Backpacks,"Bags, Backpacks & Luggage > Backpacks & Laptop Bags",amazon,amazon,Hero · EXTEND,3,379,2074,scored,True,False
-Furniture > Desks > Office Desks,Office Desks,Furniture > Desks,wayfair,wayfair,Hero · EXTEND,4,668,2787,scored,True,False
-"Coffee, Water & Snacks > Water & Beverages > Water Bottles, Tumblers & Travel Mugs","Water Bottles, Tumblers & Travel Mugs","Coffee, Water & Snacks > Water & Beverages",,scheels|amazon,Probable Hero · BUILD,5,344,0,staples_only,True,False
-Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Accent & Waiting Room Chairs,Furniture > Chairs & Seating,wayfair,wayfair,Probable Hero · BUILD,6,116,2979,scored,True,False
-Furniture > Lamps & Lighting > Desk Lamps,Desk Lamps,Furniture > Lamps & Lighting,wayfair,wayfair,Probable Hero · BUILD,7,169,770,scored,True,False
-"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",Lunch Bags & Boxes,"Bags, Backpacks & Luggage > Totes & Handbags",amazon,amazon,Probable Hero · BUILD,8,318,1786,scored,True,False
-Furniture > Decor > Clocks & Timers,Clocks & Timers,Furniture > Decor,wayfair,wayfair,Non-Hero · EXPLORE,9,174,2584,scored,True,False
-Office Supplies > Desk Organizers & Accessories > Desk Pads,Desk Pads,Office Supplies > Desk Organizers & Accessories,,amazon,Non-Hero · EXPLORE,10,55,0,staples_only,True,False
-"Coffee, Water & Snacks > Coffee, Coffee Makers & Supplies > Coffee Organizers & Dispensers",Coffee Organizers & Dispensers,"Coffee, Water & Snacks > Coffee, Coffee Makers & Supplies",amazon,amazon,Non-Hero · EXPLORE,11,50,1185,scored,True,False
-Furniture > Cubicle & Panel Systems > Office Partitions & Dividers,Office Partitions & Dividers,Furniture > Cubicle & Panel Systems,wayfair,wayfair,Non-Hero · EXPLORE,12,99,781,scored,True,False
+Office Supplies > Calendars & Planners > Planners & Personal Organizers,Planners & Personal Organizers,Office Supplies > Calendars & Planners,amazon,amazon,Hero · EXTEND,1,805,1173,scored,True,False
+Office Supplies > Desk Organizers & Accessories > Desk Organizers,Desk Organizers,Office Supplies > Desk Organizers & Accessories,amazon,amazon,Hero · EXTEND,2,239,185,scored,True,False
+"Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",Backpacks,"Bags, Backpacks & Luggage > Backpacks & Laptop Bags",amazon,amazon,Hero · EXTEND,3,379,1979,scored,True,False
+Furniture > Desks > Office Desks,Office Desks,Furniture > Desks,wayfair,wayfair,Hero · EXTEND,4,668,2821,scored,True,False
+"Coffee, Water & Snacks > Water & Beverages > Water Bottles, Tumblers & Travel Mugs","Water Bottles, Tumblers & Travel Mugs","Coffee, Water & Snacks > Water & Beverages",amazon,amazon,Probable Hero · BUILD,5,344,194,scored,True,False
+Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Accent & Waiting Room Chairs,Furniture > Chairs & Seating,wayfair,wayfair,Probable Hero · BUILD,6,116,2977,scored,True,False
+Furniture > Lamps & Lighting > Desk Lamps,Desk Lamps,Furniture > Lamps & Lighting,wayfair,wayfair,Probable Hero · BUILD,7,169,776,scored,True,False
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",Lunch Bags & Boxes,"Bags, Backpacks & Luggage > Totes & Handbags",amazon,amazon,Probable Hero · BUILD,8,318,1789,scored,True,False
+Furniture > Decor > Clocks & Timers,Clocks & Timers,Furniture > Decor,wayfair,wayfair,Non-Hero · EXPLORE,9,174,2586,scored,True,False
+Office Supplies > Desk Organizers & Accessories > Desk Pads,Desk Pads,Office Supplies > Desk Organizers & Accessories,amazon,amazon,Non-Hero · EXPLORE,10,55,61,scored,True,False
+"Coffee, Water & Snacks > Coffee, Coffee Makers & Supplies > Coffee Organizers & Dispensers",Coffee Organizers & Dispensers,"Coffee, Water & Snacks > Coffee, Coffee Makers & Supplies",amazon,amazon,Non-Hero · EXPLORE,11,50,1196,scored,True,False
+Furniture > Cubicle & Panel Systems > Office Partitions & Dividers,Office Partitions & Dividers,Furniture > Cubicle & Panel Systems,wayfair,wayfair,Non-Hero · EXPLORE,12,99,775,scored,True,False

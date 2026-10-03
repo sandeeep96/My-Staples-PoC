@@ -23,3 +23,15 @@ pages:
   "Office Products > Office Supplies > Calendars, Planners & Personal Organizers > Personal Organizers": [Planners & Personal Organizers]
   "Office Products > Office Supplies > Calendars, Planners & Personal Organizers > Planners, Refills & Covers > Planners": [Planners & Personal Organizers]
   # (Planner Refills / Covers / Accessories: Staples "Organizer Refills & Accessories" leaf)
+  # --- Added 2026-10-03 (Amazon file v7: water bottles, desk organizers, desk pads) ---
+  # Water bottles, tumblers & travel mugs (Staples' only drinkware leaf; it carries Thermos-brand bottles)
+  "Home & Kitchen > Kitchen & Dining > Travel & To-Go Drinkware > Sports Water Bottles": ["Water Bottles, Tumblers & Travel Mugs"]
+  "Home & Kitchen > Kitchen & Dining > Storage & Organization > Thermoses": ["Water Bottles, Tumblers & Travel Mugs"]
+  "Sports & Outdoors > Outdoor Recreation > Camping & Hiking > Hydration & Filtration > Flasks": ["Water Bottles, Tumblers & Travel Mugs"]   # soft/hip flasks, insulated bottles
+  # Desk organizers (Staples' leaf holds pencil cups, clip holders, desk shelves/hutches)
+  "Office Products > Office Supplies > Desk Accessories & Workspace Organizers > Desk Supplies Holders & Dispensers": [Desk Organizers]
+  "Office Products > Office Supplies > Desk Accessories & Workspace Organizers > Platforms, Stands & Shelves > Desktop & Off-Surface Shelves": [Desk Organizers]
+  "Office Products > Office Supplies > Desk Accessories & Workspace Organizers > Platforms, Stands & Shelves > Keyboard Drawers & Platforms": []   # Staples: Computer Accessories > Keyboard Trays
+  "Office Products > Office Supplies > Desk Accessories & Workspace Organizers > Copyholders": []   # Staples: Book & Document Holders leaf
+  # Desk pads
+  "Office Products > Office Supplies > Desk Accessories & Workspace Organizers > Desk Pads & Blotters": [Desk Pads]
