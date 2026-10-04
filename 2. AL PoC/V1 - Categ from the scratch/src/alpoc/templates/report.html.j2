@@ -217,15 +217,15 @@ td .combo{display:block;margin-top:1px}
     <div class="fc-phase">2 · Describe every product the same way</div>
     <div class="fc-step"><div class="fc-tag">S3</div><div>
       <h4>Attributes</h4>
-      <p>Extract the same attributes from both retailers' text, with the same amount of text per side, and check them against Staples spec sheets.</p>
-      <div class="chain"><span class="pill">Node vocabulary (3 tiers)</span><span class="to">→</span><span class="pill">Same extractor, same text length</span><span class="to">→</span><span class="pill">&lt; {{ "{:.0%}".format(cfg.qa.g2_field_acc) }} accurate: excluded</span><span class="to">→</span><span class="pill">{{ m('DFI') }}</span></div>
+      <p>Extract the same attributes from all of each retailer's text (titles, descriptions, bullets and specifications, uncut), and check the extractor against Staples spec sheets.</p>
+      <div class="chain"><span class="pill">Node vocabulary (3 tiers)</span><span class="to">→</span><span class="pill">Same extractor, full text</span><span class="to">→</span><span class="pill">&lt; {{ "{:.0%}".format(cfg.qa.g2_field_acc) }} accurate: excluded</span><span class="to">→</span><span class="pill">{{ m('DFI') }}</span></div>
       <div class="meta"><span class="k">Output</span>Attribute table, DFI (0–1), per-field accuracy</div>
       <div class="meta"><span class="k">Tech</span><span class="tech">closed-vocabulary regex · embedding zero-shot · anchor contrast · Claude Haiku 4.5 Batch API (planned)</span></div>
     </div></div>
     <div class="fc-arrow"></div>
     <div class="fc-step"><div class="fc-tag">S4</div><div>
       <h4>Archetypes (Attributes Combinations)</h4>
-      <p>Cut each node into archetypes, each defined by {{ cfg.archetypes.core_facets }} to {{ cfg.archetypes.max_facets }} attributes that mix all three tiers. Price is never an attribute.</p>
+      <p>Cut each node into archetypes, each defined by {{ cfg.archetypes.core_facets }} to {{ cfg.archetypes.max_facets }} attributes that mix all three tiers. Attributes on which the two retailers differ most are preferred, and credible tag gaps (e.g. water-resistant) can be attributes too. Price is never an attribute.</p>
       <div class="chain"><span class="pill">Best {{ cfg.archetypes.core_facets }}-attribute combination</span><span class="to">→</span><span class="pill">+5th / 6th where supported</span><span class="to">→</span><span class="pill">&lt; {{ cfg.archetypes.min_pooled }} products: long tail</span><span class="to">→</span><span class="pill">Cluster cross-check</span></div>
       <div class="meta"><span class="k">Output</span>Archetype (Attributes Combination), e.g. “Mid-century velvet chair (Material: velvet · Colour tone: warm-neutral · Form: barrel · Style: mid-century)”</div>
       <div class="meta"><span class="k">Tech</span><span class="tech">combinatorial search · normalised entropy · UMAP · HDBSCAN · {{ m('ARI') }} · bootstrap</span></div>
@@ -281,6 +281,7 @@ td .combo{display:block;margin-top:1px}
       <dt>Tier 2 · functional</dt><dd>What the product does, specific to the node. <span class="ink2">Examples: type (barrel chair, writing desk, pod drawer, bento box, wall clock), features (USB port, insulated, leak-proof, drawers, silent movement), size bands (laptop fit 15–16 in, 50+ pods, 6+ panels).</span></dd>
       <dt>Tier 3 · lifestyle</dt><dd>The look and feel. <span class="ink2">Examples: style (mid-century, farmhouse, minimalist), vibe (luxe, statement, cute/kawaii, natural/woven), theme, pattern or audience (nature/animals clock, floral planner, kids' backpack).</span></dd>
     </dl>
+    <p class="ink2" style="margin-top:10px"><b>How the attributes are chosen.</b> Candidates are the node's attributes by tier plus up to {{ cfg.archetypes.gap_facets.max_per_node }} <b>gap attributes</b>: credible value gaps in the tags (benefits, use context, audience, aesthetic) where the competitor carries more, turned into yes / not-stated attributes, e.g. “Water-resistant: yes”. Attributes unknown for more than {{ "{:.0%}".format(cfg.archetypes.max_unknown_share) }} of either retailer's products, dominated by one value, or failing validation are left out. Among the rest, the combination of {{ cfg.archetypes.core_facets }} that covers both retailers well <b>and</b> differs most between them (JSD) wins, so archetypes line up with the attribute gaps shown for each node. A combination needs ≥ {{ cfg.archetypes.min_pooled }} families; a node that ends with fewer than {{ cfg.gates.final.min_per_node }} recommendations is re-run with a smaller bar of {{ cfg.archetypes.small_node.min_pooled }} families.</p>
   </div>
 
   <h2>The two methods</h2>

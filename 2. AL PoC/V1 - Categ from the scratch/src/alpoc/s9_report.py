@@ -105,7 +105,7 @@ def build_gates(qm, qx, qa6, qv, qi) -> list[dict]:
     n_f = sum(len(v) for v in fails.values())
     gs.append(gate("PASS" if n_f == 0 else "PARTIAL", f"{n_p} node-fields pass, {n_f} fail",
                    f"≥ {q['g2_field_acc']:.0%} per field", "G2 Extraction (physical facts)",
-                   "Text extractor (on length-matched Staples text) vs Staples specs, accuracy when found",
+                   "Text extractor (on Staples title, paragraph and bullets) vs Staples specs, accuracy when found",
                    "Failing: " + "; ".join(f"{nid.split(' > ')[-1]}: {', '.join(v)}" for nid, v in fails.items())
                    + ". Failing fields are kept out of gap scores and archetype definitions."))
     gs.append(gate("PENDING", "–", "κ ≥ 0.6", f"G3 Lifestyle tags & {m('DFI')}", "Two-rater human labels",
@@ -465,6 +465,9 @@ def run() -> dict:
         facets_txt = ", ".join(f"{facet_label(nid, f)} ({tiers[f].replace('tier', 'T')})" for f in q6.get("core_facets", []))
         if q6.get("refinement_facets"):
             facets_txt += "; refined where supported by " + ", ".join(facet_label(nid, f) for f in q6["refinement_facets"])
+        if q6.get("small_node_relaxed"):
+            facets_txt += (f"; small node: combinations of ≥ {q6['min_support']['pooled']} families allowed "
+                           f"(standard {cfg()['archetypes']['min_pooled']})")
         base.update({
             "rho": qi["spearman_vos_tg"].get(nid),
             "rho_note": agreement_insight(qi["spearman_vos_tg"].get(nid), int((nfa["shortlisted"] & (nfa["tier"] == "Strong")).sum()),

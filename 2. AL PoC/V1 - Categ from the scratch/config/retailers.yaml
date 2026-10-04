@@ -1,5 +1,6 @@
 # Retailer adapters (S0). A new competitor = a new entry here plus a crosswalk file (and its house brands).
-# Only the Phase-1 columns are read (Sai, 2026-10-01): no ratings, review counts, badges, ranks, list prices,
+# Only the Phase-1 columns are read (Sai, 2026-10-01), plus the Wayfair `specifications` column (Sai, 2026-10-03):
+# no ratings, review counts, badges, ranks, list prices,
 # images or specification columns. The L1..L6 columns are the path of the listing page (`category`); they are
 # used only to identify that page, because many page names are facet labels ("Type: Folding").
 staples:
@@ -49,6 +50,7 @@ wayfair:
     vendor: vendor
     choice: selected_choice
     description: description        # prose + optional " | " customer review (dropped: PII)
+    specs: specifications           # "Name: value | Name: value" (30% filled; no review text); text source only
     page: category
   path_columns: [L1, L2, L3, L4, L5, L6]
   description_format: text_with_review

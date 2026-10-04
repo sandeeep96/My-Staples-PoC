@@ -124,7 +124,7 @@ def families_competitor(name: str, staples_brands: set) -> pd.DataFrame:
     # one row per product id first (a product can sit on several listing pages)
     per_id = sku.groupby("sku_id", sort=False).agg(
         title=("title", "first"), vendor=("vendor", "first"), price=("price", "median"), url=("url", "first"),
-        desc=("desc", lambda s: max(s, key=len)), choices=("choice", lambda s: sorted({c for c in s if c})),
+        desc=("desc", lambda s: max(s, key=len)), specs=("specs", lambda s: max(s, key=len)), choices=("choice", lambda s: sorted({c for c in s if c})),
         pages=("page", lambda s: sorted(set(s)))).reset_index()
     # a title prefix is only accepted as a brand when it is a known brand (a Staples brand or a vendor this retailer
     # shows elsewhere); Amazon titles often start with generic words ("Coffee Pod", "2 Pack")
@@ -149,7 +149,7 @@ def families_competitor(name: str, staples_brands: set) -> pd.DataFrame:
             "brand": rep["brand"], "brand_inferred": bool(rep["brand_inferred"]),
             "house_brand": rep["brand"].lower() in house,
             "price": float(np.nanmedian(g["price"])) if g["price"].notna().any() else np.nan,
-            "url": rep["url"], "desc": rep["desc"], "bullets": "", "specs": "{}",
+            "url": rep["url"], "desc": rep["desc"], "bullets": "", "specs": rep["specs"],
             "choice": " / ".join(choices),
             "colours_observed": "|".join(colours), "n_colourways": max(1, len(colours)),
             "n_skus": len(g), "sku_ids": "|".join(g["sku_id"]),

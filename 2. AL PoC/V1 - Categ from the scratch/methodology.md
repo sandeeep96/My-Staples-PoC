@@ -71,7 +71,7 @@ Anything category-specific is **generated from the data** (usually an LLM draft 
 | Ingest (S0) | Retailer adapter: column map, price parser, PII stripping | New retailer = new entry in `retailers.yaml` |
 | Families & nodes (S1) | One grouping rule for all retailers (brand + name stem, colour segments removed); node = Staples leaf | Focus list and competitor order (`nodes.yaml`) |
 | Mapping (S2) | Page prior + product-level k-NN scope check + NONE threshold (+ planned LLM adjudication) | Page-path prefix → Staples leaf crosswalk per retailer (`crosswalk/<retailer>.yaml`) |
-| Schema & extraction (S3) | Tier 1 and Tier 3 definitions; matchers; text parity; validation against Staples specs | Per node (`nodes/<node>.yaml`): Tier-2 and Tier-3 vocabularies, spec keys and maps, numeric bands, vocabulary overrides |
+| Schema & extraction (S3) | Tier 1 and Tier 3 definitions; matchers; full text on both sides; validation against Staples specs | Per node (`nodes/<node>.yaml`): Tier-2 and Tier-3 vocabularies, spec keys and maps, numeric bands, vocabulary overrides |
 | DFI | Anchor contrast on the neutral card, pooled percentile | Design / utility anchors per node |
 | Archetypes (S4) | 4–6-attribute search with tier mix, refinement, long tail, HDBSCAN cross-check | Facet candidates by tier, naming order and labels per node |
 | Scores & gates (S5–S7) | All formulas, decision tree, ACR, safety gates, weights | Thresholds (calibrated per L2), gate parameters (`pipeline.yaml` → `gates`), material tiers per node |
@@ -131,7 +131,7 @@ Profiled on 2026-09-27. These findings drive most of the design choices.
 | `Amazon product level dataset - 7 Chosen L3s - Final Samples.xlsx` | 34,265 rows / 14,591 ASINs → 14,070 families (the same ASIN repeats across many rows; S0 keeps one row per id) | Planners, backpacks, lunch bags, coffee organizers and, since 2026-10-03, **water bottles** (Sports Water Bottles, Thermoses, Flasks), **desk organizers** (Pencil Holders, Paper Clip Holders, Desktop & Off-Surface Shelves; Keyboard Drawers and Copyholders go to the backlog) and **desk pads** (Desk Pads & Blotters). Replaces the 6-L3 file. `description` is a ~110-character subtitle (58% empty); `brand/vendor` 70% empty with noise ("Learn more", size codes); prices like "2 sizes"; sponsored redirect URLs; colour variants as separate ASINs |
 | `Wayfair product level dataset - 5 Chosen L3s - Final Samples.xlsx` | 12,280 / 11,175 products → 10,841 families | Clocks, accent chairs, desks, room dividers / office partitions, desk lamps. Same description + review (PII) format as Phase 1; colour/size variants are separate ids with the same title + vendor; page names are facet labels ("Type: Folding"), so a page is identified by its L1–L6 path |
 
-**Columns used (Sai):** only the Phase-1 columns: id, title, price, url, brand/vendor, selected choice, description, listing page and its path. Ratings, review counts, ranks, badges, list prices, images and the new Wayfair `specifications` column are never read.
+**Columns used (Sai):** the Phase-1 columns (id, title, price, url, brand/vendor, selected choice, description, listing page and its path) plus, since 2026-10-03, the Wayfair `specifications` column ("Name: value | …", 30% filled, no review text). Ratings, review counts, ranks, badges, list prices and images are never read.
 
 ## 3. Critique of the proposed methodologies
 
@@ -176,7 +176,7 @@ Profiled on 2026-09-27. These findings drive most of the design choices.
 ```
  S0  Ingest & clean ─► S1  Families & nodes ─► S2  Competitor mapping          [C1 node scope]
                                                           │
- S3  Attributes (3 tiers, per-node vocabularies, text parity, validation G2)
+ S3  Attributes (3 tiers, per-node vocabularies, full text, validation G2)
                                                           │
  S4  Archetypes (4–6 attributes mixing the tiers; no price band)                  [C2 valid archetype]
         ┌─────────────────────────────────┴─────────────────────────────────┐
@@ -282,7 +282,7 @@ Tier 1 and Tier 2 feed archetypes and substitution. Tier 3 feeds the lifestyle g
 #### 6.2.2 The same instrument on both sides (critical)
 - Tier 3 (style, aesthetic, DFI, use-context) and `style_family` are extracted **by the same LLM prompt from the same kind of input (title plus a text summary) on both sides**, even when Staples has a spec value. A Staples "Furnishing Style: Contemporary" and an LLM's "mid-century" come from different instruments, and the gap would reflect that difference rather than the assortment.
 - For Tier 1 and Tier 2 physical facts (dimensions, material, colour, arm type), Staples specs are the truth and competitor values come from text. We validate that the two agree (next step).
-- **Text parity (Phase 2).** Text-measured fields read Staples text (title + paragraph + bullets) cut to the **median description length of that node's competitor** (Amazon ≈ 110 characters, Wayfair ≈ 450–850), so "not mentioned" means the same on both sides. The G2 validation runs on this cut text too.
+- **Full text (Sai, 2026-10-03; replaced text parity).** Every attribute is read from all available text, uncut: Staples = title + paragraph + bullets + specification values; Amazon = title + description; Wayfair = product name + selected choice + description (review part dropped) + `specifications`. Specifications add their **value** only (spec names carry category words such as "Accent & Waiting Room Chair Type"); the name is added only for an affirmative value ("Water Resistant: Yes" → "Water Resistant"); negative values ("No", "Non Gaming", "Non-Antimicrobial", "Not Included") are left out. G2 validation reads Staples title + paragraph + bullets (full, no specs), so it is not circular. **Caveat:** Amazon has the least text (title + a ~110-character subtitle), so its "not stated" share is higher than Staples' or Wayfair's for any feature; tag gaps where Staples looks deeper are partly this effect.
 
 #### 6.2.3 Extractor validation: Staples specs as free ground truth
 - Hide the specs and run the Wayfair-style text-only extractor on 300 Staples families, stratified by node.
@@ -311,9 +311,9 @@ Tier 1 and Tier 2 feed archetypes and substitution. Tier 3 feeds the lifestyle g
 - Cache raw LLM responses to disk so that re-runs cost nothing.
 
 ### 6.3 S4 Archetype construction: 4–6 attributes, three tiers, no price — gate C2
-1. **Candidates.** The node's facet list per tier (Tier 1 material / colour tone / colour family / size; Tier 2 node functional attributes and bands; Tier 3 style / vibe / node theme), minus facets that failed validation (G2), are unknown for > 40% of either retailer, or have one value covering > 85% of families. Values held by < 5% of the node's families are grouped as "other".
-2. **Core of 4.** The 4-facet combination with ≥ 1 facet from each tier that puts the largest *balanced* share of both retailers' families into supported cells; score = balanced coverage + 0.25 × mean normalised entropy. Colour tone and colour family never appear together, and the node's product-type attribute is required when usable. A cell is supported with ≥ 10 pooled families and either ≥ max(5, 0.5% of the competitor's families) competitor families or ≥ max(8, 4% of Staples' families) Staples families. A tier with no usable facet is relaxed (shown in the report); if fewer than 4 facets pass every check, the best near-misses are admitted and flagged.
-3. **Refinement to 5 and 6.** The next facet splits a cell only if ≥ 2 children are supported and the rest of the cell is supported (kept as "<facet>: other") or empty; refinement stops before a node exceeds 40 archetypes. There is no back-off below 4 attributes: families in no supported cell form the node's **long tail** (reported, never recommended).
+1. **Candidates.** The node's facet list per tier (Tier 1 material / colour tone / colour family / size; Tier 2 node functional attributes and bands; Tier 3 style / vibe / node theme) plus up to 4 **gap facets** (Sai, 2026-10-03): values of the multi-label tags (key benefits → Tier 2; use context, end-user segment, aesthetic tags → Tier 3) where the competitor credibly carries more (Pr ≥ 0.9, held by ≥ 10% of its families), the strongest by share difference, each turned into a yes / not-stated facet (e.g. "Water-resistant: yes"); an aesthetic-tag gap facet never appears with vibe. Facets are dropped if they failed validation (G2), are unknown for > 45% of either retailer (40% before 2026-10-03), or have one value covering > 85% of families. Values held by < 5% of the node's families are grouped as "other".
+2. **Core of 4.** The 4-facet combination with ≥ 1 facet from each tier that puts the largest *balanced* share of both retailers' families into supported cells; score = balanced coverage + 0.25 × mean normalised entropy + 1.0 × mean JSD between the Staples and competitor value mixes (Sai, 2026-10-03: prefer attributes on which the two assortments differ, so archetypes line up with the attribute gaps the report shows). Colour tone and colour family never appear together, and the node's product-type attribute is required when usable. A cell is supported with ≥ 10 pooled families and either ≥ max(5, 0.5% of the competitor's families) competitor families or ≥ max(8, 4% of Staples' families) Staples families. A tier with no usable facet is relaxed (shown in the report); if fewer than 4 facets pass every check, the best near-misses are admitted and flagged.
+3. **Refinement to 5 and 6.** The next facet splits a cell only if ≥ 2 children are supported and the rest of the cell is supported (kept as "<facet>: other") or empty; refinement stops before a node exceeds 40 archetypes. There is no back-off below 4 attributes: families in no supported cell form the node's **long tail** (reported, never recommended). **Small-node pass:** a node that ends S7 with fewer than 3 recommendations that passed a method gate is re-run once through S4–S7 with a pooled bar of 5 families instead of 10 (`archetypes.small_node`; list in `data/interim/relaxed_nodes.json`; the node header says so).
 4. **Price band is not an attribute.** Price is read in PPG (inside TG), PPR (Method 1 labels) and the node's price view (§6.7.2).
 5. **Naming.** A short merchant name from the node's `name_order` plus the full attribute combo; every output shows **Archetype (Attributes combo)**.
 6. **Gate C2 (valid archetype).** An archetype can be recommended only if it has ≥ 4 attributes, no "other (mixed)" value and ≥ 5 competitor families.
@@ -520,7 +520,7 @@ No Excel workbook or deck for now. Intermediate tables (CSV or parquet) are pipe
 - A flow chart of S0 → S8 (one box per stage: purpose, steps, outputs, gate, tech); the report itself (S9) is not shown as a method step.
 - Archetypes (Attributes Combinations): the three tiers, each with examples; the two methods side by side (VOS and TG components, ACR); Method 1 and Method 2 label tables; "from two scores to one list" (the gates of §7).
 - **Safety gates** first (grouped Common / Method 1 / Method 2 / Final with this run's counts), then **Quality gates** (§10) as a scorecard; encoder bake-off and calibration.
-- Assumptions and caveats (columns used, convenience samples, text parity, provisional vocabularies).
+- Assumptions and caveats (columns used, convenience samples, full-text length differences, provisional vocabularies).
 
 **Tab 2: Gaps & Recommendations.** A single-select dropdown groups the focus nodes by L1, ordered by path inside each L1 (Staples-only nodes marked). Choosing a node shows, in this order (Sai, 2026-10-01):
 
@@ -638,7 +638,7 @@ These decisions were made while building the pipeline. Each one either tightens 
 
 **Scope.** Phase 2 narrows the PoC to 12 focus nodes (exact Staples L3/L4 paths, Sai's selection), each compared with its **Primary 1** competitor: Amazon (planners, desk organizers, backpacks, water bottles, lunch bags, desk pads, coffee organizers) and Wayfair (office desks, accent chairs, desk lamps, clocks, partitions). Water bottles were planned against Scheels; Sai moved them to Amazon on 2026-10-03 when the Amazon file gained those pages. The node list, segment · play and competitor order live in `config/nodes.yaml`. A node whose competitor has no data runs as a **Staples-only profile** until data arrives, with no code change. Where this section conflicts with §4–§9, §14 wins.
 
-**Columns.** Only the Phase-1 columns are read: id, title, price, url, brand/vendor, selected choice, description, listing page (and the L1–L6 path of that page, used only to identify it, because many page names are facet labels such as "Type: Folding"). Ratings, review counts, ranks, badges, list prices, images and the new Wayfair `specifications` column are not used.
+**Columns.** The Phase-1 columns are read: id, title, price, url, brand/vendor, selected choice, description, listing page (and the L1–L6 path of that page, used only to identify it, because many page names are facet labels such as "Type: Folding"). Since 2026-10-03 the Wayfair `specifications` column is also read as text (§14.8). Ratings, review counts, ranks, badges, list prices and images are not used.
 
 ### 14.1 Stage simplification (S0–S9)
 
@@ -647,7 +647,7 @@ These decisions were made while building the pipeline. Each one either tightens 
 | S0 Ingest | S0 | Generic competitor adapter (Amazon added); prices must carry a `$` ("2 sizes" is not a price); vendor noise ("Learn more", size codes) blanked; Amazon links rebuilt as `/dp/<ASIN>`; Staples rating no longer parsed |
 | S1 Families & nodes | S1 + S2 | **Same grouping rule for every retailer** (brand + name stem), because Amazon and Wayfair now list colour/size variants as separate ids too. Competitor variants also need the same description start (house-brand titles are generic). A title prefix counts as a brand only if it is a known brand. **Node = exact Staples leaf**: the pseudo-L5 split is dropped (the focus list already names the granular node) |
 | S2 Mapping | S3 + S2 finalize | Each page now points to at most one node, so the multi-leaf classifier is replaced by: longest-prefix **page-path crosswalk** → node or [] (pages whose products Staples shelves under a *sibling* leaf, e.g. calendars, briefcases, standing desks, desktop dividers) → **product-level scope check**: k-NN over all Staples nodes, mapped only if the predicted node is the page's node and the product is close enough. The NONE cut is Youden's J but never rejects more than 5% of known in-scope products (the page crosswalk already removes whole out-of-scope pages) |
-| S3 Attributes | S4–S5 | Per-node vocabularies (`config/nodes/*.yaml`) incl. material overrides, Tier-3 node attributes (design theme, pattern, audience…), numeric fields and bands. **Text parity**: text-measured fields read Staples text cut to the median description length of that node's competitor (Amazon subtitles ≈ 110 characters vs thousands of Staples bullet characters), so "not mentioned" means the same on both sides; G2 validation also runs on this cut text. `spec_role: indicator` marks Tier-2 fields whose Staples spec vocabulary differs from product copy (measured by text on both sides, spec for validation only). Derived single-valued `vibe` facet = first aesthetic tag in priority order, else "plain" |
+| S3 Attributes | S4–S5 | Per-node vocabularies (`config/nodes/*.yaml`) incl. material overrides, Tier-3 node attributes (design theme, pattern, audience…), numeric fields and bands. **Full text** on both sides since 2026-10-03 (§14.8; text parity before). `spec_role: indicator` marks Tier-2 fields whose Staples spec vocabulary differs from product copy (measured by text on both sides, spec for validation only). Derived single-valued `vibe` facet = first aesthetic tag in priority order, else "plain" |
 | S4 Archetypes | S6 | Redesigned, §14.2 |
 | S5 / S6 / S7 / S8 | S7 / S8 / S9 / S10 | Same formulas. Per-node competitor, cards and functional core. S6 adds the price view (§14.3) |
 | S9 Report | S11 | Node filter removed (all 12 nodes listed); §14.4 |
@@ -768,3 +768,64 @@ Weight-sensitivity top-5 retention: TG 95%, VOS 95%.
 - **The new nodes are small, so archetypes are sparse.** Desk Pads has 55 Staples + 61 Amazon families; only one 4-attribute cell reaches the 10-family pooled bar, and 81% of families sit in the long tail. Desk Organizers has 6 archetypes and an 80% long tail. The Conditional fill only uses valid archetypes, so the 3-per-node minimum cannot be met: Desk Organizers gets 2 and Desk Pads 0. The fixed `min_pooled: 10` was set for nodes with thousands of families. A support bar that scales with node size is the open fix; it needs Sai's approval.
 - **Water Bottles: one Strong pick** (stainless steel water bottle: Amazon 25 families vs Staples 5, ACR 4%) plus two Conditional picks (16–24 oz and 25–40 oz stainless bottles, where Staples is already deep). Several archetypes share one display name because the attribute that separates them (insulation or vibe) is not in `name_order`.
 - **Unchanged Wayfair nodes moved.** The NONE threshold τ is re-fitted on all retailers' products, so the new Amazon pages shifted τ and a few Wayfair families moved in or out of scope (mapped 9,899 → 9,935). For Desk Lamps this changed the competitor median description length, which drives text parity, and so the Staples parity text. USB-port accuracy went to 84.5% (G2 bar 85%), so USB port left the archetype facets. Colour tone replaced it, and recommendations fell from 9 to 3. This is a knife-edge effect of the G2 bar, not a change in the data. Fixing τ, parity length and the G2 field set per run (frozen calibration) would stop data changes in one retailer from moving another retailer's nodes; that is a candidate method change for Sai.
+
+### 14.8 Full text, gap-aligned archetypes, small-node pass (Sai, 2026-10-03; report v15)
+**Why.** On Desk Pads the attribute chart showed clear gaps (water-resistant 48% vs 0%, faux leather, luxe, corporate office), yet the node had no recommendation. Three causes:
+- Text parity cut Staples text to ~120 characters, so most Staples pads lost their "water-resistant / spill-proof" wording.
+- The archetype search picked attributes for coverage only, not for difference.
+- The 10-family bar split the premium faux-leather pocket into cells of 7 and 6.
+
+**Changes:**
+
+| # | Change | Where |
+|---|---|---|
+| 1 | **Full text, no cut**, for every attribute on both sides: Staples title + paragraph + bullets + spec values; Amazon title + description; Wayfair name + choice + description + `specifications` (newly read). Spec values only; names only for "Yes"; negative values skipped. G2 on Staples prose without specs. Unlabelled sizes in titles ("31.5\" x 15.7\"", "36x17 in") are now read as width × depth | `s0_ingest`, `s1_families`, `s3_attributes`, `retailers.yaml`, `pipeline.yaml` → `extraction` |
+| 2 | **Small-node pass**: nodes with < 3 gate-passing recommendations re-run S4–S7 with a 5-family bar | `run_pipeline.py`, `s4_archetypes`, `pipeline.yaml` → `archetypes.small_node` |
+| 3 | Unknown-share limit for archetype facets 40% → **45%** | `pipeline.yaml` → `archetypes.max_unknown_share` |
+| 4 | **Gap-aligned archetypes**: (a) score adds 1.0 × mean JSD of the facets; (b) up to 4 gap facets per node from credible competitor-deeper tag values | `s4_archetypes`, `pipeline.yaml` → `archetypes.divergence_weight`, `gap_facets` |
+
+**Two corrections made during the run:**
+- Spec names first leaked category words into the text ("Gaming: Non Gaming" made 96% of Staples desks "gaming"; "Accent & Waiting Room Chair Type" made every Staples chair "reception/lobby"). Specs now add values only.
+- Gap facets first took both directions, and were dominated by Staples-deeper artefacts of Staples' longer text. They now take only competitor-deeper gaps, which is the point of the analysis.
+
+**Result (S3–S9 re-run; report v15):**
+- **Extraction:** G2 70 node-fields pass, 36 fail. Desk Lamps USB port passes again; Backpacks water-resistant fails.
+- **Archetypes:** 325, of which 250 valid (C2); 279 use a gap facet.
+- **Method 1:** 134 archetypes pass, 77 listed.
+- **Method 2:** 96 archetypes pass, 80 listed.
+- **Final:** **89 recommendations (30 Strong, 19 Vector-led, 38 Gap-led, 2 Conditional)**; 77 of the 89 include a gap facet.
+- **Weight-sensitivity top-5 retention:** TG 91%, VOS 96%.
+
+| Node | Strong | Vector-led | Gap-led | Conditional | Total | v13 |
+|---|---|---|---|---|---|---|
+| Accent & Waiting Room Chairs | 2 | 3 | 5 | 0 | 10 | 10 |
+| Backpacks | 1 | 0 | 9 | 0 | 10 | 10 |
+| Clocks & Timers | 5 | 2 | 3 | 0 | 10 | 10 |
+| Desk Lamps | 7 | 1 | 2 | 0 | 10 | 3 |
+| Lunch Bags & Boxes | 4 | 1 | 5 | 0 | 10 | 10 |
+| Office Desks | 2 | 5 | 3 | 0 | 10 | 10 |
+| Office Partitions & Dividers | 5 | 1 | 4 | 0 | 10 | 4 |
+| Coffee Organizers & Dispensers | 2 | 3 | 2 | 0 | 7 | 6 |
+| Planners & Personal Organizers | 0 | 1 | 3 | 0 | 4 | 6 |
+| Desk Organizers | 1 | 1 | 0 | 1 | 3 | 2 |
+| Water Bottles, Tumblers & Travel Mugs | 0 | 1 | 2 | 0 | 3 | 3 |
+| Desk Pads | 1 | 0 | 0 | 1 | 2 | 0 |
+
+**Gap facets in use (competitor vs Staples share):**
+- Office Desks: luxe 35% vs 7%; home office 52% vs 19%; remote workers 51% vs 19%.
+- Accent Chairs: residential living 38% vs 7%.
+- Desk Lamps: residential living 42% vs 12%; luxe 24% vs 8%.
+- Clocks: statement 39% vs 9%; sleek/minimal 33% vs 9%.
+- Partitions: natural/woven 32% vs 2%; residential living 24% vs 0%; commercial-grade.
+- Backpacks: men 33% vs 2%; women 36% vs 9%; outdoor 25% vs 3%.
+- Lunch Bags: women 23% vs 4%; travel/commute 31% vs 15%.
+- Desk Pads: water-resistant 48% vs 15%; corporate office.
+- Desk Organizers: education 46% vs 22%.
+- Water Bottles: water-resistant; gym/sports.
+
+**Reading and caveats:**
+- **Desk Pads.** The Strong pick is the premium faux-leather pocket: no anti-slip or "water-resistant" wording; Amazon 17 vs Staples 5; median $94 vs $157; 9 safe products. The Conditional pick is the cheap anti-slip "water-resistant" PU pad (Amazon $13.99 vs Staples $49.44, ACR 94%), shown only to reach the per-node minimum. The small-node pass cannot help further: the node's other cells have no Amazon products.
+- **"Not stated" values in archetype names** come from the gap facets and from Amazon's short text. A combination such as "Water-resistant: not stated" means the product's text does not say so, not that the product lacks the feature.
+- **Full text favours the retailer with more text.** Amazon's "not stated" share is higher for every feature, so competitor-deeper tag gaps are conservative, and Staples-deeper ones are partly a text effect. Gap facets therefore use competitor-deeper gaps only.
+- **Selection on the gap.** Archetypes are now chosen partly because they differ (JSD term and gap facets). TG on these archetypes reads larger than on coverage-only archetypes; compare TG within a run, not across v13 and v15.
+- **Planners fell from 6 to 4**: the archetype set changed, and fewer archetypes pass a gate.

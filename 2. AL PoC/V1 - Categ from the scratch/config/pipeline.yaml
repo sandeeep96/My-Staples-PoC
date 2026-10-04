@@ -25,11 +25,14 @@ extraction:
   style_zero_shot: true            # default; a node config can switch it off (non-furniture nodes)
   style_zero_shot_margin: 0.015
   desc_words_in_card: 40
-  # Text parity (same instrument, same amount of text): for text-measured fields, Staples text is cut to the
-  # median description length of that node's competitor. Staples-only nodes use the default.
-  parity_default_chars: 400
-  parity_min_chars: 80
-  parity_max_chars: 1500
+  # Full text on both sides (Sai, 2026-10-03; replaces text parity): every attribute is read from ALL available
+  # text, uncut. Staples = title + paragraph + bullets + specification values; Amazon = title + description;
+  # Wayfair = product name + selected choice + description (review part dropped) + specifications.
+  # G2 validation still reads Staples title + paragraph + bullets only (no specs), so it is not circular.
+  # Specs add their VALUE only (spec names carry category words); the name only for an affirmative value;
+  # negative values (these, or starting with non/not/no/without) are left out
+  spec_negative_values: ['no', 'none', 'n/a', 'na', 'false', '0', 'not applicable']
+  spec_affirmative_values: ['yes', 'true', 'y']
 
 nodes:
   min_families_scored: 30          # per side, else the node is "thin" (descriptive only)
@@ -49,7 +52,7 @@ archetypes:
   max_facets: 6                    # ... and at most 6 (refinement adds the 5th/6th only where support allows)
   max_archetypes: 40               # refinement stops before a node exceeds this many archetypes
   tier_min: {tier1: 1, tier2: 1, tier3: 1}   # the 4 core attributes mix all three tiers
-  max_unknown_share: 0.4
+  max_unknown_share: 0.45         # Sai, 2026-10-03 (was 0.40)
   max_dominant_share: 0.85         # a facet whose top value covers more families than this says little
   exclusive_facets: [[colour_tone, colour_family]]   # never both in one archetype (same information)
   require_type_facet: true         # the core includes the node's product-type attribute when it is usable
@@ -64,7 +67,20 @@ archetypes:
   # partly unknown, then below the validation bar) and flagged in the report, so every archetype keeps 4 attributes
   admit_near_misses: true
   rare_value_share: 0.05           # facet values held by < 5% of the node's families are grouped as "other"
-  entropy_weight: 0.25             # score = balanced coverage + weight x mean normalised entropy
+  entropy_weight: 0.25             # score = balanced coverage + entropy_weight x mean normalised entropy
+  divergence_weight: 1.0           #         + divergence_weight x mean JSD (Staples vs competitor) of the facets
+  # Gap facets (Sai, 2026-10-03): credible value-level gaps of the multi-label tags become yes / not-stated facets,
+  # so archetypes can be built on the gaps the report shows (e.g. "Water-resistant: yes")
+  gap_facets:
+    max_per_node: 4                # strongest credible gaps by share difference
+    min_credibility: 0.9           # Pr(competitor share > Staples share) >= 0.9: only gaps where the competitor carries more
+    min_share: 0.10                # the competitor holds the value in >= 10% of its families
+    tiers: {key_benefits: tier2, use_context: tier3, end_user_segment: tier3, aesthetic_tags: tier3}
+    exclusive_with: {aesthetic_tags: vibe}   # vibe is derived from the aesthetic tags: never both
+  # Small nodes (Sai, 2026-10-03): only when a node ends with fewer than gates.final.min_per_node recommendations
+  # that passed a method gate, S4-S7 are re-run for it with a smaller support bar
+  small_node:
+    min_pooled: 5                  # combinations of >= 5 families (standard: min_pooled); C2 still needs >= 5 competitor families
   price_bands: 4                   # node price bands: price insights only, never an archetype attribute
   umap_components: 10
   bootstrap: 20

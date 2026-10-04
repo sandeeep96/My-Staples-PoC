@@ -1,7 +1,8 @@
 """S0 Ingest & clean: retailer adapters -> one SKU table per retailer (methodology §5.1).
 
 Only the Phase-1 columns are read (id, title, price, url, brand/vendor, selected choice, description, listing page
-and its path). Ratings, review counts, badges, ranks, list prices, images and specification columns are ignored.
+and its path), plus a competitor specification column where the adapter names one (Wayfair, Sai 2026-10-03).
+Ratings, review counts, badges, ranks, list prices and images are ignored.
 """
 from __future__ import annotations
 
@@ -69,6 +70,18 @@ def parse_staples_description(raw) -> tuple[str, str, dict]:
         if name and val and name not in specs:
             specs[name] = val
     return para, bullets, specs
+
+
+def parse_pipe_specs(raw) -> dict:
+    """'Product Type: Armoire Desk | Overall Shape: Rectangle' -> {name: value}"""
+    out = {}
+    for part in _clean(raw).split(" | "):
+        if ":" in part:
+            k, v = part.split(":", 1)
+            k, v = k.strip(), v.strip()
+            if k and v and k not in out:
+                out[k] = v
+    return out
 
 
 def _path(r: dict, cols: list[str]) -> list[str]:
@@ -146,7 +159,8 @@ def ingest_competitor(name: str, ad: dict) -> pd.DataFrame:
             "url": url,
             "vendor": clean_vendor(r.get(c["vendor"]), ad) if c.get("vendor") else "",
             "choice": _clean(r.get(c["choice"])) if c.get("choice") else "",
-            "desc": desc, "bullets": "", "specs": "{}",
+            "desc": desc, "bullets": "",
+            "specs": json.dumps(parse_pipe_specs(r.get(c["specs"])) if c.get("specs") else {}, ensure_ascii=False),
             "page": page, "page_name": page_name,
             "had_review_text": ad.get("description_format") == "text_with_review" and " | " in desc_full,
         })

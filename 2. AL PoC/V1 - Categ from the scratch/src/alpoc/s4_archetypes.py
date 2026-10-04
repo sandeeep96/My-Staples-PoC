@@ -5,13 +5,19 @@ Every archetype is a combination of 4 to 6 attribute values (Sai, 2026-10-01), m
   features), Tier 3 lifestyle (style, vibe, node-specific theme/pattern/audience). Price band is NOT an attribute:
   price is analysed separately (price-band coverage, archetype price ladder, PPG and PPR).
 
-  1. Candidates: the node's facet list per tier (config), minus fields that failed validation (G2) or are unknown
-     for more than `max_unknown_share` of either retailer.
-  2. Core: the 4-facet combination (with at least tier_min facets from each tier) that puts the largest balanced
-     share of both retailers' families into supported cells (ties: higher mean entropy).
+  1. Candidates: the node's facet list per tier (config) plus "gap facets" (credible value-level gaps of the
+     multi-label tags where the competitor carries more, e.g. "Water-resistant: yes / not stated"; Sai 2026-10-03),
+     minus fields that failed
+     validation (G2) or are unknown for more than `max_unknown_share` of either retailer.
+  2. Core: the 4-facet combination (with at least tier_min facets from each tier) with the highest score =
+     balanced share of both retailers' families in supported cells + entropy_weight x mean entropy
+     + divergence_weight x mean JSD between Staples and the competitor (Sai 2026-10-03: prefer attributes on which
+     the two assortments differ, so archetypes line up with the attribute gaps the report shows).
   3. Refinement: a 5th, then 6th facet splits a cell only when >= 2 children are supported and the rest of the cell
      (other values or not stated) is itself supported or empty; that rest keeps the cell as "<facet>: other".
-  4. Families outside every supported cell form the node's long tail (reported, not scored).
+  4. Families outside every supported cell form the node's long tail (reported, not scored). A node listed in
+     relaxed_nodes.json (fewer than gates.final.min_per_node gate-passing recommendations on the first pass; written
+     by run_pipeline) uses the smaller pooled bar archetypes.small_node.min_pooled.
   5. Cross-check against UMAP + HDBSCAN clusters of the source-neutral card (ARI/AMI, bootstrap stability).
 """
 from __future__ import annotations
@@ -28,7 +34,8 @@ from sklearn.metrics import adjusted_mutual_info_score, adjusted_rand_score
 
 from . import embed
 from .cards import neutral_card, tier2_attrs, tier3_attrs
-from .common import cfg, load, load_json, log, money, nice_breaks, node_config, save, save_json
+from .common import (cfg, interim, jsd, load, load_json, log, money, nice_breaks, node_config, prob_greater, save,
+                     save_json, smoothed_dist, split_multi)
 
 TIERS = ("tier1", "tier2", "tier3")
 UNIVERSAL_T1 = ["material_class", "colour_tone", "colour_family", "size_class"]
@@ -36,6 +43,27 @@ UNIVERSAL_T3 = ["style_family", "vibe"]
 FACET_LABELS = {"material_class": "Material", "colour_tone": "Colour tone", "colour_family": "Colour",
                 "size_class": "Size", "style_family": "Style", "vibe": "Vibe"}
 SKIP_WORDS = {"no", "other", "plain", "none", "general", "solid", ""}
+GAP_PREFIX = "gap__"
+RELAXED_FILE = "relaxed_nodes.json"
+
+
+def relaxed_nodes() -> list[str]:
+    f = interim(RELAXED_FILE)
+    return json.loads(f.read_text(encoding="utf-8")) if f.exists() else []
+
+
+def write_relaxed_nodes(nids: list[str]) -> None:
+    interim(RELAXED_FILE).write_text(json.dumps(sorted(nids)), encoding="utf-8")
+
+
+def is_gap_facet(f: str) -> bool:
+    return str(f).startswith(GAP_PREFIX)
+
+
+def gap_parts(f: str) -> tuple[str, str]:
+    """'gap__key_benefits__water-resistant' -> ('key_benefits', 'water-resistant')"""
+    _, attr, val = f.split("__", 2)
+    return attr, val
 
 
 # ----------------------------------------------------------------------------- price bands (price insights only)
@@ -65,6 +93,45 @@ def _norm_entropy(s: pd.Series) -> float:
     return float(-(p * np.log(p)).sum() / np.log(len(p)))
 
 
+def facet_jsd(df: pd.DataFrame, f: str, comp: str) -> float:
+    """JSD between the Staples and competitor value mixes (known values, Jeffreys-smoothed), as in the report."""
+    s, cpt = df.loc[df["retailer"] == "staples", f].dropna(), df.loc[df["retailer"] == comp, f].dropna()
+    if not len(s) or not len(cpt):
+        return 0.0
+    support = sorted(set(s) | set(cpt))
+    return jsd(smoothed_dist(s.value_counts(), support), smoothed_dist(cpt.value_counts(), support))
+
+
+def gap_facets(df: pd.DataFrame, comp: str, c: dict, rng: np.random.Generator) -> tuple[dict, list, list]:
+    """Credible value-level gaps of the multi-label tags where the competitor carries more -> yes / no columns
+    usable as archetype facets.
+    -> ({column: Series}, [(column, tier)], [info rows])"""
+    g = c.get("gap_facets") or {}
+    S, C = df[df["retailer"] == "staples"], df[df["retailer"] == comp]
+    NS, NC = len(S), len(C)
+    if not g or not NS or not NC:
+        return {}, [], []
+    rows = []
+    for attr, tier in (g.get("tiers") or {}).items():
+        if attr not in df.columns:
+            continue
+        tags = df[attr].map(split_multi)
+        vals = sorted({t for ts in tags for t in ts})
+        for t in vals:
+            has = tags.map(lambda ts, t=t: t in ts)
+            ks, kc = int(has[S.index].sum()), int(has[C.index].sum())
+            ss, sc = ks / NS, kc / NC
+            cred = prob_greater(kc, NC, ks, NS, cfg()["gaps"]["mc_draws"], rng)
+            if cred >= g["min_credibility"] and sc >= g["min_share"]:     # competitor carries more
+                rows.append({"facet": f"{GAP_PREFIX}{attr}__{t}", "attribute": attr, "value": t, "tier": tier,
+                             "share_staples": ss, "share_competitor": sc, "credibility": cred, "diff": sc - ss,
+                             "has": has})
+    rows.sort(key=lambda r: -abs(r["diff"]))
+    rows = rows[: g.get("max_per_node", 4)]
+    cols = {r["facet"]: r.pop("has").map({True: "yes", False: "no"}) for r in rows}
+    return cols, [(r["facet"], r["tier"]) for r in rows], rows
+
+
 def facet_tiers(nid: str) -> dict:
     af = node_config(nid).get("archetype_facets")
     if af:
@@ -72,9 +139,12 @@ def facet_tiers(nid: str) -> dict:
     return {"tier1": UNIVERSAL_T1[:2], "tier2": tier2_attrs(nid), "tier3": UNIVERSAL_T3 + tier3_attrs(nid)}
 
 
-def facet_candidates(df: pd.DataFrame, nid: str, fails: set, c: dict, comp: str):
+def facet_candidates(df: pd.DataFrame, nid: str, fails: set, c: dict, comp: str, extra: list | None = None):
     cands, scores = [], []
-    for tier, fl in facet_tiers(nid).items():
+    tiers = facet_tiers(nid)
+    for f, tier in extra or []:
+        tiers[tier] = tiers.get(tier, []) + [f]
+    for tier, fl in tiers.items():
         for f in fl:
             if f not in df.columns:
                 scores.append({"facet": f, "tier": tier, "eligible": False, "reason": "not extracted"})
@@ -88,6 +158,7 @@ def facet_candidates(df: pd.DataFrame, nid: str, fails: set, c: dict, comp: str)
                       "one value only" if df[f].nunique() < 2 or ent <= 0.05 else
                       f"one value covers {dom:.0%}" if dom > c["max_dominant_share"] else "")
             scores.append({"facet": f, "tier": tier, "entropy": ent, "unknown": unk, "dominant_share": dom,
+                           "jsd": facet_jsd(df, f, comp), "gap_facet": is_gap_facet(f),
                            "eligible": not reason, "reason": reason})
             if not reason:
                 cands.append((f, tier))
@@ -135,6 +206,7 @@ def _combo_ok(fs: list[str], c: dict, type_facets: list[str]) -> bool:
 
 def choose_core(df: pd.DataFrame, cands: list[tuple], c: dict, comp: str, type_facets: list[str]):
     ent = {f: _norm_entropy(df[f]) for f, _ in cands}
+    div = {f: facet_jsd(df, f, comp) for f, _ in cands}
     type_facets = [f for f in type_facets if f in ent] if c.get("require_type_facet") else []
     k = min(c["core_facets"], len(cands))
     mins = dict(c["tier_min"])
@@ -156,7 +228,8 @@ def choose_core(df: pd.DataFrame, cands: list[tuple], c: dict, comp: str, type_f
             fs = [f for f, _ in combo]
             if not _combo_ok(fs, c, type_facets):
                 continue
-            score = balanced_coverage(df, fs, c, comp) + c["entropy_weight"] * np.mean([ent[f] for f in fs])
+            score = (balanced_coverage(df, fs, c, comp) + c["entropy_weight"] * np.mean([ent[f] for f in fs])
+                     + c.get("divergence_weight", 0.0) * np.mean([div[f] for f in fs]))
             if best is None or score > best[0]:
                 best = (score, combo)
         if best is not None:
@@ -229,10 +302,15 @@ def pretty_value(v) -> str:
 
 
 def facet_label(nid: str, f: str) -> str:
+    if is_gap_facet(f):
+        v = gap_parts(f)[1]
+        return v[:1].upper() + v[1:]
     return (node_config(nid).get("facet_labels") or {}).get(f) or FACET_LABELS.get(f) or f.replace("_", " ").capitalize()
 
 
 def _word(nid: str, f: str, v: str) -> str:
+    if is_gap_facet(f):
+        return gap_parts(f)[1] if v == "yes" else ""
     labels = (node_config(nid).get("labels") or {}).get(f) or {}
     if v in labels:
         return labels[v]
@@ -247,7 +325,7 @@ def archetype_name(nid: str, fv: list[tuple]) -> tuple[str, str]:
     """-> (short merchant name, attribute combo). The report shows 'Name (combo)'."""
     nc = node_config(nid)
     d = dict(fv)
-    order = nc.get("name_order") or [f for f, _ in fv]
+    order = [f for f, _ in fv if is_gap_facet(f)] + (nc.get("name_order") or [f for f, _ in fv if not is_gap_facet(f)])
     words = [w for w in (_word(nid, f, d[f]) for f in order if f in d) if w][:4]
     noun = nc.get("noun", "")
     noun_tokens = set(re.findall(r"[a-z]+", noun.lower()))
@@ -294,6 +372,8 @@ def run() -> dict:
     nodes = load("nodes.parquet")
     qx = load_json("qa_extraction.json")["nodes"]
     rng = np.random.default_rng(7)
+    grng = np.random.default_rng(11)
+    relaxed_list = set(relaxed_nodes())
     members, arches, qa = [], [], {}
     att["price_band"] = None
     for _, nd in nodes.iterrows():
@@ -309,15 +389,28 @@ def run() -> dict:
         df = att.loc[idx]
         fails = set(qx.get(nid, {}).get("g2_fail", []))
         n_s, n_c = int((df["retailer"] == "staples").sum()), int((df["retailer"] == comp).sum())
-        c = {**c, "_min_c": max(c["min_competitor"], int(round(c["min_competitor_share"] * n_c))),
+        c = {**cfg()["archetypes"], "_min_c": max(c["min_competitor"], int(round(c["min_competitor_share"] * n_c))),
              "_min_s": max(c["min_staples"], int(round(c["min_staples_share"] * n_s)))}
+        small = nid in relaxed_list
+        if small:
+            c["min_pooled"] = int(min(c["min_pooled"], (c.get("small_node") or {}).get("min_pooled", 5)))
         df = df.copy()
         for f in {x for t in facet_tiers(nid).values() for x in t if x in df.columns}:
             vc = df[f].dropna().value_counts(normalize=True)
             rare = set(vc[vc < c["rare_value_share"]].index)
             if rare and len(vc) - len(rare) >= 1:
                 df[f] = df[f].where(~df[f].isin(rare), "other")
-        cands, fscores = facet_candidates(df, nid, fails, c, comp)
+        gcols, gextra, ginfo = gap_facets(df, comp, c, grng)
+        for col, ser in gcols.items():
+            df[col] = ser
+            att.loc[idx, col] = ser
+        excl = [list(x) for x in c.get("exclusive_facets") or []]
+        for attr, other in ((c.get("gap_facets") or {}).get("exclusive_with") or {}).items():
+            for col in gcols:
+                if gap_parts(col)[0] == attr:
+                    excl.append([col, other])
+        c["exclusive_facets"] = excl
+        cands, fscores = facet_candidates(df, nid, fails, c, comp, gextra)
         from .cards import type_attrs
         core, score, relaxed = choose_core(df, cands, c, comp, type_attrs(nid))
         rest = [x for x in cands if x not in core]
@@ -347,7 +440,9 @@ def run() -> dict:
         depths = [len(cell["facets"]) for cell in cells.values()]
         qa[nid] = {"core_facets": [f for f, _ in core], "core_tiers": [t for _, t in core],
                    "refinement_facets": [f for f, _ in used], "tier_min_relaxed": relaxed,
-                   "coverage_score": score, "facet_scores": fscores, "price_breaks": br, "min_support": {"competitor": c["_min_c"], "staples": c["_min_s"]},
+                   "coverage_score": score, "facet_scores": fscores, "price_breaks": br,
+                   "min_support": {"pooled": c["min_pooled"], "competitor": c["_min_c"], "staples": c["_min_s"]},
+                   "small_node_relaxed": small, "gap_facets": ginfo,
                    "admitted_near_misses": [sc["facet"] + ": " + sc["reason"] for sc in fscores if sc.get("admitted") and sc["facet"] in [f for f, _ in core + used]],
                    "n_archetypes": len(cells), "depth_counts": pd.Series(depths).value_counts().to_dict() if depths else {},
                    "long_tail_share": float(len(tail) / len(df)),
