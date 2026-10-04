@@ -1,0 +1,11 @@
+{
+  "n_nodes": 15866,
+  "n_edges": 27480,
+  "edges_by_type": {
+    "CHILD_OF": 15416,
+    "SAME_AS": 9600,
+    "CROSS_LISTED_UNDER": 2464
+  },
+  "n_concepts": 8190,
+  "seconds": 35.0
+}

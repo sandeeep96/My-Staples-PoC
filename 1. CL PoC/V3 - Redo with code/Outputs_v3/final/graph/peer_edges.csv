@@ -1,0 +1,179 @@
+source,target,score,rel
+"Amazon::Patio, Lawn & Garden > Outdoor Décor > Cupolas & Accessories",OfficeDepot::Furniture > Outdoor Furniture > Outdoor Decor > Outdoor Accessories,0.7155450001396948,SIMILAR_TO
+"Amazon::Patio, Lawn & Garden > Outdoor Décor > Cupolas & Accessories",Wayfair::Outdoor > Outdoor Décor > Weathervanes & Cupolas,0.7628695291201669,SIMILAR_TO
+"Amazon::Patio, Lawn & Garden > Outdoor Décor > Cupolas & Accessories",Walmart::Patio & Garden > Patio & Outdoor Decor > Cupolas,0.864696799910954,SIMILAR_TO
+Amazon::Electronics > Marine Electronics > Marine Antennas,Walmart::Sports & Outdoors > Outdoor Sports > Fishing > Marine Electronics,0.6802392939258588,SIMILAR_TO
+Wayfair::Baby & Kids > Teen Bedding > Teen Comforters & Sets,OfficeDepot::Furniture > Bedroom > Bedding > Comforters,0.7695126477622337,SIMILAR_TO
+Wayfair::Baby & Kids > Teen Bedding > Teen Comforters & Sets,WestElm::Bedding > All Bedding > Comforters,0.762995033480186,SIMILAR_TO
+Wayfair::Baby & Kids > Teen Bedding > Teen Comforters & Sets,Amazon::Home & Kitchen > Bedding > Comforters & Sets,0.8468128020671082,SIMILAR_TO
+Wayfair::Baby & Kids > Teen Bedding > Teen Comforters & Sets,Walmart::Home > Teens' Rooms > Teens' Bedding > Teens' Comforters Sets,0.9345996123787961,SIMILAR_TO
+"Walmart::Seasonal > Easter > Easter Books, Movies & Music",Wayfair::Holiday > Easter,0.6753461248965298,SIMILAR_TO
+Walmart::Health and Medicine > Weight Loss > Fat Burners,Amazon::Health & Personal Care > Sports Nutrition > Fat Burners & Thermogenics,0.7785961056581976,SIMILAR_TO
+Amazon::Sports & Outdoors > Sports & Fitness > Swimming,Walmart::Sports & Outdoors > Sports > Swimming,0.9261367923209565,SIMILAR_TO
+"Amazon::Arts, Crafts & Sewing > Needlework > Latch Hook",Wayfair::Facilities & Maintenance > Maintenance Storage > Hooks,0.6699935859971196,SIMILAR_TO
+"Amazon::Arts, Crafts & Sewing > Needlework > Latch Hook",Walmart::Arts Crafts & Sewing > Sewing > Needlepoint Embroidery > Latch Locker Hooking,0.7390658630120371,SIMILAR_TO
+Wayfair::Home Improvement > Outdoor Remodel > Fencing Accessories,Walmart::Patio & Garden > Garden Center > Landscaping Supplies > Fences,0.6460431677265229,SIMILAR_TO
+Wayfair::Organization > Garage & Outdoor Storage & Organization > Sheds,Walmart::Home > Storage & Organization > Sheds,0.959262781624346,SIMILAR_TO
+Wayfair::Shop Contractor Spaces > Bathroom Renovation > Bathroom Tiles & Flooring,Amazon::Home & Kitchen > Bath > Bathroom Accessories,0.6973378894274234,SIMILAR_TO
+Wayfair::Shop Contractor Spaces > Bathroom Renovation > Bathroom Tiles & Flooring,Walmart::Home Improvement > Bathroom Renovation > Bathroom Hardware,0.7412633622337435,SIMILAR_TO
+Wayfair::Outdoor > Outdoor Fencing & Flooring > Porch & Stair Railings,Walmart::Home Improvement > Building Materials > Railing,0.7445068369837688,SIMILAR_TO
+Walmart::Food > Breakfast & Cereal > Breakfast finds,OfficeDepot::Breakroom > Fresh & Frozen Foods > Breakfast & Cereal,0.7543582995908404,SIMILAR_TO
+Wayfair::Outdoor > Backyard Play > Trampolines,Walmart::Sports & Outdoors > Recreation > Trampolines,0.9317480739012551,SIMILAR_TO
+WestElm::Outdoor > Outdoor Solutions > Furniture Cushion & Cushion Covers,Wayfair::Outdoor > Cushions,0.8063180244167838,SIMILAR_TO
+WestElm::Outdoor > Outdoor Solutions > Furniture Cushion & Cushion Covers,"Amazon::Patio, Lawn & Garden > Patio Furniture & Accessories > Patio Cushion Covers",0.8012134432584599,SIMILAR_TO
+WestElm::Outdoor > Outdoor Solutions > Furniture Cushion & Cushion Covers,Walmart::Patio & Garden > Patio & Outdoor Decor > Outdoor Cushions,0.7281353994562234,SIMILAR_TO
+Amazon::Health & Personal Care > Sports Nutrition > Post-Workout & Recovery,Walmart::Health and Medicine > Protein > Pre Workout,0.6746640972829394,SIMILAR_TO
+"Amazon::Patio, Lawn & Garden > Gardening & Lawn Care > Hydroponics",Walmart::Patio & Garden > Garden Center > Hydroponics,0.9313447376325481,SIMILAR_TO
+Wayfair::Furniture > Bedroom Furniture > Armoires & Wardrobes,OfficeDepot::Furniture > Bedroom > Armoires & Wardrobes,0.981793141066206,SIMILAR_TO
+Wayfair::Furniture > Bedroom Furniture > Armoires & Wardrobes,Walmart::Home > Furniture > Bedroom Furniture > Armoires Wardrobes,0.9818677181062154,SIMILAR_TO
+WestElm::Furniture > Bedroom > Dressers,OfficeDepot::Furniture > Bedroom > Dressers,0.9621863191913254,SIMILAR_TO
+WestElm::Furniture > Bedroom > Dressers,Walmart::Home > Furniture > Bedroom Furniture > Dressers,0.9632966562928669,SIMILAR_TO
+"Amazon::Patio, Lawn & Garden > Farm & Ranch > Plant Germination Equipment",Walmart::Patio & Garden > Garden Center > Lawn Equipment,0.6784810869580296,SIMILAR_TO
+"Wayfair::Holiday > Halloween > Halloween Wreaths, Garlands & Flowers","Amazon::Home & Kitchen > Seasonal Décor > Wreaths, Garlands & Swags",0.7545378022561139,SIMILAR_TO
+"Wayfair::Holiday > Halloween > Halloween Wreaths, Garlands & Flowers",Walmart::Seasonal > Easter > Easter Decorations > Easter Wreaths Garland,0.7442128313121117,SIMILAR_TO
+Walmart::Patio & Garden > Outdoor Shade > Pergola Canopies,"Amazon::Patio, Lawn & Garden > Patio Furniture & Accessories > Canopies, Gazebos & Pergolas",0.7568751702499328,SIMILAR_TO
+Wayfair::Furniture > Bedroom Furniture > Makeup Vanities,Walmart::Home > Bath > Bathroom Furniture > Bathroom Vanities,0.7475924193516622,SIMILAR_TO
+Wayfair::Furniture > Bedroom Furniture > Nightstands,Walmart::Home > Furniture > Bedroom Furniture > Nightstands,0.9877694785115068,SIMILAR_TO
+"Amazon::Patio, Lawn & Garden > Outdoor Décor > Doormats",WestElm::Rugs > Rugs By Type > Doormats,0.9589196899115862,SIMILAR_TO
+"Amazon::Patio, Lawn & Garden > Outdoor Décor > Doormats",Walmart::Home > Decor > Rugs > Doormats,0.977072109610277,SIMILAR_TO
+WestElm::Furniture > Dining & Kitchen > Buffet Tables & Sideboards,Wayfair::Furniture > Kitchen & Dining Furniture > Sideboards & Buffets,0.8646341465666685,SIMILAR_TO
+WestElm::Furniture > Dining & Kitchen > Buffet Tables & Sideboards,Walmart::Home > Furniture > Kitchen & Dining Furniture > Sideboards Buffets,0.8634666779080828,SIMILAR_TO
+Wayfair::Outdoor > Outdoor Shades > Awnings,Walmart::Patio & Garden > Outdoor Shade > Awnings,0.9750586631798035,SIMILAR_TO
+Wayfair::Outdoor > Garden > Rain Barrels,Walmart::Patio & Garden > Garden Center > Rain Barrels,0.9391737583268776,SIMILAR_TO
+Walmart::Patio & Garden > Outdoor Shade > Beach Umbrellas,WestElm::Outdoor > Outdoor Umbrellas > Umbrellas,0.8609943023031796,SIMILAR_TO
+Walmart::Patio & Garden > Outdoor Shade > Beach Umbrellas,"Amazon::Patio, Lawn & Garden > Patio Furniture & Accessories > Umbrellas & Shade",0.7340724038149358,SIMILAR_TO
+Wayfair::Holiday > Thanksgiving > Thanksgiving Decorations,Walmart::Party & Occasions > Thanksgiving Party Supplies > Thanksgiving Party Decorations,0.7978563007963659,SIMILAR_TO
+Wayfair::Holiday > Fourth of July > Fourth of July Decorations,Walmart::Party & Occasions > Party Supplies > Fourth of July Party Supplies > Fourth of July Party Decorations,0.8426908941547948,SIMILAR_TO
+Wayfair::Decor & Pillows > Wall Décor > Tapestries,Walmart::Home > Decor > Wall Decor > Tapestries,0.9829684723215402,SIMILAR_TO
+Wayfair::Holiday > Father's Day,Walmart::Seasonal > Father's Day,0.909237637303326,SIMILAR_TO
+Wayfair::Furniture > Bedroom Furniture > Daybeds,Walmart::Home > Furniture > Bedroom Furniture > Beds,0.6862281601424148,SIMILAR_TO
+Walmart::Health and Medicine > Protein > Special K Protein Shakes,Amazon::Health & Personal Care > Sports Nutrition > Protein,0.7220697148937032,SIMILAR_TO
+Wayfair::Holiday > St. Patrick's Day > St. Patrick's Day Decorations,Walmart::Home > Holiday Decor > St. Patrick's Day Crafts & Decor,0.8064910568082153,SIMILAR_TO
+Wayfair::Furniture > Living Room Furniture > Slipcovers,Walmart::Home > Decor > Slipcovers > Couch Covers,0.6478007267957523,SIMILAR_TO
+WestElm::Kitchen & Dining > Serveware > Picnic Baskets,Wayfair::Smallwares > Serveware > Serving Bowls & Baskets,0.70331837871622,SIMILAR_TO
+WestElm::Kitchen & Dining > Serveware > Picnic Baskets,"Amazon::Patio, Lawn & Garden > Patio Furniture & Accessories > Picnic Baskets, Tables & Accessories",0.788252578040981,SIMILAR_TO
+WestElm::Kitchen & Dining > Serveware > Picnic Baskets,Walmart::Home > Storage & Organization > Storage Baskets & Bins > Baskets,0.7281583679943089,SIMILAR_TO
+"Amazon::Patio, Lawn & Garden > Gardening & Lawn Care > Plant Support Structures",Walmart::Patio & Garden > Garden Center > Plant Supports,0.8085032403963754,SIMILAR_TO
+Wayfair::Smallwares > Baking Sheets & Pans > Ramekins & Souffle Dishes,Walmart::Home > Kitchen & Dining > Bakeware > Baking Dishes,0.6855801955097918,SIMILAR_TO
+Wayfair::Facilities & Maintenance > Maintenance Storage > Workbenches,Walmart::Home Improvement > Garage Storage > Tool Storage > Work Benches,0.6787983984915408,SIMILAR_TO
+Wayfair::Outdoor > Outdoor Fencing & Flooring > Privacy Screens,OfficeDepot::Computers & Accessories > Monitors & Accessories > Privacy Screen Filters,0.7931544479689558,SIMILAR_TO
+Wayfair::Outdoor > Outdoor Fencing & Flooring > Privacy Screens,"Amazon::Patio, Lawn & Garden > Patio Furniture & Accessories > Outdoor Privacy Screens & Protection",0.819216491447242,SIMILAR_TO
+Wayfair::Outdoor > Outdoor Fencing & Flooring > Privacy Screens,Walmart::Patio & Garden > Patio & Outdoor Decor > Outdoor Privacy Screens,0.8805510271622742,SIMILAR_TO
+WestElm::Bedding > Featured > Pillowcases,OfficeDepot::Furniture > Bedroom > Bedding > Pillows & Pillowcases,0.8957079614959922,SIMILAR_TO
+WestElm::Bedding > Featured > Pillowcases,Wayfair::Bedding & Bath > Bedding Essentials > Sheets & Pillowcases,0.8574409927493842,SIMILAR_TO
+WestElm::Bedding > Featured > Pillowcases,Amazon::Home & Kitchen > Bedding > Sheets & Pillowcases,0.8816010053152228,SIMILAR_TO
+WestElm::Bedding > Featured > Pillowcases,Walmart::Home > Bedding > Bed Sheets & Pillowcases,0.8525205517272356,SIMILAR_TO
+Wayfair::Outdoor > Fitness > Weight Benches,Walmart::Sports & Outdoors > Exercise & Fitness > Strength Training > Weights,0.7580273745351089,SIMILAR_TO
+Wayfair::Shop Contractor Spaces > Hallway & Mudroom > Hallway Runners,Walmart::Home > Decor > Rugs > Kitchen Runners,0.6624824972795518,SIMILAR_TO
+Wayfair::Outdoor > Outdoor Heating > Chimineas,Walmart::Patio & Garden > Outdoor Heating > Chimineas,0.9930682709298249,SIMILAR_TO
+Wayfair::Baby & Kids > Toddler & Kids Bedding & Bath > Bed Canopies,Amazon::Home & Kitchen > Bedding > Bed Canopies & Drapes,0.847370004304768,SIMILAR_TO
+Wayfair::Baby & Kids > Toddler & Kids Bedding & Bath > Bed Canopies,Walmart::Home > Kids' Rooms > Kids' Bedding > Bed Canopies,0.9687301130265362,SIMILAR_TO
+Amazon::Industrial & Scientific > Material Handling Products > Forklift Booms,Walmart::Industrial & Scientific > Packaging and Material Handling > Forklift Parts,0.800162003654412,SIMILAR_TO
+Wayfair::Shop Office Spaces > Reception Sets,Walmart::Walmart for Business > Business Furniture > Desks & Workstations > Reception Desks,0.7492030418071456,SIMILAR_TO
+Wayfair::Outdoor > Front Door Décor & Curb Appeal > Shutters,Walmart::Home Improvement > Windows & Window Supplies > Window Hardware > Shutters,0.9353645535492692,SIMILAR_TO
+WestElm::Outdoor > Planters & Garden > Outdoor Planters,Wayfair::Outdoor > Outdoor Décor > Planters,0.8517498195544109,SIMILAR_TO
+WestElm::Outdoor > Planters & Garden > Outdoor Planters,Walmart::Patio & Garden > Patio & Outdoor Decor > Pots & Planters > Indoor Planters,0.7857895685575184,SIMILAR_TO
+Walmart::Health and Medicine > Sleep & Snoring Aids > Snoring,Amazon::Health & Personal Care > Health Care > Sleep & Snoring,0.7958499374198502,SIMILAR_TO
+Wayfair::Outdoor > Outdoor Shades > Carports,Walmart::Patio & Garden > Sheds & Outdoor Storage > Carports,0.9634494977241699,SIMILAR_TO
+Wayfair::Outdoor > Backyard Play > Basketball Hoops,Walmart::Sports & Outdoors > Sports > Basketball > Basketball Hoops,0.901601055842095,SIMILAR_TO
+Walmart::Industrial & Scientific > Science Education > Anatomy Models,Amazon::Industrial & Scientific > Science Education > Model Animals,0.7168346877268348,SIMILAR_TO
+Wayfair::Outdoor > Garden > Potting Tables,"Amazon::Patio, Lawn & Garden > Gardening & Lawn Care > Potting Benches & Tables",0.7698790788242658,SIMILAR_TO
+Wayfair::Outdoor > Garden > Potting Tables,Walmart::Patio & Garden > Garden Center > Potting Benches,0.7423995792183553,SIMILAR_TO
+Walmart::Home Improvement > Home Safety > Personal Safety,Amazon::Tools & Home Improvement > Safety & Security > Fire Safety,0.7046790576305875,SIMILAR_TO
+Wayfair::Organization > Garage & Outdoor Storage & Organization > Natural Material Storage,Walmart::Home > Storage & Organization > Garage Storage,0.6879221717628542,SIMILAR_TO
+Wayfair::Furniture > Bedroom Furniture > Small Space Bedrooms,OfficeDepot::Furniture > Bedroom,0.7822127087621877,SIMILAR_TO
+Wayfair::Furniture > Bedroom Furniture > Small Space Bedrooms,WestElm::Furniture > Bedroom,0.7822127087621877,SIMILAR_TO
+Wayfair::Furniture > Bedroom Furniture > Small Space Bedrooms,Amazon::Home & Kitchen > Furniture > Bedroom Furniture,0.726497668090591,SIMILAR_TO
+Wayfair::Furniture > Bedroom Furniture > Small Space Bedrooms,Walmart::Home > Furniture > Small Space Furniture > Bedroom,0.8024122980454678,SIMILAR_TO
+"Wayfair::Shop Contractor Spaces > Hallway & Mudroom > Pet Gates, Fences & Doors",Walmart::Home Improvement > Doors and Gates > Doors,0.6748304079321781,SIMILAR_TO
+WestElm::Bath > Bathroom Renovation > Cabinet Knobs & Pulls,Walmart::Home Improvement > Bathroom Renovation > Bathroom Cabinets & Fixtures,0.6823407515266928,SIMILAR_TO
+Wayfair::Bedding & Bath > Bath Rugs & Towels > Bathrobes,Walmart::Home > Bath > Bathroom Rugs & Bath Mats,0.6601465651242006,SIMILAR_TO
+Wayfair::Outdoor > Fitness > Home Gyms,Walmart::Sports & Outdoors > Exercise & Fitness > Strength Training > Home Gyms,0.959014998701474,SIMILAR_TO
+Amazon::Sports & Outdoors > Sports & Fitness > Australian Rules Football,Walmart::Sports & Outdoors > Sports > Football Gear & Equipment,0.6706747653283954,SIMILAR_TO
+Amazon::Home & Kitchen > Home Décor > Vases,"Wayfair::Decor & Pillows > Decorative Accents > Vases, Urns, Jars & Bottles",0.734652199769172,SIMILAR_TO
+Amazon::Home & Kitchen > Home Décor > Vases,Walmart::Home > Decor > Vases,0.9778926983039526,SIMILAR_TO
+Wayfair::Outdoor > Front Door Décor & Curb Appeal > House Numbers & Letters,WestElm::Outdoor > Outdoor Accessories & Decor > House Numbers & Mailboxes,0.799072143092848,SIMILAR_TO
+Wayfair::Outdoor > Front Door Décor & Curb Appeal > House Numbers & Letters,"Amazon::Tools & Home Improvement > Hardware > House Numbers, Plaques & Signs",0.7244297595203939,SIMILAR_TO
+Wayfair::Outdoor > Outdoor Fencing & Flooring > Pavers & Cobblestone,Walmart::Patio & Garden > Garden Center > Landscaping Supplies > Pavers Rocks Stepping Stones,0.6593734357278516,SIMILAR_TO
+"Amazon::Patio, Lawn & Garden > Outdoor Heating & Cooling > Patio Heater Replacement Parts",OfficeDepot::Breakroom > Appliances > Heating & Cooling > Heaters,0.6928141109480845,SIMILAR_TO
+"Amazon::Patio, Lawn & Garden > Outdoor Heating & Cooling > Patio Heater Replacement Parts",Wayfair::Outdoor > Outdoor Heating > Patio Heaters,0.8054668236705417,SIMILAR_TO
+"Amazon::Patio, Lawn & Garden > Outdoor Heating & Cooling > Patio Heater Replacement Parts",Walmart::Patio & Garden > Outdoor Heating > Patio Heaters,0.8162380587169384,SIMILAR_TO
+Wayfair::Baby & Kids > Teen Bedding > Teen Bed in a Bag,Walmart::Home > Teens' Rooms > Teens' Bedding > Teen Bedding,0.7300257902783853,SIMILAR_TO
+Amazon::Electronics > Marine Electronics > Marine Electronic Radar Systems,Walmart::Sports & Outdoors > Outdoor Sports > Fishing > Marine Electronics,0.7699140720834483,SIMILAR_TO
+Amazon::Health & Personal Care > Wellness & Relaxation > App-Enabled Activity Trackers,Walmart::Health and Medicine > Caregiver > Fitness & Wellness > Activity Trackers,0.8325716436084861,SIMILAR_TO
+"Amazon::Arts, Crafts & Sewing > Sewing > Quilting",Walmart::Arts Crafts & Sewing > Sewing > Quilting,0.9996204887727549,SIMILAR_TO
+Wayfair::Bedding & Bath > Shower Curtains & Accessories > Shower Curtain Rods,WestElm::Bath > Bath Linens > Shower Curtains,0.8483149946615407,SIMILAR_TO
+Wayfair::Bedding & Bath > Shower Curtains & Accessories > Shower Curtain Rods,Walmart::Home > Bath > Shower Curtains & Accessories > Shower Curtains,0.8889478088432179,SIMILAR_TO
+Amazon::Appliances > Garbage Disposals & Compactors > Trash Compactors,Walmart::Home > Appliances > Trash Compactors,0.9577602043083686,SIMILAR_TO
+Wayfair::Outdoor > Outdoor Décor > Bird Houses,Walmart::Patio & Garden > Patio & Outdoor Decor > Bird Feeders Bird Houses > Bird Houses,0.9408930315194795,SIMILAR_TO
+Amazon::Industrial & Scientific > Power Transmission Products > Ratchets & Pawls,Walmart::Home Improvement > Tools > Hand Tools > Ratchets & Sockets,0.6937433826925626,SIMILAR_TO
+Amazon::Home & Kitchen > Home Décor > Poufs,"WestElm::Pillows & Decor > Pillows, Throws & Poufs > Poufs & Floor Pillows",0.742101561893417,SIMILAR_TO
+Amazon::Home & Kitchen > Home Décor > Poufs,Wayfair::Furniture > Living Room Furniture > Ottomans & Poufs,0.7654284987985914,SIMILAR_TO
+Amazon::Home & Kitchen > Home Décor > Poufs,Walmart::Home > Decor > Poufs,0.9662872473312433,SIMILAR_TO
+Amazon::Electronics > eBook Readers & Accessories > Skins,Walmart::Electronics > Electronics Accessories > General Electronic Accessories > Electronic Skins,0.7707225831479452,SIMILAR_TO
+"Amazon::Industrial & Scientific > Test, Measure & Inspect > Calibration","Walmart::Industrial & Scientific > Test, Measure, and Inspect > Calibration",0.9930567100536047,SIMILAR_TO
+Amazon::Industrial & Scientific > Industrial Hardware > Lock Bolts,Walmart::Home Improvement > Hardware > Fasteners > Bolts,0.8197479235023375,SIMILAR_TO
+"Amazon::Patio, Lawn & Garden > Grills & Outdoor Cooking > Grills & Smokers",OfficeDepot::Breakroom > Appliances > Kitchen > Grills,0.7386936407855179,SIMILAR_TO
+"Amazon::Patio, Lawn & Garden > Grills & Outdoor Cooking > Grills & Smokers",Wayfair::Outdoor > Grills & Outdoor Cooking > Grills & Accessories,0.7616015115096915,SIMILAR_TO
+"Amazon::Patio, Lawn & Garden > Grills & Outdoor Cooking > Grills & Smokers",Walmart::Patio & Garden > Outdoor Cooking > Grills > Smokers,0.8244771522232699,SIMILAR_TO
+"Amazon::Patio, Lawn & Garden > Outdoor Décor > Chimes",Walmart::Patio & Garden > Patio & Outdoor Decor > Wind Chimes,0.8650297583373294,SIMILAR_TO
+OfficeDepot::Office Supplies > Drafting > Knives & Blades,Wayfair::Kitchen > Kitchen Utensils & Tools > Knives & Accessories,0.6866180012660363,SIMILAR_TO
+OfficeDepot::Office Supplies > Drafting > Knives & Blades,Walmart::Home > Kitchen & Dining > Kitchen Knives Knife Block Sets and Cutlery > Paring Knives,0.6781820642304972,SIMILAR_TO
+Amazon::Industrial & Scientific > Material Handling Products > Loading Dock Levelers,Walmart::Industrial & Scientific > Packaging and Material Handling > Dock Equipment,0.6889586009408264,SIMILAR_TO
+Amazon::Sports & Outdoors > Outdoor Recreation > Cycling,Walmart::Sports & Outdoors > Bikes > Performance Cycling,0.7914384206167507,SIMILAR_TO
+Amazon::Grocery & Gourmet Food > Snack Foods > Pork Rinds,"Walmart::Food > Snacks, Cookies & Chips > Chips > Pork Rinds",0.9536736636698235,SIMILAR_TO
+Amazon::Sports & Outdoors > Sports & Fitness > Golf,Walmart::Sports & Outdoors > Sports > Golf Equipment,0.8098198483061998,SIMILAR_TO
+"Amazon::Patio, Lawn & Garden > Outdoor Power Tools > Hedge Trimmers",Walmart::Patio & Garden > Outdoor Power Equipment > Trimmers and Edgers > Hedge Trimmers,0.9604913344469863,SIMILAR_TO
+Amazon::Sports & Outdoors > Sports Medicine > Sports Mouthguards,"Walmart::Sports & Outdoors > Exercise & Fitness > Sports Recovery, Injury Prevention > Sports Medicine",0.6944420298426452,SIMILAR_TO
+"Amazon::Arts, Crafts & Sewing > Needlework > Embroidery",Walmart::Arts Crafts & Sewing > Sewing > Needlepoint Embroidery > Embroidery Kits,0.8719345964751912,SIMILAR_TO
+"Amazon::Appliances > Ranges, Ovens & Cooktops > Wall Ovens",Wayfair::Appliances > Kitchen Appliances > Wall Ovens,0.9637056046876789,SIMILAR_TO
+"Amazon::Appliances > Ranges, Ovens & Cooktops > Wall Ovens","Walmart::Home > Appliances > Ranges, Ovens and Cooktops > Wall Ovens",0.9961707288433808,SIMILAR_TO
+"Amazon::Arts, Crafts & Sewing > Beading & Jewelry Making > Charms",Walmart::Arts Crafts & Sewing > Beading & Jewelry Making > Pendants and Charms,0.836547616252189,SIMILAR_TO
+Amazon::Industrial & Scientific > Science Education > Microscope Sample Slides,Walmart::Industrial & Scientific > Telescopes and Microscopes > Microscopes,0.7177063863235105,SIMILAR_TO
+"Amazon::Patio, Lawn & Garden > Pools, Hot Tubs & Supplies > Parts & Accessories","Wayfair::Outdoor > Hot Tubs, Saunas & Pools > Hot Tub Accessories",0.766744099650746,SIMILAR_TO
+"Amazon::Patio, Lawn & Garden > Pools, Hot Tubs & Supplies > Parts & Accessories",Walmart::Patio & Garden > Hot Tubs > Hot Tub Accessories,0.7443799327808442,SIMILAR_TO
+Amazon::Industrial & Scientific > Industrial Hardware > Hinges,Walmart::Home Improvement > Hardware > Hinges,0.9487479645541816,SIMILAR_TO
+Amazon::Health & Personal Care > Sexual Wellness,Walmart::Health and Medicine > Sexual Wellness Top Brands,0.822583941205719,SIMILAR_TO
+"Amazon::Patio, Lawn & Garden > Farm & Ranch > Poultry Care",Walmart::Industrial & Scientific > Farm & Ranch > Poultry Care,0.991346382926577,SIMILAR_TO
+Amazon::Industrial & Scientific > Power Transmission Products > Belts,"Walmart::Health and Medicine > Bedroom Safety & Aids > Transfer Boards, Belts & Slides > Transfer Belts Slides",0.702084496275811,SIMILAR_TO
+"Amazon::Arts, Crafts & Sewing > Fabric Decorating > Dyes",Walmart::Arts Crafts & Sewing > Crafting > Shop All Fabric & Apparel Crafting > Fabric Dyes,0.8341621538035393,SIMILAR_TO
+Amazon::Home & Kitchen > Seasonal Décor > Wreath Hangers,Wayfair::Outdoor > Outdoor Décor > Wreaths,0.7571443082481237,SIMILAR_TO
+Amazon::Home & Kitchen > Seasonal Décor > Wreath Hangers,Walmart::Home > Holiday Decor > Halloween Decor > Halloween Wreaths,0.7017028909584099,SIMILAR_TO
+Amazon::Toys & Games > Learning & Education > Reading & Writing,OfficeDepot::School Supplies > Instructional Resources > Classroom Reading and Writing,0.804882652818599,SIMILAR_TO
+Amazon::Office Products > Office Electronics > Electronic Organizers,Wayfair::Office Storage & Organization > File & Paper Organization > Paper Organizers,0.6936968969726764,SIMILAR_TO
+"Amazon::Patio, Lawn & Garden > Farm & Ranch > Livestock Supplies",Walmart::Industrial & Scientific > Farm & Ranch > Livestock Supplies,0.9915988545233871,SIMILAR_TO
+OfficeDepot::School Supplies > Art & Craft Supplies > Clay and Modeling,Walmart::Arts Crafts & Sewing > Art Supplies > Ceramic & Pottery Supplies > Modeling Clay,0.8956218312602864,SIMILAR_TO
+"Amazon::Arts, Crafts & Sewing > Beading & Jewelry Making > Purse Making",Walmart::Arts Crafts & Sewing > Beading & Jewelry Making > Jewelry Making Tools,0.6982045396303139,SIMILAR_TO
+"Amazon::Grocery & Gourmet Food > Candy & Chocolate > Brittle, Caramel & Toffee",OfficeDepot::Breakroom > Candy & Snacks > Chocolate & Caramels,0.7049724636102527,SIMILAR_TO
+"Amazon::Grocery & Gourmet Food > Candy & Chocolate > Brittle, Caramel & Toffee","Walmart::Food > Candy > Brittle, Caramel & Toffee",0.9636523808179861,SIMILAR_TO
+"Amazon::Patio, Lawn & Garden > Outdoor Power Tools > Lawn Mowers & Tractors",Walmart::Patio & Garden > Outdoor Power Equipment > Lawn Mowers,0.8829261754440481,SIMILAR_TO
+Amazon::Home & Kitchen > Seasonal Décor > Candleholders,WestElm::Pillows & Decor > Room Decor > Candleholders,0.9565017791622397,SIMILAR_TO
+Amazon::Home & Kitchen > Seasonal Décor > Candleholders,Wayfair::Decor & Pillows > Candles & Candle Holders > Candle Holders,0.6984450549859711,SIMILAR_TO
+Amazon::Home & Kitchen > Seasonal Décor > Candleholders,Walmart::Home > Decor > Candles & Home Fragrance > Lanterns Candle Holders,0.6757502317437538,SIMILAR_TO
+"Amazon::Arts, Crafts & Sewing > Printmaking > Printmaking Inks",Walmart::Arts Crafts & Sewing > Crafting > Printmaking > Printmaking Ink,0.969027229099632,SIMILAR_TO
+"Amazon::Patio, Lawn & Garden > Grills & Outdoor Cooking > Fuel & Firestarters",Walmart::Patio & Garden > Outdoor Cooking > Grills > Grilling Fuels and Fire Starters,0.7339916694288399,SIMILAR_TO
+"Amazon::Arts, Crafts & Sewing > Beading & Jewelry Making > Beads & Bead Assortments",Walmart::Arts Crafts & Sewing > Beading & Jewelry Making > Beads,0.8466327129803072,SIMILAR_TO
+Wayfair::Outdoor > Outdoor Fencing & Flooring > Outdoor Deck Tiles & Planks,Walmart::Patio & Garden > Patio & Outdoor Decor > Outdoor Rugs,0.6509560268900908,SIMILAR_TO
+"Amazon::Appliances > Ranges, Ovens & Cooktops > Cooktops",Wayfair::Appliances > Kitchen Appliances > Cooktops,0.9645453745859963,SIMILAR_TO
+"Amazon::Appliances > Ranges, Ovens & Cooktops > Cooktops","Walmart::Home > Appliances > Ranges, Ovens and Cooktops > Cooktops",0.9962841866918765,SIMILAR_TO
+"Amazon::Patio, Lawn & Garden > Outdoor Power Tools > Tillers",Walmart::Patio & Garden > Outdoor Power Equipment > Tillers,0.984023747217416,SIMILAR_TO
+Amazon::Health & Personal Care > Vision Care > Contact Lenses,Walmart::Health and Medicine > Eye Care > Contact Lens Cases,0.7810191371652956,SIMILAR_TO
+Amazon::Industrial & Scientific > Industrial Electrical > Passive Components,Walmart::Home Improvement > Electrical > Electronic Communication Components,0.6776019202340944,SIMILAR_TO
+"Amazon::Arts, Crafts & Sewing > Needlework > Cross-Stitch",Walmart::Arts Crafts & Sewing > Sewing > Needlepoint Embroidery > Cross Stitch,0.901488196337826,SIMILAR_TO
+Amazon::Sports & Outdoors > Outdoor Recreation > Climbing,Wayfair::School Spaces > Outdoor Playground & Recreation > Climbing Toys & Slides,0.7577276479214269,SIMILAR_TO
+Amazon::Sports & Outdoors > Outdoor Recreation > Climbing,Walmart::Sports & Outdoors > Outdoor Sports > Climbing & Mountaineering Equipment,0.7767217081091802,SIMILAR_TO
+Amazon::Appliances > Garbage Disposals & Compactors > Garbage Disposals,Walmart::Home Improvement > Kitchen Renovation > Kitchen Plumbing > Garbage Disposals,0.928893576814768,SIMILAR_TO
+Amazon::Sports & Outdoors > Sports & Fitness > Boating & Sailing,Walmart::Sports & Outdoors > Outdoor Sports > Boating,0.8024415677891614,SIMILAR_TO
+Amazon::Industrial & Scientific > Power Transmission Products > Mechanical Pulleys,Walmart::Industrial & Scientific > Packaging and Material Handling > Pullers and Pulleys,0.7189228043471471,SIMILAR_TO
+Amazon::Tools & Home Improvement > Hardware > Address Numbers & Plaques,Wayfair::Outdoor > Front Door Décor & Curb Appeal > Address Plaques & Signs,0.7341012380572942,SIMILAR_TO
+Amazon::Health & Personal Care > Sports Nutrition > Electrolyte Replacements,Walmart::Health and Medicine > Protein > Electrolytes,0.7605547446392571,SIMILAR_TO
+"Amazon::Patio, Lawn & Garden > Outdoor Power Tools > Edgers",Walmart::Patio & Garden > Outdoor Power Equipment > Trimmers and Edgers > Edgers,0.9600180811050716,SIMILAR_TO
+"Amazon::Arts, Crafts & Sewing > Printmaking > Printing Presses & Accessories",Walmart::Arts Crafts & Sewing > Crafting > Printmaking > Printing Presses Accessories,0.9895328327371354,SIMILAR_TO
+"Amazon::Patio, Lawn & Garden > Outdoor Heating & Cooling > Fire Pit Spark Screens",Wayfair::Outdoor > Outdoor Heating > Fire Pits,0.7575358380998977,SIMILAR_TO
+"Amazon::Patio, Lawn & Garden > Outdoor Heating & Cooling > Fire Pit Spark Screens",Walmart::Patio & Garden > Outdoor Heating > Fire Pit Accessories > Fire Pit Spark Screens,0.944557063486887,SIMILAR_TO
+Walmart::Sports & Outdoors > Sports > Handball,Amazon::Sports & Outdoors > Sports & Fitness > Team Handball Equipment,0.7713458776798147,SIMILAR_TO
+"Amazon::Patio, Lawn & Garden > Gardening & Lawn Care > Plant & Soil Monitoring",Walmart::Patio & Garden > Garden Center > Plant Care,0.6564323553063366,SIMILAR_TO
+Walmart::Party & Occasions > Easter Party Supplies > Easter Grass,Wayfair::Holiday > Easter,0.7056225215681013,SIMILAR_TO
+"Amazon::Arts, Crafts & Sewing > Beading & Jewelry Making > Beading Supplies",Walmart::Arts Crafts & Sewing > Beading & Jewelry Making > Beading Supplies,0.9996234181951043,SIMILAR_TO
+Amazon::Sports & Outdoors > Sports & Fitness > Hunting & Fishing,Walmart::Sports & Outdoors > Outdoor Sports > Hunting,0.8002650689626767,SIMILAR_TO
+"Amazon::Arts, Crafts & Sewing > Crafting > Weaving & Spinning",Walmart::Arts Crafts & Sewing > Crafting > Speciality Crafts & Hobbies > Weaving,0.8354056122073442,SIMILAR_TO
