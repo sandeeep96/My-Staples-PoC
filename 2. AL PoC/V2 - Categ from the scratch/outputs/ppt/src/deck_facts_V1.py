@@ -230,9 +230,6 @@ def main():
                    for b in bands[bands.node_id == nid].itertuples()},
         )
     facts["nodes"] = node_facts
-    rec9 = rec[rec.node_id.isin(DECK_NODES)]
-    facts["totals9"] = dict(recommended=int(len(rec9)), tiers={t: int(n) for t, n in rec9.tier.value_counts().items()},
-                            absent_share=pct((rec9.n_staples == 0).mean()))
 
     # ---------- insight statistics (each with its source cell) ----------
     N = {SHORT[leaf(n)]: n for n in DECK_NODES}
@@ -304,8 +301,6 @@ def main():
         "desks_luxe": G("Office Desks", "aesthetic_tags", "luxe"),
         "desks_writing": G("Office Desks", "desk_type", "writing/table"),
         "bp_comfort": G("Backpacks", "key_benefits", "comfort"),
-        "bp_outdoor": G("Backpacks", "use_context", "outdoor"),
-        "coffee_capacity": G("Coffee Organizers", "capacity_band", "30-49 pods"),
     }
     facts["bands"] = {
         "desks_u200": band(N["Office Desks"], "under $200"),
@@ -381,11 +376,7 @@ def main():
                                 comp_share=round(100 * a_co / max(a_co_n, 1), 1)),
                 note=p.get("note"),
                 final_rank=int(a.final_rank), label=p["label"], archetype=a["name"], combo=a.combo_full,
-                tier=a.tier, framing=p["framing"],
-                # attribute combination as shown on the slide: stated values only; empty defaults
-                # ("Vibe: plain", "Audience: general") give no information, as in the archetype names
-                combo_shown=" · ".join(x for x in a.combo_full.split(" · ")
-                                       if "not stated" not in x and x not in ("Vibe: plain", "Audience: general")), skipped=p.get("skipped"),
+                tier=a.tier, framing=p["framing"], skipped=p.get("skipped"),
                 n_staples=int(a.n_staples), n_competitor=int(a.n_competitor),
                 share_staples=round(float(a.p_staples) * 100, 1), share_competitor=round(float(a.p_competitor) * 100, 1),
                 median_price_competitor=None if pd.isna(a.price_median_competitor) else round(float(a.price_median_competitor), 2),
