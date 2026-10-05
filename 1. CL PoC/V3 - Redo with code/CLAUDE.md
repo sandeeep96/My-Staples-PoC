@@ -22,9 +22,11 @@ Codes/code/                   pipeline (Python)
   gold_relabel_kappa_v3.csv   blind second-pass labels (Cohen's kappa)
   od_unmapped_placement.csv   reviewed placement of Office Depot's breadcrumb-less pages
 Codes/docs_build/             V2 JS builders for docx/pptx (not regenerated)
+Codes/ppt_build/              client deck builder: build_ppt.js (pptxgenjs) + apply_theme.js + render.ps1 (PowerPoint -> PNG QA)
 Outputs/                      V2 outputs: keep untouched (V2-vs-V3 comparison reads them)
 Outputs_v3/                   V3 pipeline outputs
 reports/                      client HTML reports, one file per version (v3, v4, ...) - never overwrite a shared one
+ppt/                          client deck for Pat: instructions docx + Staples_Category_Recommendations_<version>.pptx (v1, v2, ...)
 ```
 
 ## Run (Windows, Git Bash)
@@ -53,10 +55,12 @@ python method_v_vector.py && python method_g_graph.py && python run_framework.py
   - **Gaps & Recommendations:** KPI tiles; decision picture (collapsible) = opportunities on AAS × CRS titled with zone counts and labelled by lead sub-category (top 5 per zone, 1P-CORE GAP unlabelled), then brand fit vs adjacency, then peer evidence (no "Figure N" prefixes); zone filter (4 options, default CURATE) + theme filter (default All) driving the sub-category table sorted by O, highest first, with full score names in the headings; opportunity deep dives, findability, pass and watch list collapsed.
   - Self-contained: figures embedded as base64, no external requests. Must work at 375 px width.
 - Chart labels name the sub-category (e.g. "Workbenches"), not the L1 › L2 › L3 path.
+- **Deck versions:** every new set of deck instructions gets a new file. Run `cd Codes/ppt_build && npm install && PPT_VERSION=v2 node build_ppt.js` (default v1); keep older decks in `ppt/`. QA: `powershell -File render.ps1 <deck> <out_dir>` renders slides through PowerPoint.
+- **Deck structure (v1):** intro, Category Recommendations (the 43 opportunities on AAS × CRS drawn as editable shapes, top 5 labelled in CURATE / VERTICAL EXT / REVIEW = 15 labels, zone legend strip; label positions auto-placed inside each label's own zone, manual nudges in `OVERRIDE`), Tech Architecture (6 stages under 3 phase arrows, in the style of the sample in the instructions docx), thank you. Speaker notes carry the talk track. Numbers come from `summary_v3.json`.
 - Client-facing wording is plain English. Explain AAS / CRS / BFS / EASE / PC / O the first time each appears.
 
 ## Decisions already made (do not re-ask)
 - V3 = fix the code and re-run the pipeline (not critique-only).
 - Brand reach = workplace-first: residential lifestyle is downgraded, brand-unsafe categories are excluded.
 - Category opportunity = zone × Staples department (embedding clusters were rejected: they mixed look-alikes).
-- Deliverables = versioned HTML report in `reports/` + `Category_Recommendations_v3.xlsx`. The docx and pptx stay as V2.
+- Deliverables = versioned HTML report in `reports/` + `Category_Recommendations_v3.xlsx` + versioned client deck in `ppt/` (presented to Pat). The V2 docx and the old V2 pptx stay as they are.

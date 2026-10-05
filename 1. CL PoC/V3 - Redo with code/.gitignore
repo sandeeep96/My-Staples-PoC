@@ -28,6 +28,9 @@ Outputs/G/category_graph.graphml
 Outputs/G/neo4j/nodes.csv
 Outputs/G/neo4j/edges.csv
 
+# --- deck builder dependencies (npm install in Codes/ppt_build) ---------------------------
+Codes/ppt_build/node_modules/
+
 # --- run logs and one-off working files ------------------------------------------------
 Outputs_v3/log_*.txt
 *.log

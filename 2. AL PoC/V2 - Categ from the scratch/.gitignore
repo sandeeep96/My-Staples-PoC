@@ -6,3 +6,5 @@ __pycache__/
 *.pyc
 # Excel lock files
 ~$*.xlsx
+# deck build dependencies
+outputs/ppt/src/node_modules/
