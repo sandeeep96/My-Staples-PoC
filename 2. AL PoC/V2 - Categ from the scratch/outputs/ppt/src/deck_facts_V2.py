@@ -31,16 +31,7 @@ DECK_NODES = [
     "Furniture > Cubicle & Panel Systems > Office Partitions & Dividers",
     "Coffee, Water & Snacks > Coffee, Coffee Makers & Supplies > Coffee Organizers & Dispensers",
 ]
-# From V3 the deck covers all 12 analysed nodes (Sai, 2026-10-05); the top-2 picks below stay for the 9.
-ALL_NODES = DECK_NODES + [
-    "Office Supplies > Desk Organizers & Accessories > Desk Organizers",
-    "Coffee, Water & Snacks > Water & Beverages > Water Bottles, Tumblers & Travel Mugs",
-    "Office Supplies > Desk Organizers & Accessories > Desk Pads",
-]
 SHORT = {
-    "Desk Organizers": "Desk Organizers",
-    "Water Bottles, Tumblers & Travel Mugs": "Water Bottles",
-    "Desk Pads": "Desk Pads",
     "Planners & Personal Organizers": "Planners",
     "Backpacks": "Backpacks",
     "Office Desks": "Office Desks",
@@ -220,7 +211,7 @@ def main():
         return dict(st=pct(r.share_staples), co=pct(r.share_competitor), cred=round(float(r.credibility), 3))
 
     node_facts = {}
-    for nid in ALL_NODES:
+    for nid in DECK_NODES:
         n = nodes[nodes.node_id == nid].iloc[0]
         s = summary[summary.node_id == nid].iloc[0]
         r = rec[rec.node_id == nid]
@@ -244,20 +235,7 @@ def main():
                             absent_share=pct((rec9.n_staples == 0).mean()))
 
     # ---------- insight statistics (each with its source cell) ----------
-    # design-forward share (text-based DFI >= 0.6), averaged over nodes, overall and by competitor
-    sm = summary.merge(nodes[["node_id", "competitor"]], on="node_id")
-    facts["design_forward"] = dict(
-        staples_all=pct(sm.design_forward_share_staples.mean()), competitor_all=pct(sm.design_forward_share_competitor.mean()),
-        **{f"{c}_{side}": pct(sm[sm.competitor == c][f"design_forward_share_{side}"].mean())
-           for c in ("amazon", "wayfair") for side in ("staples", "competitor")},
-        staples_ahead=[SHORT[leaf(r.node_id)] for r in sm.itertuples()
-                       if r.design_forward_share_staples > r.design_forward_share_competitor],
-    )
-    # example products the report recommends (each safe under its method, shown beside the nearest Staples item)
-    facts["totals"]["example_products"] = int(skus.family_id.nunique())
-    facts["totals"]["example_products_nodes"] = int(skus.node_id.nunique())
-
-    N = {SHORT[leaf(n)]: n for n in ALL_NODES}
+    N = {SHORT[leaf(n)]: n for n in DECK_NODES}
     G = lambda k, a, v: gap(N[k], a, v)  # noqa: E731
     facts["stats"] = {
         # who they build for
@@ -328,13 +306,6 @@ def main():
         "bp_comfort": G("Backpacks", "key_benefits", "comfort"),
         "bp_outdoor": G("Backpacks", "use_context", "outdoor"),
         "coffee_capacity": G("Coffee Organizers", "capacity_band", "30-49 pods"),
-        # the three nodes added back in V3
-        "water_gym": G("Water Bottles", "use_context", "gym/sports"),
-        "water_outdoor": G("Water Bottles", "use_context", "outdoor"),
-        "pads_faux_leather": G("Desk Pads", "material_class", "faux leather"),
-        "pads_water_resistant": G("Desk Pads", "key_benefits", "water-resistant"),
-        "org_education": G("Desk Organizers", "use_context", "education"),
-        "org_pen_cup": G("Desk Organizers", "organizer_type", "pen cup"),
     }
     facts["bands"] = {
         "desks_u200": band(N["Office Desks"], "under $200"),
@@ -353,8 +324,6 @@ def main():
         "coffee_30p": band(N["Coffee Organizers"], "$30+"),
         "chairs_250_350": band(N["Accent Chairs"], "$250–$350"),
         "lunch_u15": band(N["Lunch Bags"], "under $15"),
-        "pads_u15": band(N["Desk Pads"], "under $15"),
-        "org_u10": band(N["Desk Organizers"], "under $10"),
     }
 
     # ---------- sourcing (vendor view of the products the report shows) ----------
@@ -381,10 +350,6 @@ def main():
         amazon_brands=int(len(av)), amazon_house=int(av.house_brand.sum()),
         brands_on_staples_9=merged, brands_on_staples_9_n=len(merged),
         brands_on_staples_12_n=len(seen_all),
-        brands_on_staples_12=sorted({b.strip().lower(): b.strip() for b in on_all.brand.astype(str)}.values(),
-                                    key=str.lower),
-        wayfair_house_share_12=pct(v_all[v_all.node_id.map(nodes.set_index("node_id").competitor) == "wayfair"]
-                                   .house_brand.mean()),
     )
 
     # ---------- picks ----------

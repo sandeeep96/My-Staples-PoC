@@ -531,13 +531,13 @@ No Excel workbook or deck for now. Intermediate tables (CSV or parquet) are pipe
 | Section | Content |
 |---|---|
 | **Node header** | Path; segment · play; competitor; family counts; mapping confidence and products set aside; archetype (attributes combination) definition (one bullet per attribute set A/B/C, plus a small-node note when relaxed); number of archetypes and long-tail share |
-| **Key insights** | Plain-English findings grouped: where the competitor is deeper, where Staples is deeper, price (median prices, credible price-band gaps, premium and cheaper archetypes), design, recommendations by tier, Method 1 and Method 2 cannibalisation counts |
-| **Coverage** | One 2 × 2 grid: price-band coverage, DFI density, attribute divergence (JSD), largest credible attribute-value gaps |
-| **Attribute level gaps (detailed)** | Collapsed by default. Credible value-level gaps with a Tier column, ordered Tier 1 → Tier 2 → Tier 3, then by each attribute's largest gap |
-| **Final recommendations** | Method agreement (Spearman ρ) with a one-line reading; table of Rank, Archetype (Attributes Combination, every attribute with its value), Attribute set (when the node has more than one), Tier, Final score, VOS, TG, Staples / competitor families; TG-vs-VOS chart |
+| **Key trends** | Collapsible, open by default. One 2 × 2 grid: price-band coverage, DFI density, attribute divergence (JSD), largest credible attribute-value gaps |
+| **Attribute level gaps** | Collapsed by default. Credible value-level gaps with a Tier column, ordered Tier 1 → Tier 2 → Tier 3, then by each attribute's largest gap |
+| **Final recommendations** | Table of Rank, Archetype (Attributes Combination, every attribute with its value), Attribute set (when the node has more than one), Tier, Final score, VOS, TG, Staples / competitor families; then a collapsed “VOS vs TG” subsection with the TG-vs-VOS chart (the Spearman ρ stays in the QA files) |
 | **SKU recommendations** | Evidence cards per recommended archetype (competitor product beside its nearest Staples product: price, link, label, CRS, PPR, AD, Method 2 label, safe-under basis), then style extensions |
 | **Vendor / seller view** | Display brands of the products shown: already on Staples (quick win), competitor house brand (source the archetype), independent seller |
 | **Excluded archetypes** | Collapsed. Every non-recommended archetype with its reason from each method's gate, or from the final gate (per-set cap, overlap with a higher pick) |
+| **Key insights** | Collapsed. Plain-English findings grouped: where the competitor is deeper, where Staples is deeper, price (median prices, credible price-band gaps, premium and cheaper archetypes), design, recommendations by tier, Method 1 and Method 2 cannibalisation counts |
 | **Method 1 results** | Collapsed. VOS components chart, decision scatter, and per archetype VW, AAS, AD, CRS, PPR, safe products, safe share, substitute + undercut, M1 gate and reason |
 | **Method 2 results** | Collapsed. TG components chart, and per archetype shares, LSR and credibility, PPG, CG, MSG, DFG, ACR, non-cannibalising products, M2 gate and reason |
 
@@ -847,7 +847,7 @@ Weight-sensitivity top-5 retention: TG 95%, VOS 95%.
 
 S6 node-level shares, gaps and Method 2 labels stay family-level (checked: node counts equal family counts); only archetype roll-ups use the many-to-many membership. Product-level label counts in the report are de-duplicated by family.
 
-**Result (S4–S9 re-run, small-node pass for Desk Pads; report v17; v16 = same run before a name fix; v18 and v20 = report-only changes, same numbers):**
+**Result (S4–S9 re-run, small-node pass for Desk Pads; report v17; v16 = same run before a name fix; v18, v20 and v21 = report-only changes, same numbers):**
 - **Archetypes:** 897 across all sets (325 in v15). Method 1: 380 pass, 93 listed. Method 2: 245 pass, 99 listed.
 - **Final:** **99 recommendations (23 Strong, 30 Vector-led, 45 Gap-led, 1 Conditional)**; 33 archetypes skipped by the per-set cap or the overlap rule.
 - **Weight-sensitivity top-5 retention:** TG 86%, VOS 90% (v15: 91%, 96%): more archetypes compete for the top 5.
@@ -874,3 +874,5 @@ S6 node-level shares, gaps and Method 2 labels stay family-level (checked: node 
 - **Run time** grew to about 65 minutes from S4 (S5 and S6 now score ~900 archetypes, twice with the small-node pass).
 
 **Report-only follow-ups (v18, same results):** title "Staples: Assortment Gap & Archetype (Attributes Combination) Recommendation Analysis"; the node header lists attribute sets A/B/C as bullets; the final recommendations and SKU groups list every attribute with its value (incl. "not stated"), because stated-only combos made two archetypes look identical (Desk Pads #1 and #2). Names still use stated values only.
+
+**Report-only follow-ups (v20, v21, same results):** v20 reworked Tab 1 (archetype box with tier examples and two bullet lists, separate Method 1 / Method 2 label tables, Method 1 decision map). v21 reordered Tab 2 (Sai, 2026-10-05): Coverage renamed Key trends (collapsible, open by default); "(detailed)" dropped from Attribute level gaps; the method agreement box removed from Final recommendations and the TG-vs-VOS chart moved into a collapsed "VOS vs TG" subsection; Key insights moved, collapsed, to after Excluded archetypes.

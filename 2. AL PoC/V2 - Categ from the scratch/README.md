@@ -5,7 +5,7 @@ attribute variants the node's Primary 1 competitor (Amazon for 7 nodes, Wayfair 
 checks whether Staples could add them through its marketplace without cannibalising its own assortment. The method is
 in [methodology.md](methodology.md); Phase-2 changes, with evidence, are in §14.
 
-**Current report:** `outputs/report/Staples_Assortment_Report_v18.html` (2026-10-04). All 12 nodes are scored, giving
+**Current report:** `outputs/report/Staples_Assortment_Report_v21.html` (2026-10-05). All 12 nodes are scored, giving
 99 recommended archetypes (23 Strong, 30 Vector-led, 45 Gap-led, 1 Conditional). Details: methodology §14.9.
 
 ## Run

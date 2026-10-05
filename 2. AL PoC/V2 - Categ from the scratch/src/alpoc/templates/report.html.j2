@@ -141,6 +141,8 @@ details.sec{margin:22px 0 6px} details.sec > summary{list-style:none;cursor:poin
 details.sec > summary::-webkit-details-marker{display:none}
 details.sec > summary h3{display:inline;margin:0} details.sec > summary::before{content:"▸ ";color:var(--muted)}
 details.sec[open] > summary::before{content:"▾ "} details.sec > summary .hint{font-size:12px;color:var(--muted);font-weight:400;margin-left:6px}
+details.sec > summary .hint::after{content:"click to expand"} details.sec[open] > summary .hint::after{content:"click to collapse"}
+details.sub{margin:14px 0 4px} details.sub > summary h4{display:inline;margin:0}
 td .combo{display:block;margin-top:1px}
 .sel-status{font-size:12px;color:var(--muted)}
 .tag-T{display:inline-block;font-size:10.5px;font-weight:700;border-radius:6px;padding:0 5px;background:var(--surface-2);color:var(--ink-2);margin-left:2px}
@@ -511,20 +513,16 @@ td .combo{display:block;margin-top:1px}
     </tbody></table></div>
     {% else %}
 
-    <h3>Key insights</h3>
-    <div class="card"><dl class="insg">{% for g in s.insights %}
-      <dt>{{ g.group }}</dt><dd><ul class="ins">{% for i in g.lines %}<li>{{ i }}</li>{% endfor %}</ul></dd>{% endfor %}
-    </dl></div>
-
-    <h3>Coverage</h3>
-    <div class="grid g2">
+    <details class="sec" open><summary><h3>Key trends</h3><span class="hint"></span></summary>
+    <div class="grid g2" style="margin-top:8px">
       {% if s.figs.price %}<figure class="fig"><img alt="Price-band coverage" src="{{ s.figs.price }}"><figcaption>Share of each retailer's families per price band. “gap” = {{ s.comp }} share credibly higher.</figcaption></figure>{% endif %}
       <figure class="fig"><img alt="Design-forward distribution" src="{{ s.figs.dfi }}"><figcaption>DFI (Design-Forward Index), pooled percentile of a design-vs-utility contrast (provisional until human validation).</figcaption></figure>
       {% if s.figs.jsd %}<figure class="fig"><img alt="Attribute divergence" src="{{ s.figs.jsd }}"><figcaption>JSD (Jensen–Shannon Divergence): higher = the two retailers' mixes differ more on that attribute.</figcaption></figure>{% endif %}
       {% if s.figs.gaps %}<figure class="fig"><img alt="Attribute value gaps" src="{{ s.figs.gaps }}"><figcaption>Credible gaps only (≥ 90% posterior probability); fields that failed validation are excluded.</figcaption></figure>{% endif %}
     </div>
+    </details>
 
-    <details class="sec"><summary><h3>Attribute level gaps (detailed):</h3><span class="hint">click to expand</span></summary>
+    <details class="sec"><summary><h3>Attribute level gaps</h3><span class="hint"></span></summary>
     <div class="tbl-wrap" style="margin-top:8px"><table class="grouped"><thead><tr><th class="nosort">Tier</th><th class="nosort">Attribute</th><th class="nosort">Value</th><th class="nosort num">{{ s.comp }}</th><th class="nosort num">Staples</th><th class="nosort num">Gap</th><th class="nosort num">Credibility</th></tr></thead>
     {% for g in s.gaps %}<tbody>{% for r in g.rows %}<tr>{% if loop.first %}<td rowspan="{{ g.rows|length }}" class="grp">{{ g.tier }}</td><td rowspan="{{ g.rows|length }}" class="grp">{{ g.attr }}{% if g.desc %}<br><span class="chip">descriptive only</span>{% endif %}</td>{% endif %}<td>{{ r.val }}</td><td class="num">{{ r.sc }}</td><td class="num">{{ r.ss }}</td><td class="num {{ 'pos' if r.pos else 'neg' }}">{{ r.delta }}</td><td class="num">{{ r.cred }}</td></tr>{% endfor %}</tbody>
     {% else %}<tbody><tr><td colspan="7" class="muted">No credible attribute-value gaps.</td></tr></tbody>{% endfor %}
@@ -534,18 +532,16 @@ td .combo{display:block;margin-top:1px}
 
     {% if s.status == 'scored' %}
     <h3>Final recommendations</h3>
-    <div class="lede"><ul class="agree">
-      <li><b>Method agreement score: {% if s.rho is not none %}{{ "%.2f"|format(s.rho) }}{% else %}–{% endif %}</b> <span class="ink2">(Spearman correlation coefficient, VOS (Vector Opportunity Score) vs TG (Total Gap))</span></li>
-      <li>{{ s.rho_note }}</li>
-    </ul></div>
     <div class="tbl-wrap" style="margin-top:10px"><table class="sortable"><thead><tr><th class="num">Rank</th><th>Archetype (Attributes Combination)</th>{% if s.n_sets > 1 %}<th>Attribute set</th>{% endif %}<th>Tier</th><th class="num">Final score</th><th class="num">VOS (Vector Opportunity Score)</th><th class="num">TG (Total Gap)</th><th class="num">Staples / {{ s.comp }} families</th></tr></thead><tbody>
     {% for r in s.final %}<tr><td class="num">{{ r.rank }}</td><td>{{ A(r.a, True) }}</td>{% if s.n_sets > 1 %}<td>{{ r.set }}</td>{% endif %}<td>{% if r.tier == 'Strong' %}<span class="chip st-PASS">Strong</span>{% elif r.tier == 'Conditional' %}<span class="chip st-PARTIAL">Conditional</span>{% else %}<span class="chip">{{ r.tier }}</span>{% endif %}</td><td class="num">{{ r.final }}</td><td class="num">{{ r.vos }}</td><td class="num">{{ r.tg }}</td><td class="num">{{ r.ns }} / {{ r.nc }}</td></tr>
     {% else %}<tr><td colspan="8" class="muted">No archetype passed either method's safety gate.</td></tr>{% endfor %}
     </tbody></table></div>
     <p class="ink2" style="font-size:12px;margin-top:4px">Every attribute of the archetype is listed with its value; “not stated” = the product text does not mention it.{% if s.n_sets > 1 %} Attribute set = which of the node's {{ s.n_sets }} attribute sets defines the archetype (see the definition above).{% endif %}</p>
-    <div class="grid g2" style="margin-top:10px">
-      {% if s.figs.agreement %}<figure class="fig"><img alt="TG versus VOS" src="{{ s.figs.agreement }}"><figcaption>#n = recommended, by final order. Colour = tier; hollow = not recommended.</figcaption></figure>{% endif %}
+    {% if s.figs.agreement %}<details class="sec sub"><summary><h4>VOS (Vector Opportunity Score) vs TG (Total Gap)</h4><span class="hint"></span></summary>
+    <div class="grid g2" style="margin-top:8px">
+      <figure class="fig"><img alt="TG versus VOS" src="{{ s.figs.agreement }}"><figcaption>Every archetype on this node by its two method scores. #n = recommended, by final order. Colour = tier; hollow = not recommended.</figcaption></figure>
     </div>
+    </details>{% endif %}
 
     <h3>SKU recommendations</h3>
     {% for g in s.skus %}<div class="skugrp">
@@ -563,14 +559,20 @@ td .combo{display:block;margin-top:1px}
     {% else %}<tr><td colspan="4" class="muted">No approvable products in recommended archetypes.</td></tr>{% endfor %}
     </tbody></table></div>
 
-    <details class="sec"><summary><h3>Excluded archetypes (attributes combinations) ({{ s.excluded|length }})</h3><span class="hint">click to expand</span></summary>
+    <details class="sec"><summary><h3>Excluded archetypes (attributes combinations) ({{ s.excluded|length }})</h3><span class="hint"></span></summary>
     <div class="tbl-wrap"><table class="sortable"><thead><tr><th>Archetype (Attributes Combination)</th><th>Why excluded</th><th>Agreement</th><th class="num">VOS (Vector Opportunity Score)</th><th class="num">TG (Total Gap)</th></tr></thead><tbody>
     {% for r in s.excluded %}<tr><td>{{ A(r.a, False) }}</td><td class="ink2">{{ r.reason }}</td><td>{{ r.tier }}</td><td class="num">{{ r.vos }}</td><td class="num">{{ r.tg }}</td></tr>
     {% else %}<tr><td colspan="5" class="muted">None: every archetype passed the safety gate.</td></tr>{% endfor %}
     </tbody></table></div>
     </details>
 
-    <details class="sec"><summary><h3>Method 1: Vector view results</h3><span class="hint">click to expand</span></summary>
+    <details class="sec"><summary><h3>Key insights</h3><span class="hint"></span></summary>
+    <div class="card" style="margin-top:8px"><dl class="insg">{% for g in s.insights %}
+      <dt>{{ g.group }}</dt><dd><ul class="ins">{% for i in g.lines %}<li>{{ i }}</li>{% endfor %}</ul></dd>{% endfor %}
+    </dl></div>
+    </details>
+
+    <details class="sec"><summary><h3>Method 1: Vector view results</h3><span class="hint"></span></summary>
     <p class="ink2">Every archetype (attributes combination) on this node, highest VOS (Vector Opportunity Score) first. VOS rewards whitespace (VW), fit with Staples (AAS) and a visibly different look (AD), then is reduced by cannibalisation risk (CRS). Faded bars failed the Method 1 gate; the M1 gate column gives the reason.</p>
     <div class="grid g2">
       {% if s.figs.vos %}<figure class="fig"><img alt="VOS by archetype" src="{{ s.figs.vos }}"><figcaption>Bar segments = what VW (Vector Whitespace), AAS (Adjacency Affinity Score) and AD (Aesthetic Delta) contribute after the CRS (Cannibalisation Risk Score) discount; the number in brackets is the score before that discount.</figcaption></figure>{% endif %}
@@ -581,7 +583,7 @@ td .combo{display:block;margin-top:1px}
     </tbody></table></div>
     </details>
 
-    <details class="sec"><summary><h3>Method 2: Attribute view results</h3><span class="hint">click to expand</span></summary>
+    <details class="sec"><summary><h3>Method 2: Attribute view results</h3><span class="hint"></span></summary>
     <p class="ink2">Every archetype (attributes combination) on this node, highest TG (Total Gap) first. TG measures how far {{ s.comp }} over-indexes on the archetype (LSR) and how different its price (PPG), colour (CG), material/style (MSG) and design-forward (DFG) mix is.</p>
     {% if s.figs.tg %}<figure class="fig solo"><img alt="TG by archetype" src="{{ s.figs.tg }}"><figcaption>Bar segments = weighted contribution of each gap metric (percentile within the peer group). Faded = failed the safety gate.</figcaption></figure>{% endif %}
     <div class="tbl-wrap" style="margin-top:10px"><table class="sortable"><thead><tr><th>Archetype (Attributes Combination)</th><th class="num">TG (Total Gap)</th><th class="num">Staples share</th><th class="num">{{ s.comp }} share</th><th class="num">LSR (Log Share Ratio)</th><th class="num">Credibility</th><th>Flag</th><th class="num">PPG (Price Position Gap)</th><th class="num">CG (Colour Gap)</th><th class="num">MSG (Material &amp; Style Gap)</th><th class="num">DFG (Design-Forward Gap)</th><th class="num">TG (original weights)</th><th class="num">ACR (Attribute Cannibalisation Risk)</th><th class="num">Non-cannibalising products</th><th>M2 gate</th><th>Reason</th><th>Colours Staples lacks</th></tr></thead><tbody>
@@ -589,6 +591,11 @@ td .combo{display:block;margin-top:1px}
     </tbody></table></div>
     </details>
     {% else %}
+    <details class="sec"><summary><h3>Key insights</h3><span class="hint"></span></summary>
+    <div class="card" style="margin-top:8px"><dl class="insg">{% for g in s.insights %}
+      <dt>{{ g.group }}</dt><dd><ul class="ins">{% for i in g.lines %}<li>{{ i }}</li>{% endfor %}</ul></dd>{% endfor %}
+    </dl></div>
+    </details>
     <p class="muted">Fewer than {{ cfg.nodes.min_families_scored }} families on one side: shown descriptively; archetypes and recommendations are not scored for this node.</p>
     {% endif %}
     {% endif %}
