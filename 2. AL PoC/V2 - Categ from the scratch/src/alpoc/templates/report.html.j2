@@ -147,6 +147,37 @@ td .combo{display:block;margin-top:1px}
 .sel-status{font-size:12px;color:var(--muted)}
 .tag-T{display:inline-block;font-size:10.5px;font-weight:700;border-radius:6px;padding:0 5px;background:var(--surface-2);color:var(--ink-2);margin-left:2px}
 .pending{background:var(--warn-bg);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:10px 0}
+/* executive summary (static: no clicks) */
+.ex-q{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:12px 16px}
+.ex-q .q{color:var(--ink-2);font-size:13.5px;margin:0 0 4px;max-width:none}
+.ex-q .a{font-size:15px;font-weight:600;margin:0;max-width:none}
+.ex-kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin-top:12px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-width:0}
+.kpi .k{font-size:10.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.kpi .v{font-size:28px;font-weight:700;line-height:1.15;margin:2px 0;font-variant-numeric:tabular-nums}
+.kpi .s{font-size:12px;color:var(--ink-2);line-height:1.35}
+.stack{display:flex;height:10px;border-radius:5px;overflow:hidden;background:var(--surface-2)}
+.stack span{display:block;height:100%}
+.stack.sm{height:8px;width:90px;display:inline-flex;vertical-align:middle;margin-left:6px}
+.tlegend{display:flex;flex-wrap:wrap;gap:2px 10px;font-size:11.5px;color:var(--ink-2);margin-top:5px}
+.tlegend i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:4px;vertical-align:-1px}
+.ex-mid{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,9fr);gap:12px;margin-top:12px}
+.ex-h{font-size:11.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+.fun-row{margin:0 0 10px}
+.fun-row .l{display:flex;justify-content:space-between;gap:8px;font-size:12.5px} .fun-row .l b{font-variant-numeric:tabular-nums}
+.fun-bar{height:12px;border-radius:4px;background:var(--accent);opacity:.85;margin:3px 0 2px}
+.fun-row .s{font-size:11.5px;color:var(--ink-2)}
+.ex-find{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.find{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.find .t{font-size:10.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.find .v{font-size:20px;font-weight:700;margin:1px 0 3px;color:var(--comp)}
+.find .cap{font-size:12px;color:var(--muted);margin:0 0 6px}
+.find ul{margin:0;padding-left:16px;font-size:12.5px;color:var(--ink-2);line-height:1.45} .find li{margin:2px 0}
+table.score td{vertical-align:middle;padding:5px 10px} table.score th{cursor:default}
+.dots{display:inline-block;vertical-align:middle}
+.ex-note{font-size:12px;color:var(--muted);margin:10px 0 0;max-width:none}
+@media (max-width:1000px){.ex-kpis{grid-template-columns:repeat(3,minmax(0,1fr))}.ex-mid{grid-template-columns:1fr}}
+@media (max-width:620px){.ex-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.ex-find{grid-template-columns:1fr}}
 </style>
 </head>
 {% macro A(a, bold=True) -%}
@@ -157,16 +188,62 @@ td .combo{display:block;margin-top:1px}
   <div class="wrap">
     <h1>{{ title }}</h1>
     <nav class="tabs" role="tablist">
-      <button role="tab" data-tab="method" aria-selected="true">Approach &amp; Methodology</button>
-      <button role="tab" data-tab="nodes" aria-selected="false">Gaps &amp; Recommendations</button>
+      <button role="tab" data-tab="exec" aria-selected="true">Executive Summary</button>
+      <button role="tab" data-tab="nodes" aria-selected="false">Node Analysis</button>
+      <button role="tab" data-tab="method" aria-selected="false">Methodology</button>
     </nav>
   </div>
 </header>
 
 <main><div class="wrap">
 
+<!-- ======================================================= EXECUTIVE SUMMARY (static, Sai 2026-10-06) -->
+<section class="panel" id="tab-exec">
+  <h3 style="margin-top:0">Problem statement</h3>
+  <div class="ex-q">
+    <p class="a">Which product archetypes (attributes combinations) does each node's Primary 1 competitor carry that Staples lacks, and which can Staples add through its marketplace without cannibalising its own assortment?</p>
+  </div>
+
+  <h3>PoC at a glance</h3>
+  <div class="ex-kpis" style="margin-top:0">
+    {% for k in ex.kpis %}<div class="kpi"><div class="k">{{ k.k }}</div><div class="v">{{ k.v }}</div>
+      {% if k.bar %}<div class="stack" aria-hidden="true">{% for b in k.bar %}<span style="width:{{ '%.1f'|format(b.w) }}%;background:{{ b.c }}"></span>{% endfor %}</div>
+      <div class="tlegend">{% for b in k.bar %}<span><i style="background:{{ b.c }}"></i>{{ b.n }} {{ b.tier }}</span>{% endfor %}</div>
+      {% else %}<div class="s">{{ k.s }}</div>{% endif %}</div>{% endfor %}
+  </div>
+
+  <h3>Node scorecard</h3>
+  <div class="tbl-wrap"><table class="score"><thead><tr>
+    <th class="num">#</th><th>Node</th><th class="num">Families<br><span class="muted" style="font-weight:400">Staples / competitor</span></th>
+    <th>Design-forward share<br><span class="muted" style="font-weight:400"><span class="legend-dot" style="background:var(--accent)"></span>Staples <span class="legend-dot" style="background:var(--comp);margin-left:6px"></span>competitor</span></th>
+    <th class="num">Median price<br><span class="muted" style="font-weight:400">Staples / competitor</span></th>
+    <th>Recommended<br><span class="muted" style="font-weight:400">by tier</span></th><th class="num">New to<br>Staples</th><th>Top pick (rank 1)</th></tr></thead><tbody>
+  {% for r in ex.scorecard %}<tr>
+    <td class="num">{{ r.rank }}</td>
+    <td title="{{ r.path }}" style="white-space:nowrap"><b>{{ r.leaf }}</b> <span class="small compname">· {{ r.comp }}</span></td>
+    <td class="num">{{ "{:,}".format(r.ns) }} / {{ "{:,}".format(r.nc) }}</td>
+    <td style="white-space:nowrap"><svg class="dots" width="96" height="16" viewBox="0 0 120 16" aria-hidden="true">
+      <line x1="4" y1="8" x2="116" y2="8" stroke="var(--line)" stroke-width="2"/>
+      <line x1="{{ '%.1f'|format(4 + 112 * r.dfs) }}" y1="8" x2="{{ '%.1f'|format(4 + 112 * r.dfc) }}" y2="8" stroke="var(--muted)" stroke-width="2"/>
+      <circle cx="{{ '%.1f'|format(4 + 112 * r.dfs) }}" cy="8" r="4.5" fill="var(--accent)"/>
+      <circle cx="{{ '%.1f'|format(4 + 112 * r.dfc) }}" cy="8" r="4.5" fill="var(--comp)"/></svg>
+      <span class="small ink2">{{ "{:.0%}".format(r.dfs) }} / {{ "{:.0%}".format(r.dfc) }}</span></td>
+    <td class="num">{{ r.ps }} / {{ r.pc }}</td>
+    <td style="white-space:nowrap"><b>{{ r.n }}</b><span class="stack sm" aria-hidden="true">{% for b in r.bar %}<span style="width:{{ '%.1f'|format(b.w) }}%;background:{{ b.c }}" title="{{ b.n }} {{ b.tier }}"></span>{% endfor %}</span></td>
+    <td class="num">{{ r.new }}</td>
+    <td style="min-width:230px"><span title="{{ r.top_full }}">{{ r.top }}</span></td>
+  </tr>{% endfor %}
+  </tbody></table></div>
+  <h3>Key findings</h3>
+  <div class="ex-find">
+    {% for f in ex.findings %}<div class="find"><div class="t">{{ f.t }}</div><div class="v">{{ f.v }}</div><div class="cap">{{ f.s }}</div>
+      <ul>{% for x in f.b %}<li>{{ x }}</li>{% endfor %}</ul></div>{% endfor %}
+  </div>
+  <p class="ex-note">Read with care: the data measure assortment supply, not demand · external data only (no Staples sales, margin or traffic) · competitor data are samples, so shares are compared, not counts · thresholds are provisional until calibrated with the business. Tier bars are out of 10 picks per node. Per-node detail: Node Analysis; method: Methodology.</p>
+</section>
+
 <!-- ======================================================= TAB 1 -->
-<section class="panel" id="tab-method">
+<section class="panel" id="tab-method" hidden>
   <h2 style="margin-top:0">The question</h2>
   <p>Staples wants to grow its marketplace with <b>core-adjacent</b> products: design and lifestyle extensions of things it already sells (the “White Chair” idea: an aesthetic-first chair next to Staples' ergonomic range), without taking sales from its own first-party assortment. Using only external data, this PoC compares {{ focus|length }} granular Staples nodes, each with its chosen competitor, and asks:</p>
   <ul>
@@ -607,7 +684,6 @@ td .combo{display:block;margin-top:1px}
   {% endfor %}
 </section>
 
-<footer>Staples Marketplace assortment PoC · LatentView · generated {{ date }} · method: methodology.md v1.3 (Phase 2) · encoder {{ encoder }} · extraction backend: {{ backend }}.</footer>
 </div></main>
 
 <script>
@@ -615,24 +691,24 @@ td .combo{display:block;margin-top:1px}
   var tabs=document.querySelectorAll('nav.tabs button');
   function openTab(name){
     tabs.forEach(function(b){b.setAttribute('aria-selected', b.dataset.tab===name ? 'true':'false');});
-    document.getElementById('tab-method').hidden = name!=='method';
-    document.getElementById('tab-nodes').hidden = name!=='nodes';
-    try{localStorage.setItem('alpoc-tab',name);}catch(e){}
+    document.querySelectorAll('section.panel').forEach(function(p){p.hidden = p.id!=='tab-'+name;});
+    window.scrollTo(0,0);
   }
   tabs.forEach(function(b){b.addEventListener('click',function(){openTab(b.dataset.tab);});});
   var sel=document.getElementById('nodeSel');
-  function showNode(id){
+  function showNode(id, link){
     document.querySelectorAll('.node-sec').forEach(function(s){s.hidden = s.id!=='n-'+id;});
     if(sel.value!==id) sel.value=id;
-    try{localStorage.setItem('alpoc-node',id); history.replaceState(null,'','#'+id);}catch(e){}
+    try{localStorage.setItem('alpoc-node',id); if(link) history.replaceState(null,'','#'+id);}catch(e){}
   }
-  sel.addEventListener('change',function(){showNode(sel.value);});
-  var start=(location.hash||'').slice(1), tab=null, node=null;
-  try{tab=localStorage.getItem('alpoc-tab'); node=localStorage.getItem('alpoc-node');}catch(e){}
+  sel.addEventListener('change',function(){showNode(sel.value, true);});
+  // always opens on the Executive Summary (for presenting), unless the link points at a node
+  var start=(location.hash||'').slice(1), tab='exec', node=null;
+  try{node=localStorage.getItem('alpoc-node');}catch(e){}
   if(start && document.getElementById('n-'+start)){node=start; tab='nodes';}
   if(!node || !document.getElementById('n-'+node)) node=sel.options[0] ? sel.options[0].value : null;
   if(node) showNode(node);
-  openTab(tab==='nodes' ? 'nodes' : 'method');
+  openTab(tab);
   // sortable tables
   document.querySelectorAll('table.sortable th').forEach(function(th){
     th.addEventListener('click',function(){

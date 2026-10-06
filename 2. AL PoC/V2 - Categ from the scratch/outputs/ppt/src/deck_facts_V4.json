@@ -1,0 +1,2320 @@
+{
+ "version": "V4",
+ "source": "report v20 run (outputs/tables, data/interim)",
+ "totals": {
+  "nodes_scored": 12,
+  "staples_families": 3416,
+  "competitor_families": 16512,
+  "amazon_families": 6577,
+  "wayfair_families": 9935,
+  "archetypes_built": 897,
+  "recommended": 99,
+  "tiers": {
+   "Gap-led": 45,
+   "Vector-led": 30,
+   "Strong": 23,
+   "Conditional": 1
+  },
+  "rec_absent_at_staples": 71,
+  "rec_absent_share": 72,
+  "stability_tg": null,
+  "stability_vos": null,
+  "qa_integration_keys": [
+   "m1_gate_pass",
+   "m1_listed",
+   "m2_gate_pass",
+   "m2_listed",
+   "n_archetypes",
+   "n_eligible",
+   "n_shortlisted",
+   "n_valid",
+   "sensitivity",
+   "spearman_vos_tg",
+   "tier_counts"
+  ],
+  "example_products": 263,
+  "example_products_nodes": 12,
+  "families_all": 19928,
+  "backlog_families": 8399
+ },
+ "nodes": {
+  "Planners": {
+   "node_id": "Office Supplies > Calendars & Planners > Planners & Personal Organizers",
+   "leaf": "Planners & Personal Organizers",
+   "segment": "Hero · EXTEND",
+   "rank": 1,
+   "competitor": "Amazon",
+   "n_staples": 805,
+   "n_competitor": 1173,
+   "price_median_staples": 19.99,
+   "price_median_competitor": 12.99,
+   "design_forward_staples": 39,
+   "design_forward_competitor": 41,
+   "recommended": 10,
+   "tiers": {
+    "Gap-led": 5,
+    "Vector-led": 3,
+    "Strong": 2
+   },
+   "bands": {
+    "under $10": {
+     "st": 12,
+     "co": 41,
+     "cred": 1.0
+    },
+    "$10–$15": {
+     "st": 19,
+     "co": 19,
+     "cred": 0.47
+    },
+    "$15–$25": {
+     "st": 43,
+     "co": 24,
+     "cred": 0.0
+    },
+    "$25+": {
+     "st": 27,
+     "co": 14,
+     "cred": 0.0
+    }
+   }
+  },
+  "Backpacks": {
+   "node_id": "Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",
+   "leaf": "Backpacks",
+   "segment": "Hero · EXTEND",
+   "rank": 3,
+   "competitor": "Amazon",
+   "n_staples": 379,
+   "n_competitor": 1979,
+   "price_median_staples": 51.29,
+   "price_median_competitor": 49.99,
+   "design_forward_staples": 5,
+   "design_forward_competitor": 47,
+   "recommended": 10,
+   "tiers": {
+    "Gap-led": 9,
+    "Vector-led": 1
+   },
+   "bands": {
+    "under $30": {
+     "st": 18,
+     "co": 21,
+     "cred": 0.834
+    },
+    "$30–$50": {
+     "st": 31,
+     "co": 16,
+     "cred": 0.0
+    },
+    "$50–$100": {
+     "st": 25,
+     "co": 20,
+     "cred": 0.016
+    },
+    "$100+": {
+     "st": 26,
+     "co": 15,
+     "cred": 0.0
+    }
+   }
+  },
+  "Office Desks": {
+   "node_id": "Furniture > Desks > Office Desks",
+   "leaf": "Office Desks",
+   "segment": "Hero · EXTEND",
+   "rank": 4,
+   "competitor": "Wayfair",
+   "n_staples": 668,
+   "n_competitor": 2821,
+   "price_median_staples": 728.73,
+   "price_median_competitor": 285.99,
+   "design_forward_staples": 17,
+   "design_forward_competitor": 45,
+   "recommended": 10,
+   "tiers": {
+    "Gap-led": 6,
+    "Vector-led": 4
+   },
+   "bands": {
+    "under $200": {
+     "st": 7,
+     "co": 29,
+     "cred": 1.0
+    },
+    "$200–$350": {
+     "st": 16,
+     "co": 32,
+     "cred": 1.0
+    },
+    "$350–$600": {
+     "st": 22,
+     "co": 21,
+     "cred": 0.32
+    },
+    "$600+": {
+     "st": 56,
+     "co": 18,
+     "cred": 0.0
+    }
+   }
+  },
+  "Accent Chairs": {
+   "node_id": "Furniture > Chairs & Seating > Accent & Waiting Room Chairs",
+   "leaf": "Accent & Waiting Room Chairs",
+   "segment": "Probable Hero · BUILD",
+   "rank": 6,
+   "competitor": "Wayfair",
+   "n_staples": 116,
+   "n_competitor": 2977,
+   "price_median_staples": 402.94,
+   "price_median_competitor": 345.99,
+   "design_forward_staples": 5,
+   "design_forward_competitor": 41,
+   "recommended": 10,
+   "tiers": {
+    "Gap-led": 5,
+    "Vector-led": 3,
+    "Strong": 2
+   },
+   "bands": {
+    "under $250": {
+     "st": 27,
+     "co": 21,
+     "cred": 0.092
+    },
+    "$250–$350": {
+     "st": 14,
+     "co": 29,
+     "cred": 1.0
+    },
+    "$350–$600": {
+     "st": 33,
+     "co": 26,
+     "cred": 0.062
+    },
+    "$600+": {
+     "st": 27,
+     "co": 23,
+     "cred": 0.164
+    }
+   }
+  },
+  "Desk Lamps": {
+   "node_id": "Furniture > Lamps & Lighting > Desk Lamps",
+   "leaf": "Desk Lamps",
+   "segment": "Probable Hero · BUILD",
+   "rank": 7,
+   "competitor": "Wayfair",
+   "n_staples": 169,
+   "n_competitor": 776,
+   "price_median_staples": 67.79,
+   "price_median_competitor": 103.99,
+   "design_forward_staples": 11,
+   "design_forward_competitor": 46,
+   "recommended": 10,
+   "tiers": {
+    "Gap-led": 4,
+    "Strong": 4,
+    "Vector-led": 2
+   },
+   "bands": {
+    "under $50": {
+     "st": 32,
+     "co": 20,
+     "cred": 0.0
+    },
+    "$50–$100": {
+     "st": 43,
+     "co": 28,
+     "cred": 0.0
+    },
+    "$100–$175": {
+     "st": 20,
+     "co": 26,
+     "cred": 0.932
+    },
+    "$175+": {
+     "st": 5,
+     "co": 26,
+     "cred": 1.0
+    }
+   }
+  },
+  "Lunch Bags": {
+   "node_id": "Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",
+   "leaf": "Lunch Bags & Boxes",
+   "segment": "Probable Hero · BUILD",
+   "rank": 8,
+   "competitor": "Amazon",
+   "n_staples": 318,
+   "n_competitor": 1789,
+   "price_median_staples": 24.99,
+   "price_median_competitor": 21.99,
+   "design_forward_staples": 27,
+   "design_forward_competitor": 42,
+   "recommended": 10,
+   "tiers": {
+    "Gap-led": 4,
+    "Strong": 3,
+    "Vector-led": 3
+   },
+   "bands": {
+    "under $15": {
+     "st": 14,
+     "co": 27,
+     "cred": 1.0
+    },
+    "$15–$25": {
+     "st": 41,
+     "co": 34,
+     "cred": 0.006
+    },
+    "$25–$30": {
+     "st": 27,
+     "co": 14,
+     "cred": 0.0
+    },
+    "$30+": {
+     "st": 18,
+     "co": 23,
+     "cred": 0.968
+    }
+   }
+  },
+  "Clocks": {
+   "node_id": "Furniture > Decor > Clocks & Timers",
+   "leaf": "Clocks & Timers",
+   "segment": "Non-Hero · EXPLORE",
+   "rank": 9,
+   "competitor": "Wayfair",
+   "n_staples": 174,
+   "n_competitor": 2586,
+   "price_median_staples": 40.89,
+   "price_median_competitor": 98.99,
+   "design_forward_staples": 34,
+   "design_forward_competitor": 40,
+   "recommended": 10,
+   "tiers": {
+    "Vector-led": 5,
+    "Gap-led": 4,
+    "Strong": 1
+   },
+   "bands": {
+    "under $50": {
+     "st": 67,
+     "co": 21,
+     "cred": 0.0
+    },
+    "$50–$100": {
+     "st": 24,
+     "co": 32,
+     "cred": 0.983
+    },
+    "$100–$125": {
+     "st": 6,
+     "co": 22,
+     "cred": 1.0
+    },
+    "$125+": {
+     "st": 2,
+     "co": 25,
+     "cred": 1.0
+    }
+   }
+  },
+  "Partitions": {
+   "node_id": "Furniture > Cubicle & Panel Systems > Office Partitions & Dividers",
+   "leaf": "Office Partitions & Dividers",
+   "segment": "Non-Hero · EXPLORE",
+   "rank": 12,
+   "competitor": "Wayfair",
+   "n_staples": 99,
+   "n_competitor": 775,
+   "price_median_staples": 1580.99,
+   "price_median_competitor": 329.99,
+   "design_forward_staples": 0,
+   "design_forward_competitor": 45,
+   "recommended": 10,
+   "tiers": {
+    "Vector-led": 4,
+    "Strong": 3,
+    "Gap-led": 3
+   },
+   "bands": {
+    "under $150": {
+     "st": 3,
+     "co": 28,
+     "cred": 1.0
+    },
+    "$150–$450": {
+     "st": 5,
+     "co": 30,
+     "cred": 1.0
+    },
+    "$450–$1,000": {
+     "st": 35,
+     "co": 22,
+     "cred": 0.003
+    },
+    "$1,000+": {
+     "st": 57,
+     "co": 20,
+     "cred": 0.0
+    }
+   }
+  },
+  "Coffee Organizers": {
+   "node_id": "Coffee, Water & Snacks > Coffee, Coffee Makers & Supplies > Coffee Organizers & Dispensers",
+   "leaf": "Coffee Organizers & Dispensers",
+   "segment": "Non-Hero · EXPLORE",
+   "rank": 11,
+   "competitor": "Amazon",
+   "n_staples": 50,
+   "n_competitor": 1196,
+   "price_median_staples": 51.79,
+   "price_median_competitor": 22.99,
+   "design_forward_staples": 8,
+   "design_forward_competitor": 41,
+   "recommended": 7,
+   "tiers": {
+    "Vector-led": 3,
+    "Gap-led": 2,
+    "Strong": 2
+   },
+   "bands": {
+    "under $15": {
+     "st": 0,
+     "co": 17,
+     "cred": 1.0
+    },
+    "$15–$25": {
+     "st": 10,
+     "co": 41,
+     "cred": 1.0
+    },
+    "$25–$30": {
+     "st": 14,
+     "co": 17,
+     "cred": 0.73
+    },
+    "$30+": {
+     "st": 76,
+     "co": 23,
+     "cred": 0.0
+    }
+   }
+  },
+  "Desk Organizers": {
+   "node_id": "Office Supplies > Desk Organizers & Accessories > Desk Organizers",
+   "leaf": "Desk Organizers",
+   "segment": "Hero · EXTEND",
+   "rank": 2,
+   "competitor": "Amazon",
+   "n_staples": 239,
+   "n_competitor": 185,
+   "price_median_staples": 24.99,
+   "price_median_competitor": 13.99,
+   "design_forward_staples": 31,
+   "design_forward_competitor": 52,
+   "recommended": 4,
+   "tiers": {
+    "Strong": 2,
+    "Vector-led": 2
+   },
+   "bands": {
+    "under $10": {
+     "st": 12,
+     "co": 34,
+     "cred": 1.0
+    },
+    "$10–$20": {
+     "st": 29,
+     "co": 30,
+     "cred": 0.626
+    },
+    "$20–$30": {
+     "st": 21,
+     "co": 22,
+     "cred": 0.571
+    },
+    "$30+": {
+     "st": 38,
+     "co": 11,
+     "cred": 0.0
+    }
+   }
+  },
+  "Water Bottles": {
+   "node_id": "Coffee, Water & Snacks > Water & Beverages > Water Bottles, Tumblers & Travel Mugs",
+   "leaf": "Water Bottles, Tumblers & Travel Mugs",
+   "segment": "Probable Hero · BUILD",
+   "rank": 5,
+   "competitor": "Amazon",
+   "n_staples": 344,
+   "n_competitor": 194,
+   "price_median_staples": 27.09,
+   "price_median_competitor": 25.98,
+   "design_forward_staples": 46,
+   "design_forward_competitor": 31,
+   "recommended": 5,
+   "tiers": {
+    "Gap-led": 3,
+    "Strong": 2
+   },
+   "bands": {
+    "under $20": {
+     "st": 27,
+     "co": 32,
+     "cred": 0.918
+    },
+    "$20–$25": {
+     "st": 15,
+     "co": 9,
+     "cred": 0.037
+    },
+    "$25–$30": {
+     "st": 18,
+     "co": 11,
+     "cred": 0.011
+    },
+    "$30+": {
+     "st": 41,
+     "co": 32,
+     "cred": 0.021
+    }
+   }
+  },
+  "Desk Pads": {
+   "node_id": "Office Supplies > Desk Organizers & Accessories > Desk Pads",
+   "leaf": "Desk Pads",
+   "segment": "Non-Hero · EXPLORE",
+   "rank": 10,
+   "competitor": "Amazon",
+   "n_staples": 55,
+   "n_competitor": 61,
+   "price_median_staples": 49.44,
+   "price_median_competitor": 19.99,
+   "design_forward_staples": 18,
+   "design_forward_competitor": 61,
+   "recommended": 3,
+   "tiers": {
+    "Strong": 2,
+    "Conditional": 1
+   },
+   "bands": {
+    "under $15": {
+     "st": 7,
+     "co": 36,
+     "cred": 1.0
+    },
+    "$15–$40": {
+     "st": 36,
+     "co": 26,
+     "cred": 0.117
+    },
+    "$40–$60": {
+     "st": 29,
+     "co": 5,
+     "cred": 0.0
+    },
+    "$60+": {
+     "st": 27,
+     "co": 23,
+     "cred": 0.295
+    }
+   }
+  }
+ },
+ "totals9": {
+  "recommended": 87,
+  "tiers": {
+   "Gap-led": 42,
+   "Vector-led": 28,
+   "Strong": 17
+  },
+  "absent_share": 82
+ },
+ "design_forward": {
+  "staples_all": 20,
+  "competitor_all": 44,
+  "amazon_staples": 25,
+  "amazon_competitor": 45,
+  "wayfair_staples": 13,
+  "wayfair_competitor": 44,
+  "staples_ahead": [
+   "Water Bottles"
+  ]
+ },
+ "stats": {
+  "desks_corporate": {
+   "st": 81,
+   "co": 50,
+   "cred": 0.0,
+   "descriptive": false
+  },
+  "chairs_reception": {
+   "st": 57,
+   "co": 1,
+   "cred": 0.0,
+   "descriptive": false
+  },
+  "chairs_commercial": {
+   "st": 79,
+   "co": 1,
+   "cred": 0.0,
+   "descriptive": false
+  },
+  "desks_commercial": {
+   "st": 61,
+   "co": 3,
+   "cred": 0.0,
+   "descriptive": false
+  },
+  "chairs_residential": {
+   "st": 7,
+   "co": 38,
+   "cred": 1.0,
+   "descriptive": false
+  },
+  "lamps_residential": {
+   "st": 12,
+   "co": 42,
+   "cred": 1.0,
+   "descriptive": false
+  },
+  "partitions_residential": {
+   "st": 0,
+   "co": 24,
+   "cred": 1.0,
+   "descriptive": false
+  },
+  "desks_home_office": {
+   "st": 19,
+   "co": 52,
+   "cred": 1.0,
+   "descriptive": false
+  },
+  "desks_remote": {
+   "st": 19,
+   "co": 51,
+   "cred": 1.0,
+   "descriptive": false
+  },
+  "bp_hiking": {
+   "st": 1,
+   "co": 40,
+   "cred": 1.0,
+   "descriptive": false
+  },
+  "bp_travel": {
+   "st": 6,
+   "co": 28,
+   "cred": 1.0,
+   "descriptive": false
+  },
+  "bp_laptop": {
+   "st": 62,
+   "co": 12,
+   "cred": 0.0,
+   "descriptive": false
+  },
+  "bp_men": {
+   "st": 2,
+   "co": 33,
+   "cred": 1.0,
+   "descriptive": false
+  },
+  "bp_women": {
+   "st": 9,
+   "co": 36,
+   "cred": 1.0,
+   "descriptive": false
+  },
+  "bp_kids": {
+   "st": 25,
+   "co": 2,
+   "cred": 0.0,
+   "descriptive": false
+  },
+  "lunch_women": {
+   "st": 4,
+   "co": 23,
+   "cred": 1.0,
+   "descriptive": false
+  },
+  "lunch_teens": {
+   "st": 50,
+   "co": 1,
+   "cred": 0.0,
+   "descriptive": false
+  },
+  "chairs_black": {
+   "st": 48,
+   "co": 8,
+   "cred": 0.0,
+   "descriptive": false
+  },
+  "chairs_light": {
+   "st": 6,
+   "co": 27,
+   "cred": 1.0,
+   "descriptive": false
+  },
+  "chairs_beige": {
+   "st": 3,
+   "co": 21,
+   "cred": 1.0,
+   "descriptive": false
+  },
+  "chairs_cozy": {
+   "st": 13,
+   "co": 33,
+   "cred": 1.0,
+   "descriptive": false
+  },
+  "chairs_armchair": {
+   "st": 10,
+   "co": 36,
+   "cred": 1.0,
+   "descriptive": false
+  },
+  "chairs_guest": {
+   "st": 68,
+   "co": 14,
+   "cred": 0.0,
+   "descriptive": false
+  },
+  "coffee_black": {
+   "st": 84,
+   "co": 14,
+   "cred": 0.0,
+   "descriptive": false
+  },
+  "coffee_wood": {
+   "st": 2,
+   "co": 77,
+   "cred": 1.0,
+   "descriptive": false
+  },
+  "coffee_plastic": {
+   "st": 62,
+   "co": 4,
+   "cred": 0.0,
+   "descriptive": false
+  },
+  "coffee_bamboo": {
+   "st": 4,
+   "co": 36,
+   "cred": 1.0,
+   "descriptive": false
+  },
+  "coffee_nespresso": {
+   "st": 3,
+   "co": 33,
+   "cred": 1.0,
+   "descriptive": false
+  },
+  "coffee_corporate": {
+   "st": 68,
+   "co": 19,
+   "cred": 0.0,
+   "descriptive": false
+  },
+  "partitions_woven": {
+   "st": 2,
+   "co": 32,
+   "cred": 1.0,
+   "descriptive": false
+  },
+  "partitions_luxe": {
+   "st": 1,
+   "co": 23,
+   "cred": 1.0,
+   "descriptive": false
+  },
+  "partitions_print": {
+   "st": 0,
+   "co": 21,
+   "cred": 1.0,
+   "descriptive": false
+  },
+  "partitions_tackable": {
+   "st": 83,
+   "co": 2,
+   "cred": 0.0,
+   "descriptive": false
+  },
+  "partitions_wheels": {
+   "st": 57,
+   "co": 8,
+   "cred": 0.0,
+   "descriptive": false
+  },
+  "partitions_grey": {
+   "st": 49,
+   "co": 13,
+   "cred": 0.0,
+   "descriptive": false
+  },
+  "partitions_folding": {
+   "st": 49,
+   "co": 74,
+   "cred": 1.0,
+   "descriptive": false
+  },
+  "clocks_statement": {
+   "st": 9,
+   "co": 39,
+   "cred": 1.0,
+   "descriptive": false
+  },
+  "clocks_oversized": {
+   "st": 3,
+   "co": 30,
+   "cred": 1.0,
+   "descriptive": false
+  },
+  "clocks_plastic": {
+   "st": 60,
+   "co": 5,
+   "cred": 0.0,
+   "descriptive": false
+  },
+  "clocks_atomic": {
+   "st": 20,
+   "co": 1,
+   "cred": 0.0,
+   "descriptive": false
+  },
+  "clocks_modern": {
+   "st": 6,
+   "co": 27,
+   "cred": 1.0,
+   "descriptive": false
+  },
+  "planners_leather": {
+   "st": 0,
+   "co": 24,
+   "cred": 1.0,
+   "descriptive": false
+  },
+  "planners_journal": {
+   "st": 0,
+   "co": 17,
+   "cred": 1.0,
+   "descriptive": false
+  },
+  "planners_plain": {
+   "st": 37,
+   "co": 78,
+   "cred": 1.0,
+   "descriptive": false
+  },
+  "planners_art": {
+   "st": 37,
+   "co": 2,
+   "cred": 0.0,
+   "descriptive": false
+  },
+  "planners_business": {
+   "st": 40,
+   "co": 8,
+   "cred": 0.0,
+   "descriptive": false
+  },
+  "planners_daily": {
+   "st": 9,
+   "co": 29,
+   "cred": 1.0,
+   "descriptive": false
+  },
+  "lunch_stainless": {
+   "st": 15,
+   "co": 46,
+   "cred": 1.0,
+   "descriptive": false
+  },
+  "lunch_boho": {
+   "st": 16,
+   "co": 58,
+   "cred": 1.0,
+   "descriptive": false
+  },
+  "lunch_sustainable": {
+   "st": 90,
+   "co": 41,
+   "cred": 0.0,
+   "descriptive": false
+  },
+  "lamps_shaded": {
+   "st": 36,
+   "co": 78,
+   "cred": 1.0,
+   "descriptive": false
+  },
+  "lamps_gooseneck": {
+   "st": 34,
+   "co": 7,
+   "cred": 0.0,
+   "descriptive": false
+  },
+  "lamps_usb": {
+   "st": 83,
+   "co": 18,
+   "cred": 0.0,
+   "descriptive": false
+  },
+  "lamps_dimmable": {
+   "st": 49,
+   "co": 16,
+   "cred": 0.0,
+   "descriptive": false
+  },
+  "lamps_wireless": {
+   "st": 29,
+   "co": 2,
+   "cred": 0.0,
+   "descriptive": false
+  },
+  "lamps_tech": {
+   "st": 86,
+   "co": 20,
+   "cred": 0.0,
+   "descriptive": false
+  },
+  "lamps_tall": {
+   "st": 9,
+   "co": 32,
+   "cred": 1.0,
+   "descriptive": false
+  },
+  "lamps_luxe": {
+   "st": 8,
+   "co": 24,
+   "cred": 1.0,
+   "descriptive": false
+  },
+  "desks_narrow": {
+   "st": 4,
+   "co": 39,
+   "cred": 1.0,
+   "descriptive": false
+  },
+  "desks_wide": {
+   "st": 53,
+   "co": 16,
+   "cred": 0.0,
+   "descriptive": false
+  },
+  "desks_luxe": {
+   "st": 7,
+   "co": 35,
+   "cred": 1.0,
+   "descriptive": false
+  },
+  "desks_writing": {
+   "st": 5,
+   "co": 20,
+   "cred": 1.0,
+   "descriptive": false
+  },
+  "bp_comfort": {
+   "st": 80,
+   "co": 4,
+   "cred": 0.0,
+   "descriptive": false
+  },
+  "bp_outdoor": {
+   "st": 3,
+   "co": 25,
+   "cred": 1.0,
+   "descriptive": false
+  },
+  "coffee_capacity": {
+   "st": 28,
+   "co": 52,
+   "cred": 0.995,
+   "descriptive": false
+  },
+  "water_gym": {
+   "st": 15,
+   "co": 37,
+   "cred": 1.0,
+   "descriptive": false
+  },
+  "water_outdoor": {
+   "st": 8,
+   "co": 27,
+   "cred": 1.0,
+   "descriptive": false
+  },
+  "pads_faux_leather": {
+   "st": 29,
+   "co": 76,
+   "cred": 1.0,
+   "descriptive": false
+  },
+  "pads_water_resistant": {
+   "st": 15,
+   "co": 48,
+   "cred": 1.0,
+   "descriptive": false
+  },
+  "org_education": {
+   "st": 22,
+   "co": 46,
+   "cred": 1.0,
+   "descriptive": false
+  },
+  "org_pen_cup": {
+   "st": 20,
+   "co": 54,
+   "cred": 1.0,
+   "descriptive": false
+  }
+ },
+ "bands": {
+  "desks_u200": {
+   "st": 7,
+   "co": 29,
+   "cred": 1.0
+  },
+  "desks_200_350": {
+   "st": 16,
+   "co": 32,
+   "cred": 1.0
+  },
+  "desks_600p": {
+   "st": 56,
+   "co": 18,
+   "cred": 0.0
+  },
+  "partitions_u150": {
+   "st": 3,
+   "co": 28,
+   "cred": 1.0
+  },
+  "partitions_150_450": {
+   "st": 5,
+   "co": 30,
+   "cred": 1.0
+  },
+  "partitions_1000p": {
+   "st": 57,
+   "co": 20,
+   "cred": 0.0
+  },
+  "clocks_u50": {
+   "st": 67,
+   "co": 21,
+   "cred": 0.0
+  },
+  "clocks_125p": {
+   "st": 2,
+   "co": 25,
+   "cred": 1.0
+  },
+  "lamps_175p": {
+   "st": 5,
+   "co": 26,
+   "cred": 1.0
+  },
+  "lamps_100_175": {
+   "st": 20,
+   "co": 26,
+   "cred": 0.932
+  },
+  "planners_u10": {
+   "st": 12,
+   "co": 41,
+   "cred": 1.0
+  },
+  "coffee_u15": {
+   "st": 0,
+   "co": 17,
+   "cred": 1.0
+  },
+  "coffee_15_25": {
+   "st": 10,
+   "co": 41,
+   "cred": 1.0
+  },
+  "coffee_30p": {
+   "st": 76,
+   "co": 23,
+   "cred": 0.0
+  },
+  "chairs_250_350": {
+   "st": 14,
+   "co": 29,
+   "cred": 1.0
+  },
+  "lunch_u15": {
+   "st": 14,
+   "co": 27,
+   "cred": 1.0
+  },
+  "pads_u15": {
+   "st": 7,
+   "co": 36,
+   "cred": 1.0
+  },
+  "org_u10": {
+   "st": 12,
+   "co": 34,
+   "cred": 1.0
+  }
+ },
+ "sourcing": {
+  "wayfair_brands": 213,
+  "wayfair_house": 152,
+  "wayfair_house_share": 71,
+  "wayfair_house_examples": [
+   "East Urban Home",
+   "Ebern Designs",
+   "Latitude Run",
+   "Inbox Zero",
+   "17 Stories",
+   "Williston Forge"
+  ],
+  "amazon_brands": 172,
+  "amazon_house": 0,
+  "brands_on_staples_9": [
+   "AT-A-Glance",
+   "BAGSMART",
+   "Bentgo",
+   "Blue Sky",
+   "Fringe",
+   "High Sierra",
+   "House of Doolittle",
+   "Mead",
+   "OttLite",
+   "PlanAhead",
+   "Targus"
+  ],
+  "brands_on_staples_9_n": 11,
+  "brands_on_staples_12_n": 13,
+  "brands_on_staples_12": [
+   "at-A-Glance",
+   "BAGSMART",
+   "Bentgo",
+   "Blue Sky",
+   "CamelBak",
+   "Fringe",
+   "High Sierra",
+   "House of Doolittle",
+   "Mead",
+   "OttLite",
+   "PlanAhead",
+   "STANLEY",
+   "Targus"
+  ],
+  "wayfair_house_share_12": 71
+ },
+ "picks": {
+  "Planners": [
+   {
+    "attr_check": {
+     "spec": [
+      [
+       "design_theme",
+       "plain"
+      ],
+      [
+       "date_format",
+       "monthly"
+      ]
+     ],
+     "price_min": null,
+     "price_max": null,
+     "staples_hits": 215,
+     "staples_total": 805,
+     "staples_examples": [
+      "2027 AT-A-GLANCE QuickNotes 8.25\" x 11\" Weekly & Monthly Appointment B",
+      "2027 AT-A-GLANCE 7\" x 10\" Monthly Planner, Faux Leather Cover, Black (",
+      "2026-2027 Five Star Customizable 8.5\" x 11\" Academic Weekly & Monthly "
+     ],
+     "comp_hits": 325,
+     "comp_total": 1173,
+     "staples_share": 26.7,
+     "comp_share": 27.7
+    },
+    "note": null,
+    "final_rank": 1,
+    "label": "Minimal multi-year monthly planner",
+    "archetype": "Plain-cover monthly planner",
+    "combo": "Type: planner · Layout: monthly · Design: plain · Audience: general",
+    "tier": "Strong",
+    "framing": "deepen",
+    "combo_shown": "Type: planner · Layout: monthly · Design: plain",
+    "skipped": null,
+    "n_staples": 27,
+    "n_competitor": 84,
+    "share_staples": 3.4,
+    "share_competitor": 7.2,
+    "median_price_competitor": 9.99,
+    "median_price_staples": 19.99,
+    "final": 90.8,
+    "vos": 12.9,
+    "tg": 64.2,
+    "exemplar": {
+     "title": "2027-2029 Monthly Planner - 3 Year Calendar 2027-2028-2029 Monthly Planner",
+     "price": 17.49,
+     "url": "https://www.amazon.com/dp/B0H3KZBZK7",
+     "brand": null,
+     "house_brand": false,
+     "brand_on_staples": false,
+     "m1_label": "STYLE-EXTENSION",
+     "m2_label": "NO-TWIN",
+     "basis": "both methods",
+     "nearest_staples": "2027 Blue Sky Enterprise 8\" x 10\" Calendar Year Monthly Planner, Plastic Cover (131794-27)",
+     "nearest_staples_price": 14.99
+    },
+    "check": {
+     "staples_kw": "monthly",
+     "staples_hits": 668,
+     "staples_total": 805,
+     "staples_examples": [
+      "2027 Brownline DuraFlex 5\" x 8\" Daily & Monthly Appointment Book, Plas",
+      "2026-2027 Blue Sky Sincerely Jules Forget Me Not Purple 8.5\" x 11\" Aca",
+      "2026-2027 Blue Sky Greta 8.5\" x 11\" Academic Weekly & Monthly Planner,"
+     ],
+     "comp_hits": 385,
+     "comp_total": 1173,
+     "staples_hit_share": 83.0,
+     "comp_hit_share": 32.8
+    }
+   },
+   {
+    "attr_check": {
+     "spec": [
+      [
+       "planner_type",
+       "journal"
+      ]
+     ],
+     "price_min": null,
+     "price_max": null,
+     "staples_hits": 0,
+     "staples_total": 805,
+     "staples_examples": [],
+     "comp_hits": 198,
+     "comp_total": 1173,
+     "staples_share": 0.0,
+     "comp_share": 16.9
+    },
+    "note": null,
+    "final_rank": 3,
+    "label": "Guided / daily journal",
+    "archetype": "Plain-cover daily journal/guided planner",
+    "combo": "Type: journal/guided · Layout: daily · Design: plain · Vibe: plain",
+    "tier": "Gap-led",
+    "framing": "add",
+    "combo_shown": "Type: journal/guided · Layout: daily · Design: plain",
+    "skipped": "R2 plain-cover weekly planner: same idea as R1 (only the date layout differs)",
+    "n_staples": 0,
+    "n_competitor": 22,
+    "share_staples": 0.0,
+    "share_competitor": 1.9,
+    "median_price_competitor": 15.97,
+    "median_price_staples": null,
+    "final": 98.0,
+    "vos": 22.7,
+    "tg": 68.0,
+    "exemplar": {
+     "title": "LEATHER VILLAGE Leather Bound Journal Key Lock, Distressed Brown 8x6.",
+     "price": 29.99,
+     "url": "https://www.amazon.com/dp/B08GJS2RTN",
+     "brand": "LEATHER",
+     "house_brand": false,
+     "brand_on_staples": false,
+     "m1_label": "OFF-BRAND",
+     "m2_label": "NO-TWIN",
+     "basis": "Method 2",
+     "nearest_staples": "2027 AT-A-GLANCE Hardcover Diary, 5\" x 7.5\", Wide-Ruled, Red (SD387-13-27)",
+     "nearest_staples_price": 49.99
+    },
+    "check": {
+     "staples_kw": "journal|guided|gratitude",
+     "staples_hits": 2,
+     "staples_total": 805,
+     "staples_examples": [
+      "2027 Excello Brands Daily Diary Journal 8\" x 12\" Daily Planner, Paperb",
+      "2027 Excello Brands Daily Diary Journal 6\" x 8\" Daily Planner, Paperbo"
+     ],
+     "comp_hits": 303,
+     "comp_total": 1173,
+     "staples_hit_share": 0.2,
+     "comp_hit_share": 25.8
+    }
+   }
+  ],
+  "Backpacks": [
+   {
+    "attr_check": {
+     "spec": [
+      [
+       "pack_type",
+       "hiking"
+      ]
+     ],
+     "price_min": null,
+     "price_max": null,
+     "staples_hits": 5,
+     "staples_total": 379,
+     "staples_examples": [
+      "JanSport Outdoor Laptop Compatable Backpack, X-Large, Black (T14F008)",
+      "Ergodyne® Chill-Its® GB5050 Hydration Bladder Replacement",
+      "High Sierra Pathsetter Polyester Backpack, Medium, Black (157868-1041)"
+     ],
+     "comp_hits": 614,
+     "comp_total": 1979,
+     "staples_share": 1.3,
+     "comp_share": 31.0
+    },
+    "note": null,
+    "final_rank": 1,
+    "label": "Hiking / outdoor daypack (unisex)",
+    "archetype": "Women & men hiking/outdoor backpack",
+    "combo": "Type: hiking/outdoor · Audience: women & men · Vibe: plain · Outdoor: yes",
+    "tier": "Gap-led",
+    "framing": "add",
+    "combo_shown": "Type: hiking/outdoor · Audience: women & men · Outdoor: yes",
+    "skipped": null,
+    "n_staples": 0,
+    "n_competitor": 199,
+    "share_staples": 0.0,
+    "share_competitor": 10.1,
+    "median_price_competitor": 22.99,
+    "median_price_staples": null,
+    "final": 92.6,
+    "vos": 15.5,
+    "tg": 85.9,
+    "exemplar": {
+     "title": "25L Hiking Backpack for Men Women - Waterproof Daypack with Whistle & Anti Theft Zippers & Multi Compartments for Camping, Travel & Outdoor Day Hikes (Black)",
+     "price": 27.16,
+     "url": "https://www.amazon.com/dp/B0GF38Q254",
+     "brand": "25L",
+     "house_brand": false,
+     "brand_on_staples": false,
+     "m1_label": "OFF-BRAND",
+     "m2_label": "NO-TWIN",
+     "basis": "Method 2",
+     "nearest_staples": "Ergodyne® Chill-Its® GB5050 Hydration Bladder Replacement",
+     "nearest_staples_price": 21.19
+    },
+    "check": {
+     "staples_kw": "hiking|outdoor|daypack|trail",
+     "staples_hits": 2,
+     "staples_total": 379,
+     "staples_examples": [
+      "JanSport Outdoor Laptop Compatable Backpack, X-Large, Black (T14F008)",
+      "TUCCI TrailBlazer Laptop Compatible Backpack, Medium, Black (T0567)"
+     ],
+     "comp_hits": 590,
+     "comp_total": 1979,
+     "staples_hit_share": 0.5,
+     "comp_hit_share": 29.8
+    }
+   },
+   {
+    "attr_check": {
+     "spec": [
+      [
+       "pack_type",
+       "travel"
+      ]
+     ],
+     "price_min": null,
+     "price_max": null,
+     "staples_hits": 21,
+     "staples_total": 379,
+     "staples_examples": [
+      "Skyway Luggage Rainier Weekender Laptop Backpack, Large, Zion Gray (50",
+      "BAZIC Products® Basic Backpack 16\" Fuchsia, Pack of 2 (BAZ1036-2)",
+      "BAZIC Products Classic Backpack, Lime Green, Pack of 2 (BAZ1054-2)"
+     ],
+     "comp_hits": 425,
+     "comp_total": 1979,
+     "staples_share": 5.5,
+     "comp_share": 21.5
+    },
+    "note": null,
+    "final_rank": 4,
+    "label": "Travel / carry-on backpack (40L)",
+    "archetype": "Women & men travel/carry-on backpack",
+    "combo": "Type: travel/carry-on · Audience: women & men · Vibe: plain · Outdoor: not stated",
+    "tier": "Gap-led",
+    "framing": "deepen",
+    "combo_shown": "Type: travel/carry-on · Audience: women & men",
+    "skipped": "R2-R3 hiking/outdoor backpacks: same idea as R1",
+    "n_staples": 0,
+    "n_competitor": 58,
+    "share_staples": 0.0,
+    "share_competitor": 2.9,
+    "median_price_competitor": 31.99,
+    "median_price_staples": null,
+    "final": 81.5,
+    "vos": 14.6,
+    "tg": 74.0,
+    "exemplar": {
+     "title": "EMPSIGN 40L Travel Backpack for Women & Men",
+     "price": 39.99,
+     "url": "https://www.amazon.com/dp/B0GTLKQ4BM",
+     "brand": "EMPSIGN",
+     "house_brand": false,
+     "brand_on_staples": false,
+     "m1_label": "OFF-BRAND",
+     "m2_label": "NO-TWIN",
+     "basis": "Method 2",
+     "nearest_staples": "Thule Subterra 2 Travel Pack Laptop Backpack, Medium, Vetiver Gray (3205056)",
+     "nearest_staples_price": 169.95
+    },
+    "check": {
+     "staples_kw": "travel|carry.on|flight",
+     "staples_hits": 7,
+     "staples_total": 379,
+     "staples_examples": [
+      "Travelon CLEAN Backpack, Gray Heather (43541-51T)",
+      "Thule Subterra 2 Travel Pack Laptop Backpack, Medium, Vetiver Gray (32",
+      "Travelon Backpack, Medium, Black (42817-500)"
+     ],
+     "comp_hits": 775,
+     "comp_total": 1979,
+     "staples_hit_share": 1.8,
+     "comp_hit_share": 39.2
+    }
+   }
+  ],
+  "Office Desks": [
+   {
+    "attr_check": {
+     "spec": [
+      [
+       "aesthetic_tags",
+       "luxe"
+      ],
+      [
+       "desk_type",
+       "computer"
+      ]
+     ],
+     "price_min": null,
+     "price_max": null,
+     "staples_hits": 33,
+     "staples_total": 668,
+     "staples_examples": [
+      "Bush Furniture Saratoga 66\"W L Shaped Computer Desk with Drawers, Harv",
+      "Bush Home Somerset 72W 3 Position Sit to Stand L Shaped Desk, Storm Gr",
+      "Flash Furniture Cambridge 60\"W Single Pedestal Desk, Walnut/Black (GCM"
+     ],
+     "comp_hits": 627,
+     "comp_total": 2821,
+     "staples_share": 4.9,
+     "comp_share": 22.2
+    },
+    "note": null,
+    "final_rank": 1,
+    "label": "Design-led (luxe) computer desk",
+    "archetype": "Luxe rectangular computer desk",
+    "combo": "Type: computer · Shape: rectangular · Drawers: not stated · Luxe: yes",
+    "tier": "Vector-led",
+    "framing": "deepen",
+    "combo_shown": "Type: computer · Shape: rectangular · Luxe: yes",
+    "skipped": null,
+    "n_staples": 0,
+    "n_competitor": 232,
+    "share_staples": 0.0,
+    "share_competitor": 8.2,
+    "median_price_competitor": 259.99,
+    "median_price_staples": null,
+    "final": 87.2,
+    "vos": 20.4,
+    "tg": 61.6,
+    "exemplar": {
+     "title": "Contemporary Home Office Computer Desk, 61\" Height - Brown Laminate Shelves 61\"h Leaning Desk For Office, Taupe Laminate, Work Satisfaction Increase",
+     "price": 339.99,
+     "url": "https://www.wayfair.com/shop-product-type/pdp/inbox-zero-contemporary-home-office-computer-desk-61-height-brown-laminate-shelves-61h-leaning-desk-for-office-taupe-laminate-work-satisfaction-increase-w122093285.html",
+     "brand": "Inbox Zero",
+     "house_brand": true,
+     "brand_on_staples": false,
+     "m1_label": "LEAN-APPROVE",
+     "m2_label": "ATTR-TRADE-UP",
+     "basis": "Method 1",
+     "nearest_staples": "Flash Furniture Cambridge 48\"W Single Pedestal Desk, White Oak/Black (GCMBLK173WOK)",
+     "nearest_staples_price": 805.99
+    },
+    "check": {
+     "staples_kw": "luxe|luxury|gold|marble|glam",
+     "staples_hits": 2,
+     "staples_total": 668,
+     "staples_examples": [
+      "Techni Mobili Deluxe L-Shaped Desk with Inline Team Desk Option, Walnu",
+      "bali & pari Basile 51\" Rattan Writing Desk, Marbled Tortoise Brown (27"
+     ],
+     "comp_hits": 133,
+     "comp_total": 2821,
+     "staples_hit_share": 0.3,
+     "comp_hit_share": 4.7
+    }
+   },
+   {
+    "attr_check": {
+     "spec": [
+      [
+       "end_user_segment",
+       "remote workers"
+      ],
+      [
+       "aesthetic_tags",
+       "sleek/minimal"
+      ]
+     ],
+     "price_min": null,
+     "price_max": null,
+     "staples_hits": 10,
+     "staples_total": 668,
+     "staples_examples": [
+      "Techni Mobili 51.25\"W Modern Office Desk with Storage, Gray (RTA-7002-",
+      "Bush Home Salinas Small Computer Desk with Hutch, Shiplap Gray/Pure Wh",
+      "Staples 31.5\"W Glass Computer Desk, Black (44851)"
+     ],
+     "comp_hits": 477,
+     "comp_total": 2821,
+     "staples_share": 1.5,
+     "comp_share": 16.9
+    },
+    "note": null,
+    "final_rank": 2,
+    "label": "Minimal remote-work desk with storage",
+    "archetype": "Remote workers sleek/minimal workstation desk",
+    "combo": "Type: workstation · Drawers: yes · Remote workers: yes · Sleek/minimal: yes",
+    "tier": "Gap-led",
+    "framing": "add",
+    "combo_shown": "Type: workstation · Drawers: yes · Remote workers: yes · Sleek/minimal: yes",
+    "skipped": null,
+    "n_staples": 0,
+    "n_competitor": 15,
+    "share_staples": 0.0,
+    "share_competitor": 0.5,
+    "median_price_competitor": 274.99,
+    "median_price_staples": null,
+    "final": 83.1,
+    "vos": 18.5,
+    "tg": 63.3,
+    "exemplar": {
+     "title": "Home Office Table With Grey Laminate Finish And Black Metal Base, 48\"l Workstation For Office, 48\"l, Legs, Storage",
+     "price": 349.99,
+     "url": "https://www.wayfair.com/shop-product-type/pdp/gracie-oaks-home-office-table-with-grey-laminate-finish-and-black-metal-base-48l-workstation-for-office-48l-legs-storage-w121799809.html?piid=1416615713",
+     "brand": "Gracie Oaks",
+     "house_brand": true,
+     "brand_on_staples": false,
+     "m1_label": "OFF-BRAND",
+     "m2_label": "NO-TWIN",
+     "basis": "Method 2",
+     "nearest_staples": "HON Mod 48\"W Desk Shell, Slate Teak (HLPLDS4830.LSL1)",
+     "nearest_staples_price": 264.99
+    },
+    "check": {
+     "staples_kw": "home office",
+     "staples_hits": 6,
+     "staples_total": 668,
+     "staples_examples": [
+      "Sauder August Hill 59\"W L-Shaped Home Office Desk, Soft White (430758)",
+      "Martha Stewart Eli 47\"W Glass/Steel Home Office Desk, Clear/Polished B",
+      "Space Solutions 43\"W Folding Home Office Desk, Black/Teak (24969)"
+     ],
+     "comp_hits": 802,
+     "comp_total": 2821,
+     "staples_hit_share": 0.9,
+     "comp_hit_share": 28.4
+    }
+   }
+  ],
+  "Accent Chairs": [
+   {
+    "attr_check": {
+     "spec": [
+      [
+       "form_factor",
+       "armchair"
+      ]
+     ],
+     "price_min": null,
+     "price_max": null,
+     "staples_hits": 11,
+     "staples_total": 116,
+     "staples_examples": [
+      "Flash Furniture Hercules Series Fabric Accent Chair, Black (XU60555BK)",
+      "Flash Furniture HERCULES Paddington Series Fabric Tufted Accent Chair,",
+      "Boss Wood/Veneer Accent Chair, Black (B9540-BK)"
+     ],
+     "comp_hits": 1027,
+     "comp_total": 2977,
+     "staples_share": 9.5,
+     "comp_share": 34.5
+    },
+    "note": null,
+    "final_rank": 1,
+    "label": "Warm-tone leather / fabric armchair",
+    "archetype": "Armchair",
+    "combo": "Colour tone: warm-neutral · Form: armchair · Residential living: not stated · Natural/woven: not stated",
+    "tier": "Strong",
+    "framing": "deepen",
+    "combo_shown": "Colour tone: warm-neutral · Form: armchair",
+    "skipped": null,
+    "n_staples": 0,
+    "n_competitor": 53,
+    "share_staples": 0.0,
+    "share_competitor": 1.8,
+    "median_price_competitor": 579.99,
+    "median_price_staples": null,
+    "final": 87.9,
+    "vos": 19.1,
+    "tg": 76.4,
+    "exemplar": {
+     "title": "Pettengill Tufted Distressed Genuine Top-Grain Leather Accent Armchair",
+     "price": 969.99,
+     "url": "https://www.wayfair.com/furniture/pdp/trent-austin-design-pettengill-tufted-distressed-genuine-top-grain-leather-accent-armchair-w009992004.html?piid=276744617",
+     "brand": "Trent Austin Design",
+     "house_brand": true,
+     "brand_on_staples": false,
+     "m1_label": "STYLE-EXTENSION",
+     "m2_label": "ATTR-TRADE-UP",
+     "basis": "both methods",
+     "nearest_staples": "Flash Furniture Hercules Lacey Leather Accent Chair, Black (ZBLACEY8312CHBK)",
+     "nearest_staples_price": 911.29
+    },
+    "check": {
+     "staples_kw": "armchair|arm chair",
+     "staples_hits": 2,
+     "staples_total": 116,
+     "staples_examples": [
+      "BOSS Captain's Guest Arm Chair, Burgundy (B9540-BY)",
+      "Global Primacare HT Vinyl Bariatric Low-Back Armchair, Blue (GC3637)"
+     ],
+     "comp_hits": 682,
+     "comp_total": 2977,
+     "staples_hit_share": 1.7,
+     "comp_hit_share": 22.9
+    }
+   },
+   {
+    "attr_check": {
+     "spec": [
+      [
+       "form_factor",
+       "barrel"
+      ]
+     ],
+     "price_min": null,
+     "price_max": null,
+     "staples_hits": 0,
+     "staples_total": 116,
+     "staples_examples": [],
+     "comp_hits": 376,
+     "comp_total": 2977,
+     "staples_share": 0.0,
+     "comp_share": 12.6
+    },
+    "note": null,
+    "final_rank": 3,
+    "label": "Light-neutral swivel barrel chair",
+    "archetype": "Barrel chair",
+    "combo": "Colour tone: light-neutral · Form: barrel · Swivel: yes · Cozy/plush: not stated",
+    "tier": "Gap-led",
+    "framing": "add",
+    "combo_shown": "Colour tone: light-neutral · Form: barrel · Swivel: yes",
+    "skipped": "R2 lounge/club chair: Staples already lists 12 lounge chairs (commercial vinyl / faux leather)",
+    "n_staples": 0,
+    "n_competitor": 48,
+    "share_staples": 0.0,
+    "share_competitor": 1.6,
+    "median_price_competitor": 431.99,
+    "median_price_staples": null,
+    "final": 92.0,
+    "vos": 27.8,
+    "tg": 71.2,
+    "exemplar": {
+     "title": "360° Swivel Accent Chair, Velvet Upholstered Open-Back Swivel Barrel Chair , Modern Swivel Lounge Chair for Living Room, Dining Room, Bedroom",
+     "price": 259.99,
+     "url": "https://www.wayfair.com/furniture/pdp/hokku-designs-360-swivel-accent-chair-velvet-upholstered-open-back-swivel-barrel-chair-modern-swivel-lounge-chair-for-living-room-dining-room-bedroom-w119643556.html?piid=1272737804",
+     "brand": "Hokku Designs",
+     "house_brand": true,
+     "brand_on_staples": false,
+     "m1_label": "OFF-BRAND",
+     "m2_label": "NO-TWIN",
+     "basis": "Method 2",
+     "nearest_staples": "Flash Furniture Plastic/Poly Accent Chair, White (FH132DPPWH)",
+     "nearest_staples_price": 122.99
+    },
+    "check": {
+     "staples_kw": "barrel",
+     "staples_hits": 0,
+     "staples_total": 116,
+     "staples_examples": [],
+     "comp_hits": 388,
+     "comp_total": 2977,
+     "staples_hit_share": 0.0,
+     "comp_hit_share": 13.0
+    }
+   }
+  ],
+  "Desk Lamps": [
+   {
+    "attr_check": {
+     "spec": [
+      [
+       "lamp_form",
+       "shaded"
+      ]
+     ],
+     "price_min": 150,
+     "price_max": null,
+     "staples_hits": 9,
+     "staples_total": 169,
+     "staples_examples": [
+      "Adesso Bolton LED Desk Lamp, 19\", Antique Brass/Brown Marble (4306-21)",
+      "Adesso Elmore LED Desk Lamp, 16.5\", Black/Walnut (5180-01)",
+      "Adesso Reader LED Desk Lamp, 15\", Antique Brass/Brown Marble (3557-21)"
+     ],
+     "comp_hits": 188,
+     "comp_total": 776,
+     "staples_share": 5.3,
+     "comp_share": 24.2
+    },
+    "note": "Staples already has 55 shaded lamps (mostly under $100), so this is a price/design trade-up",
+    "final_rank": 1,
+    "label": "Decor-grade shaded table lamp ($150+)",
+    "archetype": "Shaded table-style desk lamp",
+    "combo": "Colour: grey · Form: shaded table-style · USB port: not stated · Residential living: not stated",
+    "tier": "Strong",
+    "framing": "trade-up",
+    "combo_shown": "Colour: grey · Form: shaded table-style",
+    "skipped": null,
+    "n_staples": 0,
+    "n_competitor": 22,
+    "share_staples": 0.0,
+    "share_competitor": 2.8,
+    "median_price_competitor": 151.8,
+    "median_price_staples": null,
+    "final": 97.7,
+    "vos": 23.8,
+    "tg": 80.2,
+    "exemplar": {
+     "title": "Waheed Stainless Steel Desk Lamp",
+     "price": 151.8,
+     "url": "https://www.wayfair.com/lighting/pdp/mercer41-waheed-stainless-steel-desk-lamp-w110461592.html?piid=1427026813",
+     "brand": "Mercer41",
+     "house_brand": true,
+     "brand_on_staples": false,
+     "m1_label": "LEAN-APPROVE",
+     "m2_label": "ATTR-TRADE-UP",
+     "basis": "both methods",
+     "nearest_staples": "OttLite Direct LED Desk Lamp, 18\", Brass (CS01BS9-SHPR)",
+     "nearest_staples_price": 104.49
+    },
+    "check": {
+     "staples_kw": "shade",
+     "staples_hits": 0,
+     "staples_total": 169,
+     "staples_examples": [],
+     "comp_hits": 76,
+     "comp_total": 776,
+     "staples_hit_share": 0.0,
+     "comp_hit_share": 9.8
+    }
+   },
+   {
+    "attr_check": {
+     "spec": [
+      [
+       "material_class",
+       "glass"
+      ]
+     ],
+     "price_min": null,
+     "price_max": null,
+     "staples_hits": 0,
+     "staples_total": 169,
+     "staples_examples": [],
+     "comp_hits": 81,
+     "comp_total": 776,
+     "staples_share": 0.0,
+     "comp_share": 10.4
+    },
+    "note": null,
+    "final_rank": 6,
+    "label": "Glass / Tiffany-style statement lamp",
+    "archetype": "Glass/crystal novelty/sculptural desk lamp",
+    "combo": "Material: glass/crystal · Form: novelty/sculptural · USB port: not stated · Luxe: not stated · Residential living: not stated",
+    "tier": "Gap-led",
+    "framing": "add",
+    "combo_shown": "Material: glass/crystal · Form: novelty/sculptural",
+    "skipped": "R2/R4 residential luxe shaded lamps: same idea as R1; R3/R5 wood-base shaded lamps: Staples already sells 5 (Adesso Elmore, Roman)",
+    "n_staples": 0,
+    "n_competitor": 12,
+    "share_staples": 0.0,
+    "share_competitor": 1.5,
+    "median_price_competitor": 241.54,
+    "median_price_staples": null,
+    "final": 85.9,
+    "vos": 18.9,
+    "tg": 70.3,
+    "exemplar": {
+     "title": "18\" High Tiffany Turning Leaf Desk Lamp",
+     "price": 233.1,
+     "url": "https://www.wayfair.com/lighting/pdp/bloomsbury-market-tiffany-18-mahogany-bronze-desk-lamp-npqk5963.html",
+     "brand": "Bloomsbury Market",
+     "house_brand": true,
+     "brand_on_staples": false,
+     "m1_label": "OFF-BRAND",
+     "m2_label": "NO-TWIN",
+     "basis": "Method 2",
+     "nearest_staples": "Mount-It! LED Desk Lamp, 16.54\", Silver/White (TS-7009)",
+     "nearest_staples_price": 109.19
+    },
+    "check": {
+     "staples_kw": "tiffany|stained|glass",
+     "staples_hits": 0,
+     "staples_total": 169,
+     "staples_examples": [],
+     "comp_hits": 70,
+     "comp_total": 776,
+     "staples_hit_share": 0.0,
+     "comp_hit_share": 9.0
+    }
+   }
+  ],
+  "Lunch Bags": [
+   {
+    "attr_check": {
+     "spec": [
+      [
+       "lunch_type",
+       "bento"
+      ],
+      [
+       "material_class",
+       "stainless"
+      ]
+     ],
+     "price_min": null,
+     "price_max": null,
+     "staples_hits": 1,
+     "staples_total": 318,
+     "staples_examples": [
+      "Bentgo MicroSteel Insulated Bento Box, Rose Gold, 41 oz. (BGSTLCH-RG)"
+     ],
+     "comp_hits": 190,
+     "comp_total": 1789,
+     "staples_share": 0.3,
+     "comp_share": 10.6
+    },
+    "note": null,
+    "final_rank": 1,
+    "label": "Stainless-steel commuter bento (adult)",
+    "archetype": "Travel/commute bento box",
+    "combo": "Type: bento box · Insulated: not stated · Leak-proof: not stated · Travel/commute: yes",
+    "tier": "Strong",
+    "framing": "add",
+    "combo_shown": "Type: bento box · Travel/commute: yes",
+    "skipped": null,
+    "n_staples": 0,
+    "n_competitor": 70,
+    "share_staples": 0.0,
+    "share_competitor": 3.9,
+    "median_price_competitor": 18.99,
+    "median_price_staples": null,
+    "final": 90.3,
+    "vos": 25.2,
+    "tg": 80.9,
+    "exemplar": {
+     "title": "Stackable Stainless Steel Bento Box for Adults, 6 Cup with Snack Pod",
+     "price": 38.95,
+     "url": "https://www.amazon.com/dp/B0716B2ZFK",
+     "brand": null,
+     "house_brand": false,
+     "brand_on_staples": false,
+     "m1_label": "LEAN-APPROVE",
+     "m2_label": "NO-TWIN",
+     "basis": "both methods",
+     "nearest_staples": "Bentgo Bowl Plastic Insulated Bento Bowl, 2-Coompartment, Khaki Green, 21.2 oz. (BGOBL2-KG)",
+     "nearest_staples_price": 16.99
+    },
+    "check": {
+     "staples_kw": "stainless.*bento|bento.*stainless",
+     "staples_hits": 0,
+     "staples_total": 318,
+     "staples_examples": [],
+     "comp_hits": 209,
+     "comp_total": 1789,
+     "staples_hit_share": 0.0,
+     "comp_hit_share": 11.7
+    }
+   },
+   {
+    "attr_check": {
+     "spec": [
+      [
+       "lunch_type",
+       "heated"
+      ]
+     ],
+     "price_min": null,
+     "price_max": null,
+     "staples_hits": 6,
+     "staples_total": 318,
+     "staples_examples": [
+      "Bentgo Heat Electric Insulated Lunch Bag, Carbon Black (BGHEATBG-CB)",
+      "bentgo Heated Electric Bento Box, Latte, 42.4 oz. (BGHEATBX-LT)",
+      "bentgo Heated Electric Bento Box, Pink Spice, 42.4 oz. (BGHEATBX-PS)"
+     ],
+     "comp_hits": 211,
+     "comp_total": 1789,
+     "staples_share": 1.9,
+     "comp_share": 11.8
+    },
+    "note": null,
+    "final_rank": 4,
+    "label": "Cordless heated lunch box",
+    "archetype": "Travel/commute electric heated lunch bag / box",
+    "combo": "Type: electric heated · Dishwasher/microwave safe: not stated · Vibe: plain · Travel/commute: yes",
+    "tier": "Gap-led",
+    "framing": "deepen",
+    "combo_shown": "Type: electric heated · Travel/commute: yes",
+    "skipped": "R2-R3 bento box: same idea as R1",
+    "n_staples": 0,
+    "n_competitor": 67,
+    "share_staples": 0.0,
+    "share_competitor": 3.7,
+    "median_price_competitor": 51.99,
+    "median_price_staples": null,
+    "final": 98.9,
+    "vos": 30.2,
+    "tg": 88.5,
+    "exemplar": {
+     "title": "Cordless Electric Lunch Box, 18000mAh Rechargeable Self-Heating Lunch Box Food Warmer, 1.5L Portable Heated Lunch Container for Adults, Leakproof for Work, Office, Camping & Travel, Blue-Black",
+     "price": 59.99,
+     "url": "https://www.amazon.com/dp/B0H2QG3YFG",
+     "brand": null,
+     "house_brand": false,
+     "brand_on_staples": false,
+     "m1_label": "OFF-BRAND",
+     "m2_label": "NO-TWIN",
+     "basis": "Method 2",
+     "nearest_staples": "Thermos FUNtainer Food Jar Stainless Steel Insulated Food Jar, Electric Blue, 16 oz. (EAF31104BL6)",
+     "nearest_staples_price": 26.29
+    },
+    "check": {
+     "staples_kw": "heated|electric|self.heating",
+     "staples_hits": 6,
+     "staples_total": 318,
+     "staples_examples": [
+      "Bentgo Heat Electric Insulated Lunch Bag, Carbon Black (BGHEATBG-CB)",
+      "bentgo Heated Electric Bento Box, Latte, 42.4 oz. (BGHEATBX-LT)",
+      "bentgo Heated Electric Bento Box, Pink Spice, 42.4 oz. (BGHEATBX-PS)"
+     ],
+     "comp_hits": 211,
+     "comp_total": 1789,
+     "staples_hit_share": 1.9,
+     "comp_hit_share": 11.8
+    }
+   }
+  ],
+  "Clocks": [
+   {
+    "attr_check": {
+     "spec": [
+      [
+       "aesthetic_tags",
+       "statement"
+      ],
+      [
+       "clock_type",
+       "wall"
+      ]
+     ],
+     "price_min": null,
+     "price_max": null,
+     "staples_hits": 13,
+     "staples_total": 174,
+     "staples_examples": [
+      "La Crosse Clock 12\" Sierra Wood Quartz Analog Wall Clock (404-3630B)",
+      "Monarch Specialties Inc. 12\" Quartz Wall Clock, Plastic Frame, Battery",
+      "Monarch Specialties Inc. 12\" Round Wall Clock, Gold (I 9112)"
+     ],
+     "comp_hits": 936,
+     "comp_total": 2586,
+     "staples_share": 7.5,
+     "comp_share": 36.2
+    },
+    "note": null,
+    "final_rank": 1,
+    "label": "Statement oversized wall clock",
+    "archetype": "Statement wall clock",
+    "combo": "Colour tone: pattern · Type: wall · Silent: not stated · Statement: yes",
+    "tier": "Strong",
+    "framing": "deepen",
+    "combo_shown": "Colour tone: pattern · Type: wall · Statement: yes",
+    "skipped": null,
+    "n_staples": 0,
+    "n_competitor": 101,
+    "share_staples": 0.0,
+    "share_competitor": 3.9,
+    "median_price_competitor": 129.99,
+    "median_price_staples": null,
+    "final": 96.1,
+    "vos": 20.8,
+    "tg": 82.1,
+    "exemplar": {
+     "title": "Poinsettias Contemporary Fusion - Floral Oversized Wood Wall Clock",
+     "price": 96.99,
+     "url": "https://www.wayfair.com/decor-pillows/pdp/east-urban-home-poinsettias-contemporary-fusion-floral-oversized-wood-wall-clock-w110228098.html?piid=1265712092",
+     "brand": "East Urban Home",
+     "house_brand": true,
+     "brand_on_staples": false,
+     "m1_label": "TRADE-UP",
+     "m2_label": "ATTR-TRADE-UP",
+     "basis": "both methods",
+     "nearest_staples": "La Crosse Technology Red Digital LED Wall Clock with Indoor Temperature (513-1411R)",
+     "nearest_staples_price": 29.99
+    },
+    "check": {
+     "staples_kw": "oversized|statement|large",
+     "staples_hits": 1,
+     "staples_total": 174,
+     "staples_examples": [
+      "Marathon Large 12\" Analog Clock, White (CL030057WH-WH1)"
+     ],
+     "comp_hits": 347,
+     "comp_total": 2586,
+     "staples_hit_share": 0.6,
+     "comp_hit_share": 13.4
+    }
+   },
+   {
+    "attr_check": {
+     "spec": [
+      [
+       "clock_type",
+       "pendulum"
+      ]
+     ],
+     "price_min": null,
+     "price_max": null,
+     "staples_hits": 0,
+     "staples_total": 174,
+     "staples_examples": [],
+     "comp_hits": 229,
+     "comp_total": 2586,
+     "staples_share": 0.0,
+     "comp_share": 8.9
+    },
+    "note": null,
+    "final_rank": 4,
+    "label": "Wood pendulum wall clock",
+    "archetype": "Wood pendulum clock",
+    "combo": "Material: wood · Type: pendulum · Statement: not stated · Corporate office: not stated",
+    "tier": "Gap-led",
+    "framing": "add",
+    "combo_shown": "Material: wood · Type: pendulum",
+    "skipped": "R2-R3 patterned / floral wall clocks: same idea as R1",
+    "n_staples": 0,
+    "n_competitor": 46,
+    "share_staples": 0.0,
+    "share_competitor": 1.8,
+    "median_price_competitor": 248.99,
+    "median_price_staples": null,
+    "final": 90.2,
+    "vos": 17.7,
+    "tg": 82.7,
+    "exemplar": {
+     "title": "Two-Tone Wavy Floral Pendulum Wooden Wall Clocks",
+     "price": 309.99,
+     "url": "https://www.wayfair.com/decor-pillows/pdp/dakota-fields-two-tone-wavy-floral-pendulum-wooden-wall-clocks-w123533345.html?piid=776711224",
+     "brand": "Dakota Fields",
+     "house_brand": true,
+     "brand_on_staples": false,
+     "m1_label": "OFF-BRAND",
+     "m2_label": "NO-TWIN",
+     "basis": "Method 2",
+     "nearest_staples": "La Crosse Clock 12\" Dark Sierra Wood Analog Quartz Wall Clock (404-3630C)",
+     "nearest_staples_price": 27.99
+    },
+    "check": {
+     "staples_kw": "pendulum",
+     "staples_hits": 0,
+     "staples_total": 174,
+     "staples_examples": [],
+     "comp_hits": 228,
+     "comp_total": 2586,
+     "staples_hit_share": 0.0,
+     "comp_hit_share": 8.8
+    }
+   }
+  ],
+  "Partitions": [
+   {
+    "attr_check": {
+     "spec": [
+      [
+       "divider_type",
+       "folding"
+      ]
+     ],
+     "price_min": null,
+     "price_max": 150,
+     "staples_hits": 0,
+     "staples_total": 99,
+     "staples_examples": [],
+     "comp_hits": 156,
+     "comp_total": 775,
+     "staples_share": 0.0,
+     "comp_share": 20.1
+    },
+    "note": null,
+    "final_rank": 1,
+    "label": "Decorative folding screen (under $150)",
+    "archetype": "Folding screen divider",
+    "combo": "Colour: beige/cream · Type: folding screen · Design: plain · Natural/woven: not stated",
+    "tier": "Strong",
+    "framing": "add",
+    "combo_shown": "Colour: beige/cream · Type: folding screen · Design: plain",
+    "skipped": null,
+    "n_staples": 0,
+    "n_competitor": 20,
+    "share_staples": 0.0,
+    "share_competitor": 2.6,
+    "median_price_competitor": 225.49,
+    "median_price_staples": null,
+    "final": 86.2,
+    "vos": 25.1,
+    "tg": 67.3,
+    "exemplar": {
+     "title": "Folding Room Divider Screen 8 Panel 5.6 ' Tall Privacy Screen Freestanding Room Partition Beige",
+     "price": 139.99,
+     "url": "https://www.wayfair.com/furniture/pdp/highland-dunes-folding-room-divider-screen-8-panel-56-tall-privacy-screen-freestanding-room-partition-beige-w123581307.html",
+     "brand": "Highland Dunes",
+     "house_brand": true,
+     "brand_on_staples": false,
+     "m1_label": "LEAN-APPROVE",
+     "m2_label": "NO-TWIN",
+     "basis": "both methods",
+     "nearest_staples": "Luxor Freestanding 3-Panel Mobile Magnetic Whiteboard Room Divider, 53.5\"H x 91\"W, White (MB9152WW)",
+     "nearest_staples_price": 769.69
+    },
+    "check": {
+     "staples_kw": "screen|privacy",
+     "staples_hits": 0,
+     "staples_total": 99,
+     "staples_examples": [],
+     "comp_hits": 316,
+     "comp_total": 775,
+     "staples_hit_share": 0.0,
+     "comp_hit_share": 40.8
+    }
+   },
+   {
+    "attr_check": {
+     "spec": [
+      [
+       "aesthetic_tags",
+       "natural/woven"
+      ]
+     ],
+     "price_min": null,
+     "price_max": null,
+     "staples_hits": 2,
+     "staples_total": 99,
+     "staples_examples": [
+      "Luxor Oakwood 3-Panel Room Divider, 70\"H x 70\"W, Oak Grain (PPWL012)",
+      "Luxor Oakwood 2-Panel Room Divider, 48\"H x 70\"W, Oak Grain (PPWL011)"
+     ],
+     "comp_hits": 247,
+     "comp_total": 775,
+     "staples_share": 2.0,
+     "comp_share": 31.9
+    },
+    "note": null,
+    "final_rank": 4,
+    "label": "Natural rattan / woven folding screen",
+    "archetype": "Natural/woven folding screen divider",
+    "combo": "Colour: beige/cream · Type: folding screen · Natural/woven: yes · Residential living: not stated",
+    "tier": "Vector-led",
+    "framing": "add",
+    "combo_shown": "Colour: beige/cream · Type: folding screen · Natural/woven: yes",
+    "skipped": "R2-R3 folding screen dividers: same idea as R1",
+    "n_staples": 0,
+    "n_competitor": 22,
+    "share_staples": 0.0,
+    "share_competitor": 2.8,
+    "median_price_competitor": 309.99,
+    "median_price_staples": null,
+    "final": 92.2,
+    "vos": 24.7,
+    "tg": 74.6,
+    "exemplar": {
+     "title": "bali & pari Kiyoko Natural Rattan Room Divider - Handwoven Wicker Tri-Fold Decorative Privacy Screen with Woven Leaf Motif",
+     "price": 299.99,
+     "url": "https://www.wayfair.com/furniture/pdp/wholesale-interiors-bali-pari-kiyoko-natural-rattan-room-divider-handwoven-wicker-tri-fold-decorative-privacy-screen-with-woven-leaf-motif-w121919805.html",
+     "brand": "Wholesale Interiors",
+     "house_brand": false,
+     "brand_on_staples": false,
+     "m1_label": "LEAN-APPROVE",
+     "m2_label": "ATTR-UNDERCUT",
+     "basis": "Method 1",
+     "nearest_staples": "Luxor Freestanding 3-Panel Mobile Magnetic Whiteboard Room Divider, 53.5\"H x 91\"W, White (MB9152WW)",
+     "nearest_staples_price": 769.69
+    },
+    "check": {
+     "staples_kw": "rattan|wicker|woven|bamboo|paper",
+     "staples_hits": 0,
+     "staples_total": 99,
+     "staples_examples": [],
+     "comp_hits": 95,
+     "comp_total": 775,
+     "staples_hit_share": 0.0,
+     "comp_hit_share": 12.3
+    }
+   }
+  ],
+  "Coffee Organizers": [
+   {
+    "attr_check": {
+     "spec": [
+      [
+       "organizer_type",
+       "drawer"
+      ],
+      [
+       "material_class",
+       "wood"
+      ]
+     ],
+     "price_min": null,
+     "price_max": null,
+     "staples_hits": 0,
+     "staples_total": 50,
+     "staples_examples": [],
+     "comp_hits": 115,
+     "comp_total": 1196,
+     "staples_share": 0.0,
+     "comp_share": 9.6
+    },
+    "note": null,
+    "final_rank": 1,
+    "label": "Bamboo / wood K-Cup pod drawer",
+    "archetype": "Wood/bamboo K-Cup pod drawer coffee organizer",
+    "combo": "Material: wood/bamboo · Colour: brown/wood · Type: pod drawer · Pods: k-cup",
+    "tier": "Strong",
+    "framing": "add",
+    "combo_shown": "Material: wood/bamboo · Colour: brown/wood · Type: pod drawer · Pods: k-cup",
+    "skipped": null,
+    "n_staples": 0,
+    "n_competitor": 48,
+    "share_staples": 0.0,
+    "share_competitor": 4.0,
+    "median_price_competitor": 32.99,
+    "median_price_staples": null,
+    "final": 62.5,
+    "vos": 21.6,
+    "tg": 75.0,
+    "exemplar": {
+     "title": "HTB K Cup Holder Compatible Coffee Pod Storage Drawer, Wood Brown",
+     "price": 35.89,
+     "url": "https://www.amazon.com/dp/B0DBH21SRN",
+     "brand": "HTB",
+     "house_brand": false,
+     "brand_on_staples": false,
+     "m1_label": "CURATE",
+     "m2_label": "ATTR-STYLE-EXT",
+     "basis": "both methods",
+     "nearest_staples": "Keurig® K-Cycle® K-Cup® Pod Recycling & Composting Program Bins, Large Bins 450 pod capacity each, 5/Pack (5000350630)",
+     "nearest_staples_price": 269.99
+    },
+    "check": {
+     "staples_kw": "bamboo|wood",
+     "staples_hits": 1,
+     "staples_total": 50,
+     "staples_examples": [
+      "Mind Reader 11 Compartment Wood Coffee Organizer, Brown (COMORGBM-BRN)"
+     ],
+     "comp_hits": 284,
+     "comp_total": 1196,
+     "staples_hit_share": 2.0,
+     "comp_hit_share": 23.7
+    }
+   },
+   {
+    "attr_check": {
+     "spec": [
+      [
+       "organizer_type",
+       "drawer"
+      ],
+      [
+       "pod_system",
+       "nespresso"
+      ]
+     ],
+     "price_min": null,
+     "price_max": null,
+     "staples_hits": 1,
+     "staples_total": 50,
+     "staples_examples": [
+      "Mind Reader Nespresso Capsule Plastic Coffee Drawer, 50 Pod Capacity, "
+     ],
+     "comp_hits": 120,
+     "comp_total": 1196,
+     "staples_share": 2.0,
+     "comp_share": 10.0
+    },
+    "note": null,
+    "final_rank": 4,
+    "label": "Bamboo Nespresso pod drawer",
+    "archetype": "Wood/bamboo Nespresso pod drawer coffee organizer",
+    "combo": "Material: wood/bamboo · Colour: brown/wood · Type: pod drawer · Pods: nespresso",
+    "tier": "Gap-led",
+    "framing": "add",
+    "combo_shown": "Material: wood/bamboo · Colour: brown/wood · Type: pod drawer · Pods: nespresso",
+    "skipped": "R2 metal K-Cup pod drawer: Staples already sells a Keurig metal pod drawer; R3 K-Cup station organizer: priced at 0.36x Staples' nearest item (undercut risk) and Staples carries station organizers",
+    "n_staples": 0,
+    "n_competitor": 26,
+    "share_staples": 0.0,
+    "share_competitor": 2.2,
+    "median_price_competitor": 36.49,
+    "median_price_staples": null,
+    "final": 75.0,
+    "vos": 40.9,
+    "tg": 51.4,
+    "exemplar": {
+     "title": "Bamboo Coffee Pod Drawer Compatible with Nespresso Vertuo Capsule",
+     "price": 42.99,
+     "url": "https://www.amazon.com/dp/B0H74HQT7S",
+     "brand": null,
+     "house_brand": false,
+     "brand_on_staples": false,
+     "m1_label": "EDGE",
+     "m2_label": "ATTR-TRADE-UP",
+     "basis": "Method 2",
+     "nearest_staples": "Mind Reader 11 Compartment Wood Coffee Organizer, Brown (COMORGBM-BRN)",
+     "nearest_staples_price": 74.39
+    },
+    "check": {
+     "staples_kw": "nespresso|vertuo",
+     "staples_hits": 1,
+     "staples_total": 50,
+     "staples_examples": [
+      "Mind Reader Nespresso Capsule Plastic Coffee Drawer, 50 Pod Capacity, "
+     ],
+     "comp_hits": 259,
+     "comp_total": 1196,
+     "staples_hit_share": 2.0,
+     "comp_hit_share": 21.7
+    }
+   }
+  ]
+ }
+}

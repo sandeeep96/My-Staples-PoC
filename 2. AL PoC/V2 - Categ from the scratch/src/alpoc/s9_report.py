@@ -341,6 +341,145 @@ def staples_profile(nft: pd.DataFrame, nid: str) -> list[dict]:
     return rows
 
 
+def _compact(n) -> str:
+    return f"{n / 1000:.1f}K" if n >= 10000 else f"{n:,}"
+
+
+def _and(xs: list[str]) -> str:
+    return xs[0] if len(xs) == 1 else ", ".join(xs[:-1]) + " and " + xs[-1] if xs else ""
+
+
+def exec_summary(nodes, nsum, fa, cand, recs, vend, bands, qi) -> dict:
+    """Executive Summary tab (Sai, 2026-10-06): KPI tiles, funnel, key findings and a node scorecard, all computed from
+    this run with generic rules (no per-node text), static (no clicks)."""
+    top = cfg()["report"].get("exec", {}).get("top_n", 3)
+    cred = cfg()["gaps"]["credible"]
+    tiers = ["Strong", "Vector-led", "Gap-led", "Conditional"]
+    sc = nodes[nodes["status"] == "scored"].sort_values("rank")
+    leaf = lambda nid: nid.split(" > ")[-1]
+    short = lambda nid: leaf(nid).split(",")[0]
+    comp_of = dict(zip(nodes["node_id"], nodes["competitor"].map(lambda c: display_name(c) if c else "–")))
+    arch_all = fa[fa["depth"] > 0]
+    rec = fa[fa["shortlisted"]]
+    n_rec, n_new = len(rec), int((rec["n_staples"] == 0).sum())
+    tc = rec["tier"].value_counts()
+    tier_bar = lambda d, n: [{"tier": t, "n": int(d.get(t, 0)), "w": 100 * d.get(t, 0) / n, "c": F.TIER[t]}
+                             for t in tiers if d.get(t, 0)] if n else []
+    n_st, n_co = int(sc["n_staples"].sum()), int(sc["n_competitor"].sum())
+    comps = sc["competitor"].map(display_name).value_counts()
+    n_ex = int(recs["family_id"].nunique()) if len(recs) else 0
+    vo = vend[vend["brand_on_staples"].fillna(False)].assign(b=lambda x: x["brand"].fillna("").astype(str).str.strip())         if len(vend) else pd.DataFrame(columns=["b", "products"])
+    vo = vo[vo["b"] != ""].sort_values("products", ascending=False)
+    on_st = list(vo.groupby(vo["b"].str.lower(), sort=False)["b"].first())   # most products first
+    kpis = [
+        {"k": "Nodes analysed", "v": f"{len(sc)}", "s": " · ".join(f"{n} vs {c}" for c, n in comps.items())},
+        {"k": "Families compared", "v": _compact(n_st + n_co), "s": f"{n_st:,} Staples · {n_co:,} competitor"},
+        {"k": "Archetypes built", "v": f"{len(arch_all):,}", "s": "attribute combinations, 4–6 attributes each"},
+        {"k": "Safe recommendations", "v": f"{n_rec}", "s": "", "bar": tier_bar(tc, n_rec)},
+        {"k": "New to Staples", "v": _pct(n_new / n_rec) if n_rec else "–", "s": f"{n_new} of {n_rec} picks have no Staples product today"},
+        {"k": "Example products", "v": f"{n_ex}", "s": "each shown beside its nearest Staples item"},
+    ]
+
+    # funnel: bar width on a log scale so 20K and 99 both read
+    n_fam = n_st + n_co
+    either = int((arch_all["m1_gate"] | arch_all["m2_gate"]).sum())
+    stages = [("Product families compared", n_fam, f"{n_st:,} Staples · {n_co:,} competitor"),
+              ("Archetypes built", len(arch_all), f"across {len(sc)} nodes"),
+              ("Valid archetypes", int(arch_all["valid"].sum()), "in scope, ≥ 4 attributes, enough products"),
+              ("Pass a method's safety gate", either, f"Method 1: {int(arch_all['m1_gate'].sum())} · Method 2: {int(arch_all['m2_gate'].sum())}"),
+              ("Recommended", n_rec, "after the final gate (≤ 10 per node, no near-duplicates)")]
+    lmax = np.log10(max(n_fam, 10))
+    funnel = [{"k": k, "v": f"{n:,}", "s": s, "w": max(6.0, 100 * np.log10(max(n, 1)) / lmax)} for k, n, s in stages]
+    funnel[-1]["bar"] = tier_bar(tc, n_rec)
+
+    # ---- key findings (generic rules; nodes named by size of the effect)
+    ns = nsum.loc[sc["node_id"]]
+    df_c, df_s = ns["design_forward_share_competitor"], ns["design_forward_share_staples"]
+    diff = (df_c - df_s).sort_values(ascending=False)
+    ahead = [leaf(n) for n in diff.index if diff[n] < 0]
+    # each finding: headline value "v", caption "s" (what the number is), bullets "b"
+    find = []
+    b = [f"Competitor ahead on {int((diff > 0).sum())} of {len(diff)} nodes."]
+    b += [f"Widest gap: {short(n)} ({df_c[n]:.0%} vs {df_s[n]:.0%})." for n in diff.index[:top]]
+    if ahead:
+        b.append(f"Staples ahead: {_and([short(n) for n in diff.index if diff[n] < 0])}.")
+    find.append({"t": "Design gap", "v": f"{df_c.mean():.0%} vs {df_s.mean():.0%}",
+                 "s": "design-forward share, competitor vs Staples", "b": b})
+    lo, hi = [], []
+    for nid in sc["node_id"]:
+        bb = bands[bands["node_id"] == nid].sort_values("price_mid")
+        if len(bb) < 2:
+            continue
+        for row, lst in ((bb.iloc[0], lo), (bb.iloc[-1], hi)):
+            if row["credibility"] >= cred:
+                lst.append((row["share_competitor"] - row["share_staples"], nid, row))
+    pr = lambda lst: [f"{short(n)}: {r['share_competitor']:.0%} vs {r['share_staples']:.0%} {r['band']}"
+                      for _, n, r in sorted(lst, key=lambda x: -x[0])[:top]]
+    b = ([f"Cheaper entry range on {len(lo)} nodes, e.g. " + "; ".join(pr(lo)) + "."] if lo else []) + \
+        ([f"Deeper premium range on {len(hi)} nodes, e.g. " + "; ".join(pr(hi)) + "."] if hi else [])
+    find.append({"t": "Price gap", "v": f"{len(lo)} entry · {len(hi)} premium",
+                 "s": "nodes where the competitor is credibly deeper in the lowest / highest price band", "b": b})
+    per = rec.groupby("node_id").size()
+    new_n = rec[rec["n_staples"] == 0].groupby("node_id").size().reindex(per.index, fill_value=0)
+    all_new = [short(n) for n in sc["node_id"] if n in per.index and new_n[n] == per[n]]
+    none_new = [short(n) for n in sc["node_id"] if n in per.index and new_n[n] == 0]
+    b = ["The rest deepen thin Staples ranges."]
+    if all_new:
+        b.append(f"Every pick is new on {len(all_new)} nodes, e.g. {_and(all_new[:top])}.")
+    if none_new:
+        b.append(f"All picks deepen existing ranges on {_and(none_new)}.")
+    find.append({"t": "Whitespace", "v": f"{n_new} of {n_rec}", "s": "picks with no Staples product today", "b": b})
+    lc = cand["label"].value_counts()
+    n_c = len(cand)
+    rej1 = int(lc.get("SUBSTITUTE", 0) + lc.get("UNDERCUT", 0))
+    l2 = cand["m2_label"].value_counts() if "m2_label" in cand.columns else pd.Series(dtype=int)
+    rej2 = int(l2.get("ATTR-SUBSTITUTE", 0) + l2.get("ATTR-UNDERCUT", 0))
+    find.append({"t": "Cannibalisation guard", "v": _pct(rej1 / n_c) if n_c else "–",
+                 "s": f"of {n_c:,} competitor products would substitute or undercut a Staples item (Method 1)",
+                 "b": [f"Method 1: {rej1:,} products are labelled SUBSTITUTE or UNDERCUT.",
+                       f"Method 2: {rej2:,} ({_pct(rej2 / n_c)}) have a cheaper or same-look Staples twin.",
+                       "Example products are shown only where the recommending method marks them safe."]})
+    hs, n_ind = [], 0
+    if len(vend):
+        vv = vend.assign(comp=vend["node_id"].map(comp_of), b=vend["brand"].fillna("").astype(str).str.strip())
+        vv = vv[vv["b"] != ""]
+        for c, g in vv.groupby("comp"):
+            if g["house_brand"].mean() > 0:
+                hs.append(f"{g['house_brand'].mean():.0%} of {c}'s brands are house brands: source the archetype, not the brand.")
+        n_ind = int(vv.loc[~vv["house_brand"].fillna(False) & ~vv["brand_on_staples"].fillna(False), "b"].str.lower().nunique())
+    b = ([f"Quick wins: {_and(on_st[:3])}{' …' if len(on_st) > 3 else '.'}"] if on_st else []) + hs + \
+        [f"{n_ind} independent brands to recruit as marketplace sellers."]
+    find.append({"t": "Sourcing", "v": f"{len(on_st)} brands", "s": "behind safe products already sell on Staples", "b": b})
+    sens = qi.get("sensitivity", {})
+    st_tg, st_vos = sens.get("tg", {}).get("mean_topn_retention"), sens.get("vos", {}).get("mean_topn_retention")
+    tn = cfg()["sensitivity"]["top_n"]
+    b = [f"{int(tc.get('Vector-led', 0))} by the vector view only, {int(tc.get('Gap-led', 0))} by the attribute view only"
+         + (f", {int(tc.get('Conditional', 0))} conditional fill." if tc.get("Conditional", 0) else ".")]
+    if st_tg is not None and st_vos is not None:
+        b.append(f"{st_tg:.0%} ({m('TG')}) and {st_vos:.0%} ({m('VOS')}) of each node's top {tn} survive random weight changes.")
+    find.append({"t": "Confidence", "v": f"{int(tc.get('Strong', 0))} Strong", "s": f"of {n_rec} picks backed by both methods", "b": b})
+
+    # ---- node scorecard
+    rows = []
+    for nd in sc.itertuples():
+        nid, r = nd.node_id, rec[rec["node_id"] == nd.node_id]
+        t1 = r.sort_values("final_rank").head(1)
+        s_ = nsum.loc[nid]
+        rows.append({"rank": int(nd.rank), "leaf": short(nid), "path": node_display(nid), "comp": comp_of[nid],
+                     "ns": int(nd.n_staples), "nc": int(nd.n_competitor),
+                     "dfs": float(np.nan_to_num(s_["design_forward_share_staples"])),
+                     "dfc": float(np.nan_to_num(s_["design_forward_share_competitor"])),
+                     "ps": _money(s_["price_median_staples"]), "pc": _money(s_["price_median_competitor"]),
+                     "n": len(r), "bar": tier_bar(r["tier"].value_counts(), 10), "new": int((r["n_staples"] == 0).sum()),
+                     "top": t1["name"].iloc[0] if len(t1) else "–",
+                     "top_full": (t1["combo_full"].fillna(t1["combo"]).iloc[0] if len(t1) else ""),
+                     "top_tier": t1["tier"].iloc[0] if len(t1) else ""})
+    answer = (f"{n_rec} archetypes (attributes combinations) across {len(sc)} nodes are safe for Staples to add; "
+              f"{_pct(n_new / n_rec) if n_rec else '–'} are new to Staples, and {n_ex} example competitor products show what to source.")
+    return {"kpis": kpis, "funnel": funnel, "findings": find, "scorecard": rows, "answer": answer,
+            "tiers": [{"tier": t, "c": F.TIER[t]} for t in tiers]}
+
+
 def run() -> dict:
     v = cfg()["vector"]
     nodes = load("nodes.parquet")
@@ -525,6 +664,7 @@ def run() -> dict:
         "calib": {l2: q["calibration"] for l2, q in qv.items() if isinstance(q, dict) and "calibration" in q},
         "thresholds": {l2: q["thresholds"] for l2, q in qv.items() if isinstance(q, dict) and "thresholds" in q},
         "aas_t": _aas_ranges(qv),
+        "ex": exec_summary(nodes, nsum, fa, cand, recs, vend, bands, qi),
     }
     env = Environment(loader=FileSystemLoader(str(ROOT / "src" / "alpoc" / "templates")), autoescape=True)
     html = env.get_template("report.html.j2").render(**ctx)

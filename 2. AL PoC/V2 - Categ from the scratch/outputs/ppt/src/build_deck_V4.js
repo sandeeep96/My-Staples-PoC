@@ -172,19 +172,6 @@ function chip(slide, label, x, y, w, h, fill, ink = C.white, size = 9) {
   });
   s.addNotes(`Opening. This PoC answers one question for each of ${T.nodes_scored} Staples nodes: what does the leading competitor (Amazon or Wayfair) carry that Staples does not, and which of those items can Staples add through the marketplace without cannibalising its own assortment. External data only.`);
 
-  // Project Continuation steps: drawn on slide 5; slide 2's next steps reuse the same labels and headings
-  const CONT = [
-    { v: "PRIORITISE", ic: "chart", f: `Link sales & search to the top picks in 2–3 pilot nodes`, h: "Demand & segment prioritisation", q: "Which gaps will sell, and to whom?",
-      b: ["Link sales, traffic & search to each archetype", "Profile buyers: SMB vs home, RFM, basket mix", "Re-rank add-lists by expected GMV & commission"], d: "Sales · traffic · customers", o: "Revenue-ranked add-list per segment" },
-    { v: "PROTECT", ic: "shieldW", f: `Calibrate gates with merchants (60 side-by-side pairs)`, h: "Cannibalisation & threshold tuning", q: "Will this listing take sales from 1P?",
-      b: ["Tune safety-gate thresholds with merchants: cannibalisation, price, fit, picks per node", "Swap today's supply proxy for real 1P sales overlap", "Set price & margin floors per node"], d: "1P sales · margin · price history", o: "1P protected in revenue terms" },
-    { v: "EXPAND", ic: "target", f: `Agree the next nodes & benchmark competitors`, h: "Any node, competitor or audience", q: "Where should Staples grow next?",
-      b: ["Pick the category and the competitor to benchmark", "e.g. IKEA for small-space home offices, Target for Back-to-School, Etsy for gifting", "From 12 nodes to every category: config only, no new code"], d: "Staples catalogue + new competitor crawls", o: "The engine aimed at the audience Staples wants" },
-    { v: "CURATE", ic: "clip", f: `Vet top picks; start with the ${SRC.brands_on_staples_12_n} brands on Staples`, h: "Automated seller-listing vetting", q: "Should this listing go live?",
-      b: ["Score every seller submission with the same engine", "Check fit, 1P overlap & price automatically", "Approve / review / reject queue that learns from curators"], d: "Seller submissions · curator decisions", o: "Curation that scales beyond manual review" },
-    { v: "MONITOR", ic: "radar", f: `Track pilots' GMV, attach & commission`, h: "Market radar & pilot tracking", q: "What changed, and what worked?",
-      b: ["Monthly re-crawls flag new & closing gaps", "Track listed picks' GMV, attach & commission", "Compare with forecast; feed back into step 1"], d: "Sales · pilot results (+ competitor crawls)", o: "Live gap list & proven ROI" },
-  ];
   // ======================= 1. EXECUTIVE SUMMARY =======================
   pres.addSection({ title: "Summary" });
   s = pres.addSlide({ masterName: "CONTENT", sectionTitle: "Summary" });
@@ -219,46 +206,48 @@ function chip(slide, label, x, y, w, h, fill, ink = C.white, size = 9) {
     text(s, t, x + (i ? 0.28 : 0.12), 2.92, HW - (i ? 0.5 : 0.42), 0.46, { fontSize: 11, bold: true, color: ink, align: "center", valign: "middle" });
   });
   text(s, [{ text: "Two independent methods; ", options: { bold: true, color: C.navy } }, { text: "a pick survives only if it passes its own cannibalisation gate." }], 9.45, 2.88, 3.43, 0.54, { fontSize: 10.5, italic: true, color: C.text, valign: "middle" });
-  // band 3: what to add first (picks a Staples merchant recognises: anchored to what Staples already sells)
-  text(s, "WHAT STAPLES SHOULD ADD FIRST", 0.45, 3.52, 6, 0.28, { fontSize: 12, bold: true, color: C.blue, valign: "middle", charSpacing: 1 });
-  text(s, `+${T.recommended - 4} more archetypes with example products: see the demo`, 6.5, 3.52, 6.38, 0.28, { fontSize: 10, italic: true, color: C.muted, align: "right", valign: "middle" });
-  const P = F.picks, A = F.attach;
+  // band 3: what to add first
+  text(s, "WHAT STAPLES SHOULD ADD FIRST", 0.45, 3.56, 6, 0.28, { fontSize: 12, bold: true, color: C.blue, valign: "middle", charSpacing: 1 });
+  text(s, `+${T.recommended - 4} more archetypes with example products: see the demo`, 6.5, 3.56, 6.38, 0.28, { fontSize: 10, italic: true, color: C.muted, align: "right", valign: "middle" });
+  const P = F.picks;
   const recs = [
-    { k: "Coffee Organizers", pk: P["Coffee Organizers"][0], h: "Wooden K-Cup pod drawers", st: "coffee organisers",
-      hook: `Staples sells ${A.single_serve} single-serve coffees & ${A.coffee_makers} coffee makers; its organisers are ${S.coffee_plastic.st}% plastic` },
-    { k: "Lunch Bags", pk: P["Lunch Bags"][0], h: "Adult bento boxes for the commute", st: "lunch bags",
-      hook: `Lunch range built for school (${S.lunch_kids.st}% kids vs ${S.lunch_kids.co}% at Amazon); office commuters under-served` },
-    { k: "Planners", pk: P.Planners[1], h: "Guided & daily journals", st: "planners",
-      hook: `Planner shoppers already come to Staples (${P.Planners[1].attr_check.staples_total} planners); a journal is the natural add-on` },
-    { k: "Accent Chairs", pk: P["Accent Chairs"][1], h: "The \"White Chair\": swivel barrel chair", st: "accent chairs",
-      hook: `Accent chairs built for lobbies (${S.chairs_reception.st}% reception vs ${S.chairs_reception.co}% at Wayfair); no home-office chair` },
+    { k: "Accent Chairs", pk: P["Accent Chairs"][1], ic: "chair", h: "The \"White Chair\": swivel barrel chair", st: "accent chairs" },
+    { k: "Planners", pk: P.Planners[1], ic: "cal", h: "Guided & daily journals", st: "planners" },
+    { k: "Partitions", pk: P.Partitions[0], ic: "part", h: "Folding screens under $150", st: "partitions" },
+    { k: "Backpacks", pk: P.Backpacks[0], ic: "bag", h: "Hiking & outdoor daypacks", st: "backpacks" },
   ];
   const RW4 = (12.43 - 3 * 0.15) / 4;
   recs.forEach((r, i) => {
-    const x = 0.45 + i * (RW4 + 0.15), y = 3.84, n = N[r.k], a = r.pk.attr_check, ex = r.pk.exemplar;
-    box(s, x, y, RW4, 1.7, C.white, { r: 0.1, line: C.line, shadow: true });
-    circleIcon(s, ICON[NODE_ICON[r.k]], x + 0.14, y + 0.12, 0.46, C.blue);
-    text(s, r.h, x + 0.7, y + 0.08, RW4 - 0.8, 0.52, { fontSize: 12.5, bold: true, color: C.navy, valign: "middle" });
-    text(s, r.hook, x + 0.16, y + 0.64, RW4 - 0.3, 0.5, { fontSize: 9.5, italic: true, color: C.text, valign: "top" });
+    const x = 0.45 + i * (RW4 + 0.15), y = 3.9, n = N[r.k], a = r.pk.attr_check, ex = r.pk.exemplar;
+    box(s, x, y, RW4, 1.62, C.white, { r: 0.1, line: C.line, shadow: true });
+    circleIcon(s, ICON[r.ic], x + 0.14, y + 0.14, 0.5, C.blue);
+    text(s, r.h, x + 0.74, y + 0.1, RW4 - 0.84, 0.58, { fontSize: 12.5, bold: true, color: C.navy, valign: "middle" });
     text(s, [
-      { text: "Staples: ", options: { color: C.muted } }, { text: `${a.staples_hits} of ${a.staples_total}`, options: { bold: true, color: C.staples } }, { text: " · " },
-      { text: `${n.competitor}: `, options: { color: C.muted } }, { text: `${Math.round(a.comp_share)}%`, options: { bold: true, color: compColor(n.competitor) } }, { text: " of range" },
-    ], x + 0.16, y + 1.14, RW4 - 0.3, 0.24, { fontSize: 10.5, color: C.text, valign: "middle" });
-    text(s, [{ text: "e.g. ", options: { color: C.muted } }, { text: shortTitle(ex.title, 30) + ` · ${money0(ex.price)} ↗`, options: { hyperlink: { url: ex.url, tooltip: ex.title }, color: C.mid, underline: { style: "sng" } } }], x + 0.16, y + 1.42, RW4 - 0.3, 0.2, { fontSize: 9.5 });
+      { text: "Staples today: ", options: { color: C.muted } }, { text: `${a.staples_hits} of ${a.staples_total}`, options: { bold: true, color: C.staples } }, { text: ` ${r.st}`, options: { breakLine: true } },
+      { text: `${n.competitor}: `, options: { color: C.muted } }, { text: `${Math.round(a.comp_share)}%`, options: { bold: true, color: compColor(n.competitor) } }, { text: " of its range" },
+    ], x + 0.16, y + 0.74, RW4 - 0.3, 0.5, { fontSize: 10.5, color: C.text, paraSpaceAfter: 2 });
+    text(s, [{ text: "e.g. ", options: { color: C.muted } }, { text: shortTitle(ex.title, 30) + ` · ${money0(ex.price)} ↗`, options: { hyperlink: { url: ex.url, tooltip: ex.title }, color: C.mid, underline: { style: "sng" } } }], x + 0.16, y + 1.27, RW4 - 0.3, 0.2, { fontSize: 9.5 });
   });
-  // band 4: next steps = the first move in each Project Continuation step (same labels & headings as slide 5)
-  text(s, [{ text: "NEXT STEPS", options: { bold: true, color: C.blue, charSpacing: 1 } }, { text: "   →  continues on Project Continuation (slide 5)", options: { italic: true, color: C.mid, fontSize: 10, hyperlink: { slide: SLIDE_CONT, tooltip: "Go to Project Continuation" } } }], 0.45, 5.66, 9, 0.26, { fontSize: 12, valign: "middle" });
-  const NG = 0.1, NW = (12.43 - 4 * NG) / 5;
-  CONT.forEach((c, i) => {
-    const x = 0.45 + i * (NW + NG), y = 5.98;
-    box(s, x, y, NW, 1.0, C.pale, { r: 0.08 });
-    box(s, x, y, NW, 0.32, i < 2 ? C.blue : i === 2 ? C.mid : C.navy, { r: 0.08 });
-    s.addImage({ data: ICON[c.ic], x: x + 0.1, y: y + 0.06, w: 0.2, h: 0.2 });
-    text(s, `${i + 1} · ${c.v}`, x + 0.38, y, NW - 0.46, 0.32, { fontSize: 10, bold: true, color: C.orange, valign: "middle", charSpacing: 1 });
-    text(s, c.h, x + 0.1, y + 0.36, NW - 0.16, 0.24, { fontSize: 9.5, bold: true, color: C.navy, valign: "middle" });
-    text(s, c.f, x + 0.1, y + 0.6, NW - 0.16, 0.36, { fontSize: 9, color: C.muted, valign: "top" });
+  // band 4: next steps -> project continuation
+  text(s, "NEXT STEPS", 0.45, 5.8, 4, 0.26, { fontSize: 12, bold: true, color: C.blue, valign: "middle", charSpacing: 1 });
+  const nxt = [
+    ["Calibrate safety-gate thresholds with merchants (60 side-by-side pairs)", "Starts PROTECT"],
+    [`Review top picks; seller outreach starting with the ${SRC.brands_on_staples_12_n} brands on Staples`, "Starts CURATE"],
+    ["Pilot 2–3 nodes with Staples data; track attach rate & commission", "Starts PRIORITISE & MONITOR"],
+  ];
+  const NW = 3.42;
+  nxt.forEach(([t, tag], i) => {
+    const x = 0.45 + i * (NW + 0.12), y = 6.1;
+    box(s, x, y, NW, 0.86, C.pale, { r: 0.1 });
+    s.addShape("ellipse", { x: x + 0.12, y: y + 0.12, w: 0.36, h: 0.36, fill: { color: C.navy }, line: { color: C.navy, width: 0 } });
+    text(s, String(i + 1), x + 0.12, y + 0.12, 0.36, 0.36, { fontSize: 13, bold: true, color: C.white, align: "center", valign: "middle" });
+    text(s, t, x + 0.58, y + 0.06, NW - 0.68, 0.5, { fontSize: 10.5, color: C.navy, bold: true, valign: "middle" });
+    text(s, "→ " + tag, x + 0.58, y + 0.58, NW - 0.68, 0.22, { fontSize: 9, italic: true, bold: true, color: "B86E00", valign: "middle" });
   });
-  s.addNotes(`The ask: a curated, core-adjacent ("White Chair") marketplace for Q1 2027 that does not cannibalise 1P sales, built on external data only.\nFunnel: ${T.families_all.toLocaleString("en-US")} product families (${T.staples_families.toLocaleString("en-US")} Staples, ${T.amazon_families.toLocaleString("en-US")} Amazon, ${T.wayfair_families.toLocaleString("en-US")} Wayfair; colour/size variants merged) → ${T.archetypes_built} archetypes compared → ${T.recommended} pass the safety gates (${T.tiers.Strong} Strong, ${T.tiers["Vector-led"]} Vector-led, ${T.tiers["Gap-led"]} Gap-led, ${T.tiers.Conditional || 0} Conditional) → ${T.example_products} example products, each shown beside the nearest Staples item → ${SRC.brands_on_staples_12_n} brands already selling on Staples (${SRC.brands_on_staples_12.join(", ")}).\nHow: Method 1 compares products in an embedding space (whitespace, fit with Staples, look, cannibalisation risk, price position); Method 2 compares attribute shares (share gap, price, colour, material/style, design). Each has its own cannibalisation gate; the final list is their union.\nThe four headline picks are anchored to what Staples already sells, so a merchant recognises them; each was checked against the Staples catalogue: wooden K-Cup pod drawers ${P["Coffee Organizers"][0].attr_check.staples_hits} of ${P["Coffee Organizers"][0].attr_check.staples_total} coffee organisers (Strong: both methods; Staples sells ${A.single_serve} single-serve coffee items and ${A.coffee_makers} coffee makers); adult stainless bento ${P["Lunch Bags"][0].attr_check.staples_hits} of ${P["Lunch Bags"][0].attr_check.staples_total} lunch bags (Strong); journals ${P.Planners[1].attr_check.staples_hits} of ${P.Planners[1].attr_check.staples_total} planners (Gap-led); barrel chairs ${P["Accent Chairs"][1].attr_check.staples_hits} of ${P["Accent Chairs"][1].attr_check.staples_total} accent chairs (Gap-led; the literal "White Chair").\nBackup picks if asked: folding screens under $150 (${P.Partitions[0].attr_check.staples_hits} of ${P.Partitions[0].attr_check.staples_total} partitions vs ${Math.round(P.Partitions[0].attr_check.comp_share)}% of Wayfair's; Strong), statement wall clocks (Staples' clocks ${S.clocks_plastic.st}% plastic vs ${S.clocks_plastic.co}% at Wayfair; Strong), hiking / outdoor daypacks (${P.Backpacks[0].attr_check.staples_hits} of ${P.Backpacks[0].attr_check.staples_total} vs ${Math.round(P.Backpacks[0].attr_check.comp_share)}% of Amazon's).\nIf asked about the assortments: Staples builds for the workplace (${S.chairs_reception.st}% of accent chairs are reception/lobby seats vs ${S.chairs_reception.co}% at Wayfair; ${S.partitions_tackable.st}% of partitions tackable vs ${S.partitions_tackable.co}%); Wayfair for the home (${S.chairs_residential.co}% of accent chairs for living rooms vs ${S.chairs_residential.st}%); Amazon for the person and the activity (${S.bp_hiking.co}% of backpacks hiking/outdoor vs ${S.bp_hiking.st}%). Design-forward share ${DF.staples_all}% at Staples vs ${DF.competitor_all}% at the competitors (text-based, provisional). Price: Staples desks median ${money0(N["Office Desks"].price_median_staples)} vs ${money0(N["Office Desks"].price_median_competitor)} at Wayfair; ${B.planners_u10.co}% of Amazon planners under $10 vs ${B.planners_u10.st}%.\nNext steps: the first move in each of the five Project Continuation steps (same labels and headings as slide 5; click the link above the boxes).`);
+  const cx = 0.45 + 3 * (NW + 0.12) + 0.03, cw = 12.88 - cx;
+  box(s, cx, 6.1, cw, 0.86, C.navy, { r: 0.1 });
+  text(s, [{ text: "Continues as", options: { breakLine: true, fontSize: 10, color: "CADCFC" } }, { text: "Project Continuation  →", options: { bold: true, hyperlink: { slide: SLIDE_CONT, tooltip: "Go to Project Continuation" }, color: C.white } }], cx + 0.08, 6.1, cw - 0.16, 0.86, { fontSize: 11, color: C.white, valign: "middle", align: "center" });
+  s.addNotes(`The ask: a curated, core-adjacent ("White Chair") marketplace for Q1 2027 that does not cannibalise 1P sales, built on external data only.\nFunnel: ${T.families_all.toLocaleString("en-US")} product families (${T.staples_families.toLocaleString("en-US")} Staples, ${T.amazon_families.toLocaleString("en-US")} Amazon, ${T.wayfair_families.toLocaleString("en-US")} Wayfair; colour/size variants merged) → ${T.archetypes_built} archetypes compared → ${T.recommended} pass the safety gates (${T.tiers.Strong} Strong, ${T.tiers["Vector-led"]} Vector-led, ${T.tiers["Gap-led"]} Gap-led, ${T.tiers.Conditional || 0} Conditional) → ${T.example_products} example products, each shown beside the nearest Staples item → ${SRC.brands_on_staples_12_n} brands already selling on Staples (${SRC.brands_on_staples_12.join(", ")}).\nHow: Method 1 compares products in an embedding space (whitespace, fit with Staples, look, cannibalisation risk, price position); Method 2 compares attribute shares (share gap, price, colour, material/style, design). Each has its own cannibalisation gate; the final list is their union.\nThe four headline picks were checked against the Staples catalogue: barrel chairs 0 of ${P["Accent Chairs"][1].attr_check.staples_total}; journals 0 of ${P.Planners[1].attr_check.staples_total}; folding screens under $150 0 of ${P.Partitions[0].attr_check.staples_total}; hiking / outdoor packs ${P.Backpacks[0].attr_check.staples_hits} of ${P.Backpacks[0].attr_check.staples_total}.\nIf asked about the assortments: Staples builds for the workplace (${S.chairs_reception.st}% of accent chairs are reception/lobby seats vs ${S.chairs_reception.co}% at Wayfair; ${S.partitions_tackable.st}% of partitions tackable vs ${S.partitions_tackable.co}%); Wayfair for the home (${S.chairs_residential.co}% of accent chairs for living rooms vs ${S.chairs_residential.st}%); Amazon for the person and the activity (${S.bp_hiking.co}% of backpacks hiking/outdoor vs ${S.bp_hiking.st}%). Design-forward share ${DF.staples_all}% at Staples vs ${DF.competitor_all}% at the competitors (text-based, provisional). Price: Staples desks median ${money0(N["Office Desks"].price_median_staples)} vs ${money0(N["Office Desks"].price_median_competitor)} at Wayfair; ${B.planners_u10.co}% of Amazon planners under $10 vs ${B.planners_u10.st}%.\nNext steps lead straight into the Project Continuation slide (click the box).`);
 
   // ======================= 2. CURRENT SCOPE =======================
   s = pres.addSlide({ masterName: "CONTENT", sectionTitle: "Summary" });
@@ -304,6 +293,18 @@ function chip(slide, label, x, y, w, h, fill, ink = C.white, size = 9) {
   s.addText("Project Continuation: The PoC Engine on Staples Data", { placeholder: "title" });
   box(s, 0.45, 1.18, 12.43, 0.38, C.paler, { r: 0.08 });
   text(s, runs("Same question, which products to add, answered with **real demand**, **Staples' own thresholds** and **kept current**. Deepen the 12 nodes first, then broaden.", { fontSize: 11.5, color: C.text }, C.navy), 0.6, 1.18, 12.13, 0.38, { align: "center", valign: "middle" });
+  const CONT = [
+    { v: "PRIORITISE", ic: "chart", h: "Demand & segment prioritisation", q: "Which gaps will sell, and to whom?", tag: "Next step 3",
+      b: ["Link sales, traffic & search to each archetype", "Profile buyers: SMB vs home, RFM, basket mix", "Re-rank add-lists by expected GMV & commission"], d: "Sales · traffic · customers", o: "Revenue-ranked add-list per segment" },
+    { v: "PROTECT", ic: "shieldW", h: "Cannibalisation & threshold tuning", q: "Will this listing take sales from 1P?", tag: "Next step 1",
+      b: ["Tune safety-gate thresholds with merchants: cannibalisation, price, fit, picks per node", "Swap today's supply proxy for real 1P sales overlap", "Set price & margin floors per node"], d: "1P sales · margin · price history", o: "1P protected in revenue terms" },
+    { v: "EXPAND", ic: "target", h: "Any node, competitor or audience", q: "Where should Staples grow next?",
+      b: ["Pick the category and the competitor to benchmark", "e.g. IKEA for small-space home offices, Target for Back-to-School, Etsy for gifting", "From 12 nodes to every category: config only, no new code"], d: "Staples catalogue + new competitor crawls", o: "The engine aimed at the audience Staples wants" },
+    { v: "CURATE", ic: "clip", h: "Automated seller-listing vetting", q: "Should this listing go live?", tag: "Next step 2",
+      b: ["Score every seller submission with the same engine", "Check fit, 1P overlap & price automatically", "Approve / review / reject queue that learns from curators"], d: "Seller submissions · curator decisions", o: "Curation that scales beyond manual review" },
+    { v: "MONITOR", ic: "radar", h: "Market radar & pilot tracking", q: "What changed, and what worked?", tag: "Next step 3",
+      b: ["Monthly re-crawls flag new & closing gaps", "Track listed picks' GMV, attach & commission", "Compare with forecast; feed back into step 1"], d: "Sales · pilot results (+ competitor crawls)", o: "Live gap list & proven ROI" },
+  ];
   const CG = 0.26, CW5 = (12.43 - 4 * CG) / 5, HY5 = 1.9, BY5 = 2.74, BH5 = 3.72;
   CONT.forEach((c, i) => {
     const x = 0.45 + i * (CW5 + CG);
@@ -329,7 +330,7 @@ function chip(slide, label, x, y, w, h, fill, ink = C.white, size = 9) {
   s.addShape("line", { x: c1, y: BY5 + BH5, w: 0, h: ly - BY5 - BH5, line: { color: C.sky, width: 1.5, beginArrowType: "triangle" } });
   box(s, 4.67, ly - 0.14, 4.0, 0.28, C.white, { r: 0.04 });
   text(s, "↺  results feed the next cycle: the engine learns", 4.67, ly - 0.14, 4.0, 0.28, { fontSize: 10, italic: true, bold: true, color: C.mid, align: "center", valign: "middle" });
-  s.addNotes("Project continuation: the same engine, now on Staples' internal data. Order: deepen the 12 nodes first, then broaden.\n1 Prioritise: join sales, traffic and search data to each archetype; profile buyers (SMB vs home, RFM, basket mix); re-rank each node's add-list by expected GMV and commission per segment (Hero / Probable / Non-Hero).\n2 Protect: today's cannibalisation checks use supply only (how close a competitor product sits to Staples products). With Staples data we tune every safety-gate threshold with merchants (cannibalisation risk bands, price-position limits, fit-with-Staples cut-offs, picks per node; the merchant calibration session on slide 2 is the first move) and replace the supply proxy with real 1P sales overlap and substitution seen in baskets, plus price and margin floors per node.\n3 Expand: once calibrated, point the engine at any Staples category and any competitor that represents the audience Staples wants (e.g. IKEA for small-space home offices, Target for students and Back-to-School, Etsy for gifting). A new competitor is one adapter entry and a new node one config file; no code change.\n4 Curate: the same attribute and archetype engine scores every seller submission for fit, 1P overlap and price, feeding an approve / review / reject queue that learns from curator decisions (first move: vet the top picks, starting with the brands already on Staples).\n5 Monitor: scheduled re-crawls flag new and closing gaps; pilot listings are tracked for GMV, attach rate and commission against the forecast, and results feed back into prioritisation.");
+  s.addNotes("Project continuation: the same engine, now on Staples' internal data. Order: deepen the 12 nodes first, then broaden.\n1 Prioritise: join sales, traffic and search data to each archetype; profile buyers (SMB vs home, RFM, basket mix); re-rank each node's add-list by expected GMV and commission per segment (Hero / Probable / Non-Hero).\n2 Protect: today's cannibalisation checks use supply only (how close a competitor product sits to Staples products). With Staples data we tune every safety-gate threshold with merchants (cannibalisation risk bands, price-position limits, fit-with-Staples cut-offs, picks per node; the calibration session in next step 1 starts this) and replace the supply proxy with real 1P sales overlap and substitution seen in baskets, plus price and margin floors per node.\n3 Expand: once calibrated, point the engine at any Staples category and any competitor that represents the audience Staples wants (e.g. IKEA for small-space home offices, Target for students and Back-to-School, Etsy for gifting). A new competitor is one adapter entry and a new node one config file; no code change.\n4 Curate: the same attribute and archetype engine scores every seller submission for fit, 1P overlap and price, feeding an approve / review / reject queue that learns from curator decisions (next step 2 starts this with the top picks and the brands already on Staples).\n5 Monitor: scheduled re-crawls flag new and closing gaps; pilot listings (next step 3) are tracked for GMV, attach rate and commission against the forecast, and results feed back into prioritisation.");
 
   // ======================= 5. ALTERNATE GROWTH PATHS =======================
   s = pres.addSlide({ masterName: "CONTENT", sectionTitle: "Next steps" });

@@ -63,7 +63,7 @@ PICKS = {
         dict(rank=1, label="Minimal multi-year monthly planner", framing="deepen", exemplar=1,
              attr=[("design_theme", "plain"), ("date_format", "monthly")],
              staples_kw=r"monthly", comp_kw=r"monthly"),
-        dict(rank=3, label="Guided / daily journal", framing="add", exemplar=3,
+        dict(rank=3, label="Guided / daily journal", framing="add", exemplar=1,
              attr=[("planner_type", "journal")],
              staples_kw=r"journal|guided|gratitude", comp_kw=r"journal|guided|gratitude",
              skipped="R2 plain-cover weekly planner: same idea as R1 (only the date layout differs)"),
@@ -259,11 +259,6 @@ def main():
     facts["totals"]["families_all"] = facts["totals"]["staples_families"] + facts["totals"]["competitor_families"]
     # competitor families the crosswalk set aside because they fit none of the 12 focus nodes
     facts["totals"]["backlog_families"] = int(len(pd.read_csv(TABLES / "new_node_backlog.csv")))
-    # what Staples already sells next to a pick (item counts from the Staples navigation tree)
-    tree = pd.read_excel(ROOT / "Excels" / "1. Staples_Navigation_Tree_repaired.xlsx")
-    cnt = lambda col, name: int(tree.loc[tree[col] == name, "Count"].dropna().iloc[0])  # noqa: E731
-    facts["attach"] = dict(single_serve=cnt("L2", "Single Serve Coffee, Tea & Cocoa"),
-                           coffee_makers=cnt("L3", "Coffee Makers & Espresso Machines"))
 
     N = {SHORT[leaf(n)]: n for n in ALL_NODES}
     G = lambda k, a, v: gap(N[k], a, v)  # noqa: E731
@@ -286,7 +281,6 @@ def main():
         "bp_kids": G("Backpacks", "audience", "kids"),
         "lunch_women": G("Lunch Bags", "end_user_segment", "women"),
         "lunch_teens": G("Lunch Bags", "end_user_segment", "teens"),
-        "lunch_kids": G("Lunch Bags", "audience", "kids"),
         # design & look
         "chairs_black": G("Accent Chairs", "colour_family", "black"),
         "chairs_light": G("Accent Chairs", "colour_tone", "light-neutral"),

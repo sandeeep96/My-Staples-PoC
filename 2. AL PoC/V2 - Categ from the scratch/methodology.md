@@ -1,8 +1,8 @@
 # Staples Assortment PoC: Node-Level Assortment Gap and Recommendation Methodology
 
-**Status:** v1.4 (Phase 2) · 2026-10-04 · Owner: Sai (LatentView). The body describes the pipeline **as built and run in Phase 2**: 12 focus nodes against their Primary 1 competitor, stages S0–S9, full text on both sides, archetypes of 4–6 attributes built on up to 3 attribute sets per node that prefer the attributes where the retailers differ, a separate price view, and **two-method safety gates** (common gates → one gate per method → final gate). History: v1.1 (2026-09-27) Sai's §11 answers and data-driven scope; v1.2 separate VOS/TG scores and the code + PNG + static-HTML output; v1.3 Phase 2 (2026-10-01); v1.4 full text, gap-aligned archetypes, attribute sets (2026-10-03/04). §13 (Phase 1 build) and §14 (Phase 2) are the dated change logs with the evidence behind each decision; where an older paragraph and §14 disagree, §14 wins.
+**Status:** v1.4 (Phase 2) · 2026-10-06 · Owner: Sai (LatentView). The body describes the pipeline **as built and run in Phase 2**: 12 focus nodes against their Primary 1 competitor, stages S0–S9, full text on both sides, archetypes of 4–6 attributes built on up to 3 attribute sets per node that prefer the attributes where the retailers differ, a separate price view, and **two-method safety gates** (common gates → one gate per method → final gate). History: v1.1 (2026-09-27) Sai's §11 answers and data-driven scope; v1.2 separate VOS/TG scores and the code + PNG + static-HTML output; v1.3 Phase 2 (2026-10-01); v1.4 full text, gap-aligned archetypes, attribute sets (2026-10-03/04). §13 (Phase 1 build) and §14 (Phase 2) are the dated change logs with the evidence behind each decision; where an older paragraph and §14 disagree, §14 wins.
 **Supersedes:** Track B/C in `Documents/Staples PoC - Approach & Methodolgy -Initial Exploration.docx`, and the 6-step method shared in chat.
-**Scope of this document:** the method and the reasoning behind every rule. Thresholds live in `config/pipeline.yaml`; the latest run's numbers are in §14.9 and the HTML report (`Staples_Assortment_Report_v18.html`).
+**Scope of this document:** the method and the reasoning behind every rule. Thresholds live in `config/pipeline.yaml`; the latest run's numbers are in §14.9 and the HTML report (`Staples_Assortment_Report_v26.html`).
 
 ---
 
@@ -478,7 +478,7 @@ The two methods keep their own final scores, **VOS** (Method 1, §6.5.6) and **T
 
 **Reading the tiers.** Strong = both methods see an opportunity and both cannibalisation checks pass: the most robust. Vector-led = whitespace in the vector view that passes Method 1's checks (e.g. a style extension Method 2 sees as a cheaper twin). Gap-led = a credible attribute gap with few cheaper or same-look Staples twins; Method 2 has no fit-with-Staples check, so read these as "check fit". Conditional = only to reach the per-node minimum.
 
-**Also reported.** Spearman ρ between VOS and TG per node (method agreement); reciprocal-rank fusion as a robustness check; Dirichlet weight sensitivity of both scores (top-5 retention, G7). Every non-recommended archetype carries its reason from each method's gate.
+**Also computed.** Spearman ρ between VOS and TG per node (method agreement; kept in `qa_integration.json`, no longer shown in the report); reciprocal-rank fusion as a robustness check; Dirichlet weight sensitivity of both scores (top-5 retention, G7). Every non-recommended archetype carries its reason from each method's gate.
 
 **Demand.** D stays off until review counts or rank position exist (and those columns are deliberately not used, §2.5). If added later, it enters as a third ranking in the final ordering, not inside either method's score or gate.
 
@@ -519,14 +519,23 @@ No Excel workbook or deck for now. Intermediate tables (CSV or parquet) are pipe
 
 **Wording (Sai, Phase 2).** "Node", never "shelf". Archetypes are labelled **Archetype (Attributes Combination)**, each shown as its name followed by its attribute combination. Every metric abbreviation carries its full name, e.g. "TG (Total Gap)", "ACR (Attribute Cannibalisation Risk)". No person's name appears in the report.
 
-**Tab 1: Approach & Methodology.**
+**Tabs, in order (Sai, 2026-10-06):** Executive Summary (opens by default) → Node Analysis → Methodology. A link to a node (`#<node>`) opens Node Analysis on that node. No footer line.
+
+**Executive Summary tab.** A static one-glance view for presenting: no clicks, drill-downs or collapsible sections. Every number and sentence is computed in S9 from the current run with generic rules (`exec_summary()`; no per-node text), so a re-run keeps it correct. Sections, in order:
+- **Problem statement:** the business question.
+- **PoC at a glance (6 tiles):** nodes analysed (per competitor); families compared (Staples / competitor); archetypes built; safe recommendations with a tier bar; share of picks with no Staples product today; example products.
+- **Node scorecard:** one static row per node: families, design-forward share (Staples vs competitor dot pair), median prices, recommendations with a tier bar, picks new to Staples, rank-1 pick (full attributes on hover).
+- **Key findings (6 cards, each a headline number, a caption and bullets):** design gap (design-forward share, competitor vs Staples; widest nodes; nodes where Staples is ahead); price gap (nodes where the competitor is credibly deeper in the lowest or highest price band); whitespace (picks new to Staples; nodes where every pick or no pick is new); cannibalisation guard (Method 1 SUBSTITUTE/UNDERCUT share; Method 2 cheaper or same-look attribute twins); sourcing (brands already selling on Staples, competitor house-brand share, independent brands to recruit); confidence (tier mix, weight-sensitivity top-N retention). Nodes named per finding: `report.exec.top_n`.
+- **Read with care:** supply, not demand; external data only; competitor samples (shares compared, not counts); thresholds provisional until calibration.
+
+**Methodology tab** (formerly Approach & Methodology).
 - The business question; the **12 focus nodes** (segment · play, Staples path, Primary 1 competitor, status).
 - A flow chart of S0 → S8 (one box per stage: purpose, steps, outputs, gate, tech); the report itself (S9) is not shown as a method step.
 - Archetypes (Attributes Combinations): the three tiers, each with example attributes, plus two bullet lists in the same box (how the attributes are chosen, how the archetypes are constructed); the two methods side by side (VOS and TG components, ACR); Method 1 labels (a decision map of AAS × CRS with the PPR / AD splits, drawn from the configured thresholds, then the label table with counts) and Method 2 labels as separate tables; "from two scores to one list" (the gates of §7).
 - **Safety gates** first (grouped Common / Method 1 / Method 2 / Final with this run's counts), then **Quality gates** (§10) as a scorecard; encoder bake-off and calibration.
 - Assumptions and caveats (columns used, convenience samples, full-text length differences, provisional vocabularies).
 
-**Tab 2: Gaps & Recommendations.** A single-select dropdown groups the focus nodes by L1, ordered by path inside each L1 (Staples-only nodes marked). Choosing a node shows, in this order (Sai, 2026-10-01):
+**Node Analysis tab** (formerly Gaps & Recommendations). A single-select dropdown groups the focus nodes by L1, ordered by path inside each L1 (Staples-only nodes marked). Choosing a node shows, in this order (Sai, 2026-10-01):
 
 | Section | Content |
 |---|---|
@@ -550,7 +559,7 @@ Price-band coverage · DFI density · attribute divergence (JSD) · largest cred
 
 ## 10. Quality gates G1–G8 (a scorecard; they never cut recommendations)
 
-Quality gates check how far each step can be trusted. In the PoC they are computed on every run and reported in Tab 1 with PASS / FAIL / PENDING; a failure is reported plainly, not worked around. They **do not** remove products or recommendations (that is the job of the safety gates, §7), with one side effect: fields failing G2 are kept out of the gap scores and archetype attributes.
+Quality gates check how far each step can be trusted. In the PoC they are computed on every run and reported in the Methodology tab with PASS / FAIL / PENDING; a failure is reported plainly, not worked around. They **do not** remove products or recommendations (that is the job of the safety gates, §7), with one side effect: fields failing G2 are kept out of the gap scores and archetype attributes.
 
 | Gate | Metric | Target |
 |---|---|---|
@@ -607,7 +616,7 @@ Quality gates check how far each step can be trusted. In the PoC they are comput
 
 Each phase runs on the vertical slice before any bulk LLM spend. The bulk extraction run happens only after the P2 prompts pass validation on the slice.
 
-**Status (2026-10-04):** P0–P7 are built and run for all 12 Phase-2 focus nodes (report v18: 99 recommendations; §14.9). Open: Pat's calibration session (CRS bands, PPR thresholds, AAS thresholds, the gate parameters), human gold sets (G1, G3, G4), the Claude extraction / adjudication backend (needs an API key), review of the drafted node vocabularies and crosswalks, and optionally freezing τ / the G2 field set per run (§14.7).
+**Status (2026-10-06):** P0–P7 are built and run for all 12 Phase-2 focus nodes (report v26: 99 recommendations; §14.9). Open: Pat's calibration session (CRS bands, PPR thresholds, AAS thresholds, the gate parameters), human gold sets (G1, G3, G4), the Claude extraction / adjudication backend (needs an API key), review of the drafted node vocabularies and crosswalks, and optionally freezing τ / the G2 field set per run (§14.7).
 
 **Re-run on new data:** when enriched or new-category samples arrive, the same pipeline runs from S0. New L2s get their generated artefacts (§1.4) drafted automatically and flagged *provisional* until reviewed. Existing reviewed artefacts are reused.
 
@@ -665,7 +674,7 @@ These decisions were made while building the pipeline. Each one either tightens 
 
 ### 14.3 Price view (separate from archetypes)
 Per node: price-band coverage (node quartiles, rounded) with credibility, and a **price ladder**: each archetype's median price on both sides, the ratio, and a reading (premium ≥ 1.5×, cheaper < 0.85×, parity).
-
+### 14.4 Report, 2026-10-01 layout (superseded; the current layout is §9.2, changes in §14.9)
 ### 14.4 Report (the current layout is §9.2)
 "Node" replaces "shelf" everywhere. Every metric abbreviation is shown with its full name, e.g. "TG (Total Gap)". Tab 2 order: header → key insights → coverage → attribute-level gaps → price insights → final recommendations → SKU recommendations and style extensions → sellers → excluded → Method 1 and Method 2 detail (bottom). Tab 1 lists the 12 nodes with segment · play and data status, without naming retailers.
 
@@ -834,7 +843,7 @@ Weight-sensitivity top-5 retention: TG 95%, VOS 95%.
 - **Selection on the gap.** Archetypes are now chosen partly because they differ (JSD term and gap facets). TG on these archetypes reads larger than on coverage-only archetypes; compare TG within a run, not across v13 and v15.
 - **Planners fell from 6 to 4**: the archetype set changed, and fewer archetypes pass a gate.
 
-### 14.9 Merged audience, readable names, several attribute sets per node (Sai, 2026-10-04; reports v17–v18)
+### 14.9 Merged audience, readable names, several attribute sets per node (Sai, 2026-10-04; run v17, report-only builds v18–v26)
 **Why.** In v15 a backpack archetype could read "Audience: women · Men: yes · Women: yes" (the audience attribute and the men / women gap facets carry the same information), names showed "not stated" and repeated words ("Women women travel/carry-on backpack"), and every archetype in a node was a cell of the same 4 attributes, so a node's 10 picks looked alike.
 
 **Changes:**
@@ -847,8 +856,8 @@ Weight-sensitivity top-5 retention: TG 95%, VOS 95%.
 
 S6 node-level shares, gaps and Method 2 labels stay family-level (checked: node counts equal family counts); only archetype roll-ups use the many-to-many membership. Product-level label counts in the report are de-duplicated by family.
 
-**Result (S4–S9 re-run, small-node pass for Desk Pads; report v17; v16 = same run before a name fix; v18, v20 and v21 = report-only changes, same numbers):**
-- **Archetypes:** 897 across all sets (325 in v15). Method 1: 380 pass, 93 listed. Method 2: 245 pass, 99 listed.
+**Result (S4–S9 re-run, small-node pass for Desk Pads; report v17; v16 = same run before a name fix; v18–v26 = report-only changes, same numbers):**
+- **Archetypes:** 885 across all sets, plus 12 long-tail groups (897 rows in `final_archetypes`; 325 in v15). Method 1: 380 pass, 93 listed. Method 2: 245 pass, 99 listed.
 - **Final:** **99 recommendations (23 Strong, 30 Vector-led, 45 Gap-led, 1 Conditional)**; 33 archetypes skipped by the per-set cap or the overlap rule.
 - **Weight-sensitivity top-5 retention:** TG 86%, VOS 90% (v15: 91%, 96%): more archetypes compete for the top 5.
 
@@ -875,4 +884,9 @@ S6 node-level shares, gaps and Method 2 labels stay family-level (checked: node 
 
 **Report-only follow-ups (v18, same results):** title "Staples: Assortment Gap & Archetype (Attributes Combination) Recommendation Analysis"; the node header lists attribute sets A/B/C as bullets; the final recommendations and SKU groups list every attribute with its value (incl. "not stated"), because stated-only combos made two archetypes look identical (Desk Pads #1 and #2). Names still use stated values only.
 
-**Report-only follow-ups (v20, v21, same results):** v20 reworked Tab 1 (archetype box with tier examples and two bullet lists, separate Method 1 / Method 2 label tables, Method 1 decision map). v21 reordered Tab 2 (Sai, 2026-10-05): Coverage renamed Key trends (collapsible, open by default); "(detailed)" dropped from Attribute level gaps; the method agreement box removed from Final recommendations and the TG-vs-VOS chart moved into a collapsed "VOS vs TG" subsection; Key insights moved, collapsed, to after Excluded archetypes.
+**Report-only follow-ups (v20–v26, same results; Sai, 2026-10-05/06).** The current layout is §9.2; what changed:
+- **Methodology tab (v20):** archetype box with tier examples and two bullet lists; separate Method 1 / Method 2 label tables; Method 1 decision map (AAS × CRS with the PPR / AD splits).
+- **Node Analysis tab (v21):** Coverage renamed Key trends (collapsible, open); "(detailed)" dropped from Attribute level gaps; method agreement box removed (Spearman ρ stays in the QA files); TG-vs-VOS chart in a collapsed "VOS vs TG" subsection; Key insights collapsed, after Excluded archetypes.
+- **Executive Summary tab (v24, reworked in v26):** first and default tab, static: Problem statement → PoC at a glance (6 tiles) → Node scorecard → Key findings (6 bullet cards) → caveats. The answer line and the funnel were dropped as redundant. Tabs renamed Node Analysis (was Gaps & Recommendations) and Methodology (was Approach & Methodology); footer line removed.
+- Intermediate builds are kept: v19 (label glitch), v22–v23 (longer finding texts), v25 (two text slips).
+- **Archetype count:** 885 archetypes; the 897 quoted earlier (and in decks V4–V5) included the 12 long-tail groups.

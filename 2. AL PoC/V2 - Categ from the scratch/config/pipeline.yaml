@@ -178,3 +178,5 @@ qa:
 report:
   title: "Staples: Assortment Gap & Archetype (Attributes Combination) Recommendation Analysis"
   file_stem: Staples_Assortment_Report   # each build writes <stem>_v<N>.html, N = previous highest + 1
+  exec:                                 # Executive Summary tab (Sai, 2026-10-06): no clicks, about one screen
+    top_n: 2                            # nodes named per key finding

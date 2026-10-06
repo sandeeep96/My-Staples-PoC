@@ -5,7 +5,7 @@ attribute variants the node's Primary 1 competitor (Amazon for 7 nodes, Wayfair 
 checks whether Staples could add them through its marketplace without cannibalising its own assortment. The method is
 in [methodology.md](methodology.md); Phase-2 changes, with evidence, are in §14.
 
-**Current report:** `outputs/report/Staples_Assortment_Report_v21.html` (2026-10-05). All 12 nodes are scored, giving
+**Current report:** `outputs/report/Staples_Assortment_Report_v26.html` (2026-10-06). All 12 nodes are scored, giving
 99 recommended archetypes (23 Strong, 30 Vector-led, 45 Gap-led, 1 Conditional). Details: methodology §14.9.
 
 ## Run
@@ -27,7 +27,7 @@ for nodes that end with fewer than 3 gate-passing recommendations, using a small
 
 | Path | What |
 |---|---|
-| `outputs/report/Staples_Assortment_Report_v<N>.html` | The shareable report: one static file that works offline. Every S9 run writes the next version; earlier versions are kept. Tab 1 = Approach & Methodology; Tab 2 = Gaps & Recommendations (node dropdown, all 12 nodes) |
+| `outputs/report/Staples_Assortment_Report_v<N>.html` | The shareable report: one static file that works offline. Every S9 run writes the next version; earlier versions are kept. Tabs: Executive Summary (static overview) → Node Analysis (node dropdown, all 12 nodes) → Methodology |
 | `outputs/figures/<node>/*.png` | Every chart in the report |
 | `outputs/tables/*.csv` | Final archetypes, candidates, attribute gaps, price bands, SKU recommendations, vendors, backlog, audit samples |
 | `data/interim/` | Stage outputs (parquet) and QA files (`qa_*.json`) |
