@@ -17,10 +17,10 @@ import pandas as pd
 from jinja2 import Environment, FileSystemLoader
 
 from . import figures as F
-from .common import METRICS, ROOT, cfg, display_name, hash_text, load, load_json, m, money, out, slug
+from .common import METRICS, ROOT, cfg, display_name, hash_text, load, load_json, m, money, out, slug, split_multi
 from .cards import tier2_attrs
 from .s4_archetypes import facet_label, pretty_value
-from .s5_vector import APPROVE
+from .s5_vector import AESTHETIC, APPROVE
 
 TIER1_ATTRS = {"colour_family", "colour_tone", "material_class", "size_class"}
 TIER_NAMES = {1: "Tier 1 · universal", 2: "Tier 2 · functional", 3: "Tier 3 · lifestyle"}
@@ -349,7 +349,7 @@ def _and(xs: list[str]) -> str:
     return xs[0] if len(xs) == 1 else ", ".join(xs[:-1]) + " and " + xs[-1] if xs else ""
 
 
-def exec_summary(nodes, nsum, fa, cand, recs, vend, bands, qi) -> dict:
+def exec_summary(nodes, nsum, fa, cand, recs, vend, bands, qi, gaps) -> dict:
     """Executive Summary tab (Sai, 2026-10-06): KPI tiles, funnel, key findings and a node scorecard, all computed from
     this run with generic rules (no per-node text), static (no clicks)."""
     top = cfg()["report"].get("exec", {}).get("top_n", 3)
@@ -413,22 +413,14 @@ def exec_summary(nodes, nsum, fa, cand, recs, vend, bands, qi) -> dict:
         for row, lst in ((bb.iloc[0], lo), (bb.iloc[-1], hi)):
             if row["credibility"] >= cred:
                 lst.append((row["share_competitor"] - row["share_staples"], nid, row))
-    pr = lambda lst: [f"{short(n)}: {r['share_competitor']:.0%} vs {r['share_staples']:.0%} {r['band']}"
-                      for _, n, r in sorted(lst, key=lambda x: -x[0])[:top]]
-    b = ([f"Cheaper entry range on {len(lo)} nodes, e.g. " + "; ".join(pr(lo)) + "."] if lo else []) + \
-        ([f"Deeper premium range on {len(hi)} nodes, e.g. " + "; ".join(pr(hi)) + "."] if hi else [])
-    find.append({"t": "Price gap", "v": f"{len(lo)} entry · {len(hi)} premium",
-                 "s": "nodes where the competitor is credibly deeper in the lowest / highest price band", "b": b})
-    per = rec.groupby("node_id").size()
-    new_n = rec[rec["n_staples"] == 0].groupby("node_id").size().reindex(per.index, fill_value=0)
-    all_new = [short(n) for n in sc["node_id"] if n in per.index and new_n[n] == per[n]]
-    none_new = [short(n) for n in sc["node_id"] if n in per.index and new_n[n] == 0]
-    b = ["The rest deepen thin Staples ranges."]
-    if all_new:
-        b.append(f"Every pick is new on {len(all_new)} nodes, e.g. {_and(all_new[:top])}.")
-    if none_new:
-        b.append(f"All picks deepen existing ranges on {_and(none_new)}.")
-    find.append({"t": "Whitespace", "v": f"{n_new} of {n_rec}", "s": "picks with no Staples product today", "b": b})
+    at = lambda band: band if str(band).lower().startswith("under") else f"at {band}"
+    ex1 = lambda lst: (lambda n, r: f"{short(n)}: {r['share_competitor']:.0%} vs {r['share_staples']:.0%} {at(r['band'])}")(
+        *max(lst, key=lambda x: x[0])[1:])
+    med = nsum.loc[[n for n in sc["node_id"] if n in nsum.index]]
+    st_hi = int((med["price_median_staples"] > med["price_median_competitor"]).sum())
+    b = ([f"Budget gap, e.g. {ex1(lo)}."] if lo else []) + ([f"Premium gap, e.g. {ex1(hi)}."] if hi else []) +         [f"Staples' median price is higher on {st_hi} of {len(med)} nodes."]
+    find.append({"t": "Price gap", "v": f"Cheaper on {len(lo)} · pricier on {len(hi)}",
+                 "s": "nodes where the competitor has more low- / high-priced products (competitor vs Staples share)", "b": b})
     lc = cand["label"].value_counts()
     n_c = len(cand)
     rej1 = int(lc.get("SUBSTITUTE", 0) + lc.get("UNDERCUT", 0))
@@ -450,14 +442,37 @@ def exec_summary(nodes, nsum, fa, cand, recs, vend, bands, qi) -> dict:
     b = ([f"Quick wins: {_and(on_st[:3])}{' …' if len(on_st) > 3 else '.'}"] if on_st else []) + hs + \
         [f"{n_ind} independent brands to recruit as marketplace sellers."]
     find.append({"t": "Sourcing", "v": f"{len(on_st)} brands", "s": "behind safe products already sell on Staples", "b": b})
-    sens = qi.get("sensitivity", {})
-    st_tg, st_vos = sens.get("tg", {}).get("mean_topn_retention"), sens.get("vos", {}).get("mean_topn_retention")
-    tn = cfg()["sensitivity"]["top_n"]
-    b = [f"{int(tc.get('Vector-led', 0))} by the vector view only, {int(tc.get('Gap-led', 0))} by the attribute view only"
-         + (f", {int(tc.get('Conditional', 0))} conditional fill." if tc.get("Conditional", 0) else ".")]
-    if st_tg is not None and st_vos is not None:
-        b.append(f"{st_tg:.0%} ({m('TG')}) and {st_vos:.0%} ({m('VOS')}) of each node's top {tn} survive random weight changes.")
-    find.append({"t": "Confidence", "v": f"{int(tc.get('Strong', 0))} Strong", "s": f"of {n_rec} picks backed by both methods", "b": b})
+    # missing looks: look values (the fields AD reads) the competitor carries credibly more of, counted over nodes
+    lg = gaps[gaps["node_id"].isin(sc["node_id"]) & (gaps["credibility"] >= cred) & (gaps["delta"] > 0)
+              & gaps["attribute"].isin(AESTHETIC + ["aesthetic_tags"])]
+    lk = lg.groupby(["attribute", "value"]).agg(n=("node_id", "nunique"), d=("delta", "mean"), nid=("node_id", "first"))         .reset_index().sort_values(["n", "d"], ascending=False)
+    if len(lk):
+        b = []
+        for a_, g in lk.groupby("attribute", sort=False):
+            if g["n"].iloc[0] * 2 < len(sc):      # a look field counts when its top value is credible on at least half the nodes
+                continue
+            b.append(f"{attr_label(g['nid'].iloc[0], a_)}: " + ", ".join(f"{pretty_value(r.value)} ({r.n})" for r in g.head(3).itertuples()) + ".")
+        find.append({"t": "Missing looks", "v": f"{' · '.join(pretty_value(v) for v in lk['value'].head(2))}: {int(lk['n'].iloc[0])} of {len(sc)}".capitalize(),
+                     "s": "look values the competitor carries clearly more of; (n) = nodes where the gap is credible", "b": b})
+    # picks fit the core-adjacent idea: example products vs their nearest Staples product
+    ex = recs.drop_duplicates("family_id") if len(recs) else recs
+    ex = ex[ex["dfi"].notna() & ex["st_dfi"].notna()] if len(ex) else ex
+    if len(ex):
+        up = ex["dfi"] > ex["st_dfi"]
+        bn = ex.assign(up=up).groupby("node_id")["up"].mean()
+        v_ = cfg()["vector"]
+        pp = ex["ppr"].dropna()
+        hi_p, lo_p = (pp >= v_["ppr_tradeup"]).mean(), (pp < v_["ppr_undercut"]).mean()
+        b = [f"Median {m('DFI')}: {ex['dfi'].median():.2f} vs {ex['st_dfi'].median():.2f}."]
+        full = [short(n) for n in bn.index if bn[n] >= 1]
+        if full:
+            b.append(f"100% on {_and(full)}.")
+        b.append(f"{hi_p:.0%} priced at ≥ {v_['ppr_tradeup']}× Staples: room for margin.")
+        find.append({"t": "Picks fit the “White Chair” idea", "v": f"{up.mean():.0%} more design-led",
+                     "s": f"{len(ex)} example products vs their nearest Staples product", "b": b})
+
+    order = ["Design gap", "Price gap", "Cannibalisation guard", "Missing looks", "Picks fit the “White Chair” idea", "Sourcing"]
+    find.sort(key=lambda f: order.index(f["t"]) if f["t"] in order else len(order))
 
     # ---- node scorecard
     rows = []
@@ -498,6 +513,9 @@ def run() -> dict:
     qm, qx, qa6 = load_json("qa_mapping.json"), load_json("qa_extraction.json"), load_json("qa_archetypes.json")
     qv, qi = load_json("qa_vector.json"), load_json("qa_integration.json")
     arch_names = fa.set_index("archetype_id")[["name", "combo"]]
+    # look fields as AD (Aesthetic Delta) reads them (text-extracted value where one exists)
+    look = pd.DataFrame({k: ft["txt_" + k] if "txt_" + k in ft.columns else ft[k] for k in AESTHETIC + ["aesthetic_tags"]}) \
+        .set_index(ft["family_id"])
 
     # ---- tables (CSV) + audit samples
     fa_out = fa.assign(archetype=[arch_text(n, c) for n, c in zip(fa["name"], fa["combo"])])
@@ -513,6 +531,12 @@ def run() -> dict:
     ident = cand[cand["identical"]].merge(ft[["family_id", "title", "price"]], on="family_id") \
         .merge(ft[["family_id", "title", "price"]].add_prefix("st_"), left_on="identical_staples", right_on="st_family_id")
     ident.head(100).to_csv(out("tables", "audit_identical_pairs.csv"), index=False)
+
+    # ---- report order: picks ranked by final score within each node (tables above keep S7's rank)
+    fa = fa.copy()
+    sl = fa["shortlisted"].fillna(False).astype(bool)
+    fa.loc[sl, "final_rank"] = fa[sl].sort_values(["final", "tg"], ascending=False) \
+        .groupby("node_id").cumcount().add(1).reindex(fa[sl].index)
 
     # ---- overview figures
     F.node_coverage(nodes.assign(status=nodes["status"].replace({"staples_only": "thin"})), "Competitor",
@@ -603,7 +627,11 @@ def run() -> dict:
             sku_groups.append({"rank": int(r.final_rank), "a": arch(r.name, r.combo_full or r.combo), "tier": r.tier,
                                "cards": [_card(x, comp) for x in rows.itertuples()]})
         nse = se[se["node_id"] == nid] if len(se) else se
-        se_cards = [_card(x, comp, arch_names) for x in nse.itertuples()]
+        se_cards = []
+        for x in nse.drop_duplicates("title").itertuples():    # same listing under several ids: show once
+            c_ = _card(x, comp, arch_names)
+            c_["ext"] = _extended(x, look, nid)
+            se_cards.append(c_)
         vend_rows = [{"brand": _brand(r.brand), "products": r.products, "arch": r.archetypes, "path": r.recruit_path,
                       "on": r.brand_on_staples, "house": r.house_brand} for r in nvend.head(25).itertuples()]
         gsel = ng[(ng["credibility"] >= 0.9) | (ng["credibility"] <= 0.1)].assign(a=lambda x: x["delta"].abs()).nlargest(30, "a")
@@ -664,7 +692,7 @@ def run() -> dict:
         "calib": {l2: q["calibration"] for l2, q in qv.items() if isinstance(q, dict) and "calibration" in q},
         "thresholds": {l2: q["thresholds"] for l2, q in qv.items() if isinstance(q, dict) and "thresholds" in q},
         "aas_t": _aas_ranges(qv),
-        "ex": exec_summary(nodes, nsum, fa, cand, recs, vend, bands, qi),
+        "ex": exec_summary(nodes, nsum, fa, cand, recs, vend, bands, qi, gaps),
     }
     env = Environment(loader=FileSystemLoader(str(ROOT / "src" / "alpoc" / "templates")), autoescape=True)
     html = env.get_template("report.html.j2").render(**ctx)
@@ -697,4 +725,22 @@ def _card(x, comp, arch_names=None) -> dict:
             "m2": (x.m2_label.replace("ATTR-", "attribute ").replace("NO-TWIN", "no Staples twin").lower()
                    if isinstance(getattr(x, "m2_label", None), str) else None),
             "st_title": x.st_title, "st_url": x.st_url, "st_price": _money(x.st_price),
-            "st_colour": _s(x.st_colour_family), "st_material": _s(x.st_material_class), "comp": comp}
+            "st_colour": _s(x.st_colour_family), "st_material": _s(x.st_material_class), "comp": comp,
+            "ext": []}
+
+
+def _extended(x, look, nid) -> list:
+    """What a style extension changes vs its nearest Staples product: the same look fields AD (Aesthetic Delta) uses."""
+    if look is None or x.family_id not in look.index or x.st_family_id not in look.index:
+        return []
+    c, st = look.loc[x.family_id], look.loc[x.st_family_id]
+    out_ = []
+    for k in AESTHETIC:
+        cv, sv = c[k], st[k]
+        if _s(cv) != "–" and str(cv) != str(sv):
+            out_.append({"k": attr_label(nid, k), "c": pretty_value(cv), "st": pretty_value(sv) if _s(sv) != "–" else "not stated"})
+    new_tags = [t for t in split_multi(c["aesthetic_tags"]) if t not in split_multi(st["aesthetic_tags"])]
+    if new_tags:
+        out_.append({"k": attr_label(nid, "aesthetic_tags"), "c": ", ".join(pretty_value(t) for t in new_tags),
+                     "st": ", ".join(pretty_value(t) for t in split_multi(st["aesthetic_tags"])) or "not stated"})
+    return out_

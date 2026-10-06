@@ -178,6 +178,24 @@ table.score td{vertical-align:middle;padding:5px 10px} table.score th{cursor:def
 .ex-note{font-size:12px;color:var(--muted);margin:10px 0 0;max-width:none}
 @media (max-width:1000px){.ex-kpis{grid-template-columns:repeat(3,minmax(0,1fr))}.ex-mid{grid-template-columns:1fr}}
 @media (max-width:620px){.ex-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.ex-find{grid-template-columns:1fr}}
+/* node tiles, expandable example rows, style extensions (v27) */
+.ntiles{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:8px 0 6px}
+.nt{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:9px 12px;min-width:0}
+.nt.wide{grid-column:1/-1}
+.nt .k{font-size:10.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.nt .v{font-size:22px;font-weight:700;line-height:1.2;margin:2px 0;font-variant-numeric:tabular-nums}
+.nt .v.sm{font-size:14px;line-height:1.35}
+.nt .s{font-size:12px;color:var(--ink-2);line-height:1.4} .nt ul{margin:2px 0 0;padding-left:18px}
+@media (max-width:1000px){.ntiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.xbtn{display:block;margin-top:5px;font:inherit;font-size:12px;font-weight:600;color:var(--accent);background:var(--surface-2);border:1px solid var(--line);border-radius:6px;padding:1px 8px;cursor:pointer}
+.xbtn[aria-expanded="true"]{background:var(--good-bg)}
+tr.xrow > td{background:var(--surface-2);padding:6px 10px 10px}
+table.mini{font-size:12px;background:var(--surface);border:1px solid var(--line);border-radius:8px}
+table.mini th{position:static;cursor:default;white-space:normal;font-size:11.5px;vertical-align:bottom}
+table.mini td{padding:5px 8px}
+mark.ext{background:var(--warn-bg);color:var(--ink);font-weight:600;border-radius:4px;padding:0 4px}
+.extl{white-space:nowrap;margin:1px 0}
+.tbl-wrap.fit{overflow-x:visible} table.score th{white-space:normal;vertical-align:bottom}
 </style>
 </head>
 {% macro A(a, bold=True) -%}
@@ -199,12 +217,7 @@ table.score td{vertical-align:middle;padding:5px 10px} table.score th{cursor:def
 
 <!-- ======================================================= EXECUTIVE SUMMARY (static, Sai 2026-10-06) -->
 <section class="panel" id="tab-exec">
-  <h3 style="margin-top:0">Problem statement</h3>
-  <div class="ex-q">
-    <p class="a">Which product archetypes (attributes combinations) does each node's Primary 1 competitor carry that Staples lacks, and which can Staples add through its marketplace without cannibalising its own assortment?</p>
-  </div>
-
-  <h3>PoC at a glance</h3>
+  <h3 style="margin-top:0">Overview</h3>
   <div class="ex-kpis" style="margin-top:0">
     {% for k in ex.kpis %}<div class="kpi"><div class="k">{{ k.k }}</div><div class="v">{{ k.v }}</div>
       {% if k.bar %}<div class="stack" aria-hidden="true">{% for b in k.bar %}<span style="width:{{ '%.1f'|format(b.w) }}%;background:{{ b.c }}"></span>{% endfor %}</div>
@@ -213,7 +226,7 @@ table.score td{vertical-align:middle;padding:5px 10px} table.score th{cursor:def
   </div>
 
   <h3>Node scorecard</h3>
-  <div class="tbl-wrap"><table class="score"><thead><tr>
+  <div class="tbl-wrap fit"><table class="score"><thead><tr>
     <th class="num">#</th><th>Node</th><th class="num">Families<br><span class="muted" style="font-weight:400">Staples / competitor</span></th>
     <th>Design-forward share<br><span class="muted" style="font-weight:400"><span class="legend-dot" style="background:var(--accent)"></span>Staples <span class="legend-dot" style="background:var(--comp);margin-left:6px"></span>competitor</span></th>
     <th class="num">Median price<br><span class="muted" style="font-weight:400">Staples / competitor</span></th>
@@ -222,7 +235,7 @@ table.score td{vertical-align:middle;padding:5px 10px} table.score th{cursor:def
     <td class="num">{{ r.rank }}</td>
     <td title="{{ r.path }}" style="white-space:nowrap"><b>{{ r.leaf }}</b> <span class="small compname">· {{ r.comp }}</span></td>
     <td class="num">{{ "{:,}".format(r.ns) }} / {{ "{:,}".format(r.nc) }}</td>
-    <td style="white-space:nowrap"><svg class="dots" width="96" height="16" viewBox="0 0 120 16" aria-hidden="true">
+    <td style="white-space:nowrap"><svg class="dots" width="80" height="16" viewBox="0 0 120 16" aria-hidden="true">
       <line x1="4" y1="8" x2="116" y2="8" stroke="var(--line)" stroke-width="2"/>
       <line x1="{{ '%.1f'|format(4 + 112 * r.dfs) }}" y1="8" x2="{{ '%.1f'|format(4 + 112 * r.dfc) }}" y2="8" stroke="var(--muted)" stroke-width="2"/>
       <circle cx="{{ '%.1f'|format(4 + 112 * r.dfs) }}" cy="8" r="4.5" fill="var(--accent)"/>
@@ -231,7 +244,7 @@ table.score td{vertical-align:middle;padding:5px 10px} table.score th{cursor:def
     <td class="num">{{ r.ps }} / {{ r.pc }}</td>
     <td style="white-space:nowrap"><b>{{ r.n }}</b><span class="stack sm" aria-hidden="true">{% for b in r.bar %}<span style="width:{{ '%.1f'|format(b.w) }}%;background:{{ b.c }}" title="{{ b.n }} {{ b.tier }}"></span>{% endfor %}</span></td>
     <td class="num">{{ r.new }}</td>
-    <td style="min-width:230px"><span title="{{ r.top_full }}">{{ r.top }}</span></td>
+    <td><span title="{{ r.top_full }}">{{ r.top }}</span></td>
   </tr>{% endfor %}
   </tbody></table></div>
   <h3>Key findings</h3>
@@ -348,7 +361,7 @@ table.score td{vertical-align:middle;padding:5px 10px} table.score th{cursor:def
       <p>Pick varied example products per recommendation, each shown beside its nearest Staples product.</p>
       <div class="chain"><span class="pill">{{ cfg.skus.n_exemplars }} examples per archetype</span><span class="to">→</span><span class="pill">Nearest Staples match</span><span class="to">→</span><span class="pill">{{ cfg.skus.style_extension_n }} style extensions per node</span><span class="to">→</span><span class="pill">Recruit path</span></div>
       <div class="outs"><span class="o ok">Existing Staples supplier</span><span class="o hold">Independent seller</span><span class="o">Competitor house brand</span></div>
-      <div class="meta"><span class="k">Output</span>SKU cards, vendor / seller list</div>
+      <div class="meta"><span class="k">Output</span>Example products under each recommendation, style extensions, vendor / seller list</div>
       <div class="meta"><span class="k">Tech</span><span class="tech">Maximal Marginal Relevance (MMR) · cosine nearest neighbour</span></div>
     </div></div>
   </div>
@@ -567,19 +580,19 @@ table.score td{vertical-align:middle;padding:5px 10px} table.score th{cursor:def
       {% if s.status == 'thin' %}<span class="chip st-PENDING">thin node: descriptive only</span>{% endif %}
       {% if s.status == 'staples_only' %}<span class="chip st-PARTIAL">competitor data pending</span>{% endif %}
     </div>
-    <dl class="facts">
-      <dt>Segment · play</dt><dd>{{ s.segment or "–" }}</dd>
+    <div class="ntiles">
+      <div class="nt"><div class="k">Segment · play</div><div class="v sm">{{ s.segment or "–" }}</div></div>
       {% if s.status == 'staples_only' %}
-      <dt>Competitor planned</dt><dd><b class="compname">{{ s.planned }}</b> <span class="muted">(no product data yet)</span></dd>
-      <dt>Product families</dt><dd>Staples {{ "{:,}".format(s.ns) }}</dd>
+      <div class="nt"><div class="k">Competitor planned</div><div class="v sm compname">{{ s.planned }}</div><div class="s">no product data yet</div></div>
+      <div class="nt"><div class="k">Product families</div><div class="v">{{ "{:,}".format(s.ns) }}</div><div class="s">Staples</div></div>
       {% else %}
-      <dt>Competitor</dt><dd><b class="compname">{{ s.comp }}</b> <span class="muted">(Primary 1)</span></dd>
-      <dt>Product families</dt><dd>Staples {{ "{:,}".format(s.ns) }} · {{ s.comp }} {{ "{:,}".format(s.nc) }}</dd>
-      <dt>Mapping confidence</dt><dd>{{ "{:.0%}".format(s.highconf) }} of mapped {{ s.comp }} products placed with high confidence{% if s.backlog %}; {{ s.backlog }} products from this node's pages set aside as mis-shelved or out of scope{% endif %}</dd>
-      {% if s.facet_sets %}<dt>Archetype (Attributes Combination) definition</dt><dd>{% if s.facet_sets|length > 1 %}<ul style="margin:0;padding-left:18px">{% for t in s.facet_sets %}<li>{{ t }}</li>{% endfor %}</ul>{% else %}{{ s.facet_sets[0] }}{% endif %}{% if s.facets %}<div class="ink2" style="margin-top:4px">{{ s.facets }}</div>{% endif %}</dd>
-      <dt>Archetypes (Attributes Combinations)</dt><dd>{{ s.n_arch }} archetypes{% if s.tail is not none %}; {{ "{:.0%}".format(s.tail) }} of families in the long tail (in no supported combination){% endif %}</dd>{% endif %}
+      <div class="nt"><div class="k">Competitor</div><div class="v compname">{{ s.comp }}</div><div class="s">Primary 1</div></div>
+      <div class="nt"><div class="k">Product families</div><div class="v">{{ "{:,}".format(s.ns) }} / {{ "{:,}".format(s.nc) }}</div><div class="s">Staples / {{ s.comp }}</div></div>
+      <div class="nt"><div class="k">Mapping confidence</div><div class="v">{{ "{:.0%}".format(s.highconf) }}</div><div class="s">of mapped {{ s.comp }} products placed with high confidence{% if s.backlog %}; {{ s.backlog }} set aside as mis-shelved or out of scope{% endif %}</div></div>
+      {% if s.facet_sets %}<div class="nt"><div class="k">Archetypes (Attributes Combinations)</div><div class="v">{{ s.n_arch }}</div><div class="s">{% if s.tail is not none %}{{ "{:.0%}".format(s.tail) }} of families in the long tail (in no supported combination){% endif %}</div></div>
+      <div class="nt wide"><div class="k">Archetype (Attributes Combination) definition</div><div class="s">{% if s.facet_sets|length > 1 %}<ul>{% for t in s.facet_sets %}<li>{{ t }}</li>{% endfor %}</ul>{% else %}{{ s.facet_sets[0] }}{% endif %}{% if s.facets %}<div style="margin-top:4px">{{ s.facets }}</div>{% endif %}</div></div>{% endif %}
       {% endif %}
-    </dl>
+    </div>
 
     {% if s.status == 'staples_only' %}
     <div class="pending">No {{ s.planned }} product data for this node yet, so gaps and recommendations cannot be scored. The Staples side is profiled below; the node runs in full as soon as competitor data is added, with no code change.</div>
@@ -609,28 +622,33 @@ table.score td{vertical-align:middle;padding:5px 10px} table.score th{cursor:def
 
     {% if s.status == 'scored' %}
     <h3>Final recommendations</h3>
-    <div class="tbl-wrap" style="margin-top:10px"><table class="sortable"><thead><tr><th class="num">Rank</th><th>Archetype (Attributes Combination)</th>{% if s.n_sets > 1 %}<th>Attribute set</th>{% endif %}<th>Tier</th><th class="num">Final score</th><th class="num">VOS (Vector Opportunity Score)</th><th class="num">TG (Total Gap)</th><th class="num">Staples / {{ s.comp }} families</th></tr></thead><tbody>
-    {% for r in s.final %}<tr><td class="num">{{ r.rank }}</td><td>{{ A(r.a, True) }}</td>{% if s.n_sets > 1 %}<td>{{ r.set }}</td>{% endif %}<td>{% if r.tier == 'Strong' %}<span class="chip st-PASS">Strong</span>{% elif r.tier == 'Conditional' %}<span class="chip st-PARTIAL">Conditional</span>{% else %}<span class="chip">{{ r.tier }}</span>{% endif %}</td><td class="num">{{ r.final }}</td><td class="num">{{ r.vos }}</td><td class="num">{{ r.tg }}</td><td class="num">{{ r.ns }} / {{ r.nc }}</td></tr>
+    <p class="ink2" style="font-size:12.5px;margin:2px 0 0">Ranked by final score. Click <b>▸ examples</b> on a row to see the competitor products behind that archetype, each next to its nearest Staples product.</p>
+    {% set ncol = 8 if s.n_sets > 1 else 7 %}
+    <div class="tbl-wrap" style="margin-top:8px"><table class="sortable recs"><thead><tr><th class="num">Rank</th><th>Archetype (Attributes Combination)</th>{% if s.n_sets > 1 %}<th>Attribute set</th>{% endif %}<th>Tier</th><th class="num">Final score</th><th class="num">VOS (Vector Opportunity Score)</th><th class="num">TG (Total Gap)</th><th class="num">Staples / {{ s.comp }} families</th></tr></thead><tbody>
+    {% for r in s.final %}{% set g = s.skus[loop.index0] %}<tr><td class="num">{{ r.rank }}</td><td>{{ A(r.a, True) }}{% if g.cards %}<button type="button" class="xbtn" aria-expanded="false">▸ {{ g.cards|length }} example{{ 's' if g.cards|length != 1 }}</button>{% else %}<span class="muted small" style="display:block;margin-top:3px">no safe example product</span>{% endif %}</td>{% if s.n_sets > 1 %}<td>{{ r.set }}</td>{% endif %}<td>{% if r.tier == 'Strong' %}<span class="chip st-PASS">Strong</span>{% elif r.tier == 'Conditional' %}<span class="chip st-PARTIAL">Conditional</span>{% else %}<span class="chip">{{ r.tier }}</span>{% endif %}</td><td class="num">{{ r.final }}</td><td class="num">{{ r.vos }}</td><td class="num">{{ r.tg }}</td><td class="num">{{ r.ns }} / {{ r.nc }}</td></tr>
+    {% if g.cards %}<tr class="xrow" hidden><td colspan="{{ ncol }}"><table class="mini"><thead><tr><th class="num">#</th><th>{{ s.comp }} product</th><th class="num">Price</th><th>Nearest Staples product</th><th class="num">Staples price</th><th class="num">CRS (Cannibalisation Risk Score)</th><th class="num">PPR (Price Position Ratio)</th><th class="num">AD (Aesthetic Delta)</th><th>Safe under</th></tr></thead><tbody>
+      {% for c in g.cards %}<tr><td class="num">{{ loop.index }}</td><td><a href="{{ c.url }}" target="_blank" rel="noopener">{{ c.title }}</a><span class="small ink2" style="display:block">{{ c.brand }}{% if c.on %} <span class="chip st-PASS">sells on Staples</span>{% endif %}{% if c.house %} <span class="chip">house brand</span>{% endif %}{% for v in [c.colour, c.material, c.style] if v != '–' %} · {{ v }}{% endfor %}</span></td><td class="num">{{ c.price }}</td><td><a href="{{ c.st_url }}" target="_blank" rel="noopener">{{ c.st_title }}</a><span class="small ink2" style="display:block">{{ [c.st_colour, c.st_material]|reject('equalto', '–')|join(' · ') }}</span></td><td class="num">{{ c.st_price }}</td><td class="num">{{ c.crs }}</td><td class="num">{{ c.ppr }}×</td><td class="num">{{ c.ad }}</td><td class="small">{{ c.basis or "–" }}{% if c.m2 %}<span class="ink2" style="display:block">Method 2: {{ c.m2 }}</span>{% endif %}</td></tr>{% endfor %}
+    </tbody></table></td></tr>{% endif %}
     {% else %}<tr><td colspan="8" class="muted">No archetype passed either method's safety gate.</td></tr>{% endfor %}
     </tbody></table></div>
-    <p class="ink2" style="font-size:12px;margin-top:4px">Every attribute of the archetype is listed with its value; “not stated” = the product text does not mention it.{% if s.n_sets > 1 %} Attribute set = which of the node's {{ s.n_sets }} attribute sets defines the archetype (see the definition above).{% endif %}</p>
+    <p class="ink2" style="font-size:12px;margin-top:4px">Every attribute of the archetype is listed with its value; “not stated” = the product text does not mention it.{% if s.n_sets > 1 %} Attribute set = which of the node's {{ s.n_sets }} attribute sets defines the archetype (see the definition above).{% endif %} Example products are shown only where the recommending method(s) mark them safe.</p>
     {% if s.figs.agreement %}<details class="sec sub"><summary><h4>VOS (Vector Opportunity Score) vs TG (Total Gap)</h4><span class="hint"></span></summary>
     <div class="grid g2" style="margin-top:8px">
       <figure class="fig"><img alt="TG versus VOS" src="{{ s.figs.agreement }}"><figcaption>Every archetype on this node by its two method scores. #n = recommended, by final order. Colour = tier; hollow = not recommended.</figcaption></figure>
     </div>
     </details>{% endif %}
 
-    <h3>SKU recommendations</h3>
-    {% for g in s.skus %}<div class="skugrp">
-      <b>#{{ g.rank }} · {{ g.a.name }}</b> <span class="combo">({{ g.a.combo }})</span> <span class="chip">{{ g.tier }}</span>
-      {% for c in g.cards %}{% include 'card.html.j2' %}{% endfor %}
-    </div>{% else %}<p class="muted">No shortlisted archetype on this node.</p>{% endfor %}
-
-    {% if s.style_ext %}<h4>Style extensions: {{ s.style_ext|length }} colour, material or style variants of existing Staples products</h4>
-      {% for c in s.style_ext %}{% include 'card.html.j2' %}{% endfor %}
+    {% if s.style_ext %}<h3>Style extensions</h3>
+    <p class="ink2" style="font-size:12.5px;margin:2px 0 0">{{ s.style_ext|length }} {{ s.comp }} products that do the same job as a Staples product in a colour, material or style Staples lacks (Method 1 STYLE-EXTENSION). <mark class="ext">Highlighted</mark> = what is new versus the nearest Staples product.</p>
+    <div class="tbl-wrap" style="margin-top:8px"><table class="mini se"><thead><tr><th class="num">#</th><th>{{ s.comp }} product</th><th class="num">Price</th><th>Style extended</th><th>Nearest Staples product</th><th class="num">Staples price</th><th class="num">AD (Aesthetic Delta)</th></tr></thead><tbody>
+    {% for c in s.style_ext %}<tr><td class="num">{{ loop.index }}</td><td><a href="{{ c.url }}" target="_blank" rel="noopener">{{ c.title }}</a><span class="small ink2" style="display:block">{{ c.brand }}{% if c.on %} <span class="chip st-PASS">sells on Staples</span>{% endif %}{% if c.house %} <span class="chip">house brand</span>{% endif %}{% if c.arch %} · {{ c.arch.name }}{% endif %}</span></td><td class="num">{{ c.price }}</td>
+      <td>{% for e in c.ext %}<div class="extl">{{ e.k }}: <span class="ink2">{{ e.st }}</span> → <mark class="ext">{{ e.c }}</mark></div>{% else %}<span class="ink2">Different look overall (no single colour, material or style stated)</span>{% endfor %}</td>
+      <td><a href="{{ c.st_url }}" target="_blank" rel="noopener">{{ c.st_title }}</a></td><td class="num">{{ c.st_price }}</td><td class="num">{{ c.ad }}</td></tr>{% endfor %}
+    </tbody></table></div>
     {% endif %}
 
     <h3>Vendor / seller view</h3>
+    <p class="muted" style="font-size:12px;margin:2px 0 6px">Note: competitor brand / vendor data are not very clean or accurate (missing values, house brands, listing noise), so read this view as indicative.</p>
     <div class="tbl-wrap"><table class="sortable"><thead><tr><th>Display brand</th><th class="num">Approvable products</th><th class="num">Archetypes (Attributes Combinations)</th><th>Recruit path</th></tr></thead><tbody>
     {% for v in s.vendors %}<tr><td>{{ v.brand }}{% if v.on %} <span class="chip st-PASS">sells on Staples</span>{% endif %}{% if v.house %} <span class="chip">{{ s.comp }} house brand</span>{% endif %}</td><td class="num">{{ v.products }}</td><td class="num">{{ v.arch }}</td><td class="ink2">{{ v.path }}</td></tr>
     {% else %}<tr><td colspan="4" class="muted">No approvable products in recommended archetypes.</td></tr>{% endfor %}
@@ -709,15 +727,23 @@ table.score td{vertical-align:middle;padding:5px 10px} table.score th{cursor:def
   if(!node || !document.getElementById('n-'+node)) node=sel.options[0] ? sel.options[0].value : null;
   if(node) showNode(node);
   openTab(tab);
-  // sortable tables
-  document.querySelectorAll('table.sortable th').forEach(function(th){
+  // example products under each recommendation
+  document.querySelectorAll('.xbtn').forEach(function(b){
+    b.addEventListener('click',function(){
+      var row=b.closest('tr').nextElementSibling; if(!row || !row.classList.contains('xrow')) return;
+      var open=row.hidden; row.hidden=!open; b.setAttribute('aria-expanded', open?'true':'false');
+      b.textContent=(open?'▾':'▸')+b.textContent.slice(1);
+    });
+  });
+  // sortable tables (an example row stays under its pick)
+  document.querySelectorAll('table.sortable > thead th').forEach(function(th){
     th.addEventListener('click',function(){
       var table=th.closest('table'), idx=Array.prototype.indexOf.call(th.parentNode.children,th);
-      var body=table.tBodies[0], rows=Array.prototype.slice.call(body.rows);
+      var body=table.tBodies[0], rows=Array.prototype.filter.call(body.rows,function(r){return !r.classList.contains('xrow');});
       var asc = th.dataset.dir!=='asc'; th.dataset.dir = asc ? 'asc':'desc';
       function val(r){var t=(r.cells[idx]||{}).textContent||''; var n=parseFloat(t.replace(/[$,%+↑↓ ]/g,'')); return isNaN(n)? t.toLowerCase(): n;}
       rows.sort(function(a,b){var x=val(a),y=val(b); if(x===y) return 0; return (x>y?1:-1)*(asc?1:-1);});
-      rows.forEach(function(r){body.appendChild(r);});
+      rows.forEach(function(r){var x=r.nextElementSibling; body.appendChild(r); if(x && x.classList.contains('xrow')) body.appendChild(x);});
     });
   });
 })();
