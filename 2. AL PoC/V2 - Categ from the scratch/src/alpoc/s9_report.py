@@ -376,8 +376,6 @@ def exec_summary(nodes, nsum, fa, cand, recs, vend, bands, qi, gaps) -> dict:
         {"k": "Families compared", "v": _compact(n_st + n_co), "s": f"{n_st:,} Staples · {n_co:,} competitor"},
         {"k": "Archetypes built", "v": f"{len(arch_all):,}", "s": "attribute combinations, 4–6 attributes each"},
         {"k": "Safe recommendations", "v": f"{n_rec}", "s": "", "bar": tier_bar(tc, n_rec)},
-        {"k": "New to Staples", "v": _pct(n_new / n_rec) if n_rec else "–", "s": f"{n_new} of {n_rec} picks have no Staples product today"},
-        {"k": "Example products", "v": f"{n_ex}", "s": "each shown beside its nearest Staples item"},
     ]
 
     # funnel: bar width on a log scale so 20K and 99 both read

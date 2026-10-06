@@ -191,20 +191,20 @@ function chip(slide, label, x, y, w, h, fill, ink = C.white, size = 9) {
   // band 1a: the ask
   box(s, 0.45, 1.2, 12.43, 0.52, C.navy, { r: 0.08 });
   text(s, "THE ASK", 0.6, 1.2, 1.0, 0.52, { fontSize: 12, bold: true, color: C.orange, valign: "middle", charSpacing: 1 });
-  text(s, "Which design-led, core-adjacent (\"White Chair\") products can Staples add to its marketplace without cannibalising 1P sales, using only external data?", 1.62, 1.2, 11.15, 0.52, { fontSize: 12.5, color: C.white, valign: "middle" });
+  text(s, "Which design-led, core-adjacent products can Staples add to its marketplace without cannibalising 1P sales, using only external data?", 1.62, 1.2, 11.15, 0.52, { fontSize: 12.5, color: C.white, valign: "middle" });
   // band 1b: funnel tiles
   const tiles = [
     [String(T.nodes_scored), "Staples nodes across 3 segments, vs Amazon & Wayfair"],
     [k1(T.families_all), `product families analysed: ${k1(T.staples_families)} Staples, ${k1(T.competitor_families)} competitor`],
     [String(T.archetypes_built), "archetypes (attribute combinations) compared"],
     [String(T.recommended), `safe to add; ${T.tiers.Strong} confirmed by both methods`],
-    [String(T.example_products), "example products ready to list"],
   ];
-  const TG = 0.18, TW = (12.43 - 4 * TG) / 5;
+  const TG = 0.2, TW = (12.43 - 3 * TG) / 4;
   tiles.forEach(([v, l], i) => {
     const x = 0.45 + i * (TW + TG);
-    box(s, x, 1.92, TW, 1.04, C.paler, { r: 0.1 });
-    text(s, v, x + 0.08, 1.98, TW - 0.16, 0.46, { fontSize: 28, bold: true, color: C.blue, align: "center", valign: "middle" });
+    const safe = i === 3; // "safe to add" tile highlighted in light green
+    box(s, x, 1.92, TW, 1.04, safe ? "DDF3E7" : C.paler, { r: 0.1, line: safe ? "7CCB9F" : undefined, lineW: 1 });
+    text(s, v, x + 0.08, 1.98, TW - 0.16, 0.46, { fontSize: 28, bold: true, color: safe ? C.strong : C.blue, align: "center", valign: "middle" });
     text(s, l, x + 0.14, 2.46, TW - 0.28, 0.44, { fontSize: 10.5, color: C.text, align: "center", valign: "top" });
   });
   // band 3: what to add first (picks a Staples merchant recognises: anchored to what Staples already sells)
@@ -357,8 +357,51 @@ function chip(slide, label, x, y, w, h, fill, ink = C.white, size = 9) {
   });
   s.addNotes(`Growth paths, read left to right: sense demand early, size and validate it, then act on the basket and the catalog. Each combines external signals with Staples data.\n- Social media & trend listening (social media analytics + trend listening): mentions, hashtags and saves per archetype on TikTok, Instagram, Pinterest and Reddit plus Google Trends, scored for growth and sentiment; rising styles feed the Explore nodes.\n- SEO & search-intent gaps: on-site searches (zero-result, high-exit) and external SEO keywords where competitors rank and Staples does not, mapped to archetypes; feeds seller recruiting and product pages.\n- Demand forecasting: per node and archetype from sales history, with Back-to-School seasonality and the trend signals from social listening; sizes GMV and commission before listing.\n- Market research & customer surveys (market research + market survey): B2B and B2C customers on unmet needs, style and price; concept tests of the top archetypes; results set the prioritisation weights.\n- Basket completion & Back-to-School kits: market-basket analysis finds missing complements; target 1–2 attach items per order (the brief's basket goal).\n- New-category whitespace: the PoC already set aside ${T.backlog_families.toLocaleString("en-US")} competitor product families that fit none of the 12 nodes (e.g. wall calendars, thermocoolers, reusable bags, briefcases, many of which Staples shelves elsewhere); running the engine against the whole Staples tree, plus the brief's adjacent verticals such as facility supplies, finds categories with no Staples home.\nFurther options if asked: B2B account cross-sell, seller recruitment scoring, listing content enrichment (our attribute extractor auto-tags seller listings for filters and search).`);
 
-  // ======================= 6. METHOD 1 FRAMEWORK =======================
+  // ======================= 6. SOLUTION ARCHITECTURE =======================
   pres.addSection({ title: "Appendix" });
+  s = pres.addSlide({ masterName: "CONTENT", sectionTitle: "Appendix" });
+  s.addText("Solution Architecture: From Listings to Safe Recommendations", { placeholder: "title" });
+  const stages = [
+    { t: "Data Acquisition", w: 1.9, items: [["dbS", "Staples.com", `${SKUS.staples} SKUs · 12 nodes`], ["dbA", "Amazon", `${SKUS.amazon} SKUs · 7 nodes`], ["dbW", "Wayfair", `${SKUS.wayfair} SKUs · 5 nodes`]] },
+    { t: "Prep & Mapping", sub: "S0–S2", w: 2.05, items: [["filter", "Clean & de-identify", "prices, text fixes, PII removed"], ["layer", "Product families", "colour / size variants merged"], ["sitemap", "Node mapping", "k-NN classifier"]] },
+    { t: "Attributes & Archetypes", sub: "S3–S4", w: 2.3, items: [["tags", "3-tier attributes", "function · look · lifestyle, same extractor on both sides"], ["proj", "Neutral product embeddings", "extracted attributes only (no title, price or brand), bge-base"], ["puzzle", "Archetypes", "4–6-attribute combinations, up to 3 sets per node"]] },
+    { t: "Two Scoring Methods", sub: "S5–S6", w: 2.76, methods: true },
+    { t: "Gates & Picks", sub: "S7–S8", w: 1.9, items: [["shield", "Safety gates", "common → per method → final"], ["check", "Final list", "union of both methods, 3–10 per node"], ["storeB", "Products & sellers", "each beside its nearest Staples item"]] },
+  ];
+  const AGs = 0.38, by = 2.05, bh = 4.65;
+  let sx = 0.45;
+  stages.forEach((st, i) => {
+    const w = st.w, last = i === stages.length - 1;
+    const cw = last ? w : w + AGs - 0.02;
+    s.addShape(i === 0 ? "homePlate" : "chevron", { x: sx - (i ? 0.1 : 0), y: 1.28, w: cw + (i ? 0.1 : 0), h: 0.6, fill: { color: [C.pale, "CFDDF5", C.head, "A9C3EE", "97B6EA"][i] }, line: { color: C.white, width: 1 } });
+    text(s, [{ text: st.t, options: { bold: true, breakLine: !!st.sub } }, ...(st.sub ? [{ text: st.sub, options: { fontSize: 9.5, color: C.muted } }] : [])], sx + (i ? 0.25 : 0.1), 1.28, cw - (i ? 0.45 : 0.4), 0.6, { fontSize: 12.5, color: C.navy, align: "center", valign: "middle" });
+    box(s, sx, by, w, bh, C.white, { r: 0.08, line: "D3DDEE", lineW: 0.5 });
+    if (st.methods) {
+      const mm = [
+        { h: "Method 1 · Vector view", f: C.paler, lines: ["VW (Vector Whitespace)", "AAS (Adjacency Affinity Score)", "CRS (Cannibalisation Risk Score)", "AD (Aesthetic Delta)", "PPR (Price Position Ratio)"], out: "→ VOS (Vector Opportunity Score)" },
+        { h: "Method 2 · Attribute view", f: "F3F0FA", lines: ["LSR (Log Share Ratio)", "PPG (Price Position Gap)", "CG (Colour Gap) · MSG (Material/Style Gap)", "DFG (Design-Forward Gap)", "ACR (Attribute Cannibalisation Risk)"], out: "→ TG (Total Gap)" },
+      ];
+      mm.forEach((m, j) => {
+        const mh = (bh - 0.3) / 2, my = by + 0.1 + j * (mh + 0.1);
+        box(s, sx + 0.1, my, w - 0.2, mh, m.f, { r: 0.08 });
+        text(s, m.h, sx + 0.2, my + 0.08, w - 0.4, 0.28, { fontSize: 12, bold: true, color: C.blue });
+        text(s, m.lines.map((l, k) => ({ text: l, options: { breakLine: k < m.lines.length - 1 } })), sx + 0.2, my + 0.45, w - 0.35, 1.1, { fontSize: 9.5, color: C.text, paraSpaceAfter: 2 });
+        text(s, m.out, sx + 0.2, my + mh - 0.4, w - 0.4, 0.3, { fontSize: 11, bold: true, color: C.navy });
+      });
+    } else {
+      st.items.forEach(([ic, h, d], j) => {
+        const iy = by + 0.3 + j * 1.48;
+        s.addImage({ data: ICON[ic], x: sx + w / 2 - 0.25, y: iy, w: 0.5, h: 0.5 });
+        text(s, h, sx + 0.08, iy + 0.56, w - 0.16, 0.24, { fontSize: 11.5, bold: true, color: C.navy, align: "center" });
+        text(s, d, sx + 0.08, iy + 0.8, w - 0.16, 0.5, { fontSize: 9.5, color: C.muted, align: "center" });
+      });
+    }
+    if (!last) arrow(s, sx + w + 0.08, by + bh / 2 - 0.15, 0.22, 0.3);
+    sx += w + AGs;
+  });
+  s.addNotes("End-to-end flow. S0–S2: ingest and clean the three sources (PII from Wayfair reviews removed), merge colour/size variants into product families, map each competitor product to the right Staples node with a k-NN classifier over all Staples nodes. S3–S4: read every product's full text with the same extractor on both sides into 3 tiers of attributes; build archetypes as combinations of 4–6 attributes (no price). Neutral product embeddings: each product becomes a card of its extracted attributes only (same template on both sides, no title, price or brand, so neither retailer's copy style separates them), embedded with bge-base; it powers Method 1, the clustering cross-check and the nearest-Staples match for every example product. S5: Method 1 in embedding space (whitespace, fit with Staples, aesthetic difference, cannibalisation risk, price position) gives VOS. S6: Method 2 on attribute shares (share gap, price, colour, material/style, design) gives TG, with its own attribute cannibalisation check (ACR). S7: each method has its own safety gate; the final gate takes the union and tiers it. S8: example products safe under the recommending method, each shown next to the nearest Staples product, plus brand and seller notes.");
+
+  // ======================= 7. METHOD 1 FRAMEWORK =======================
   s = pres.addSlide({ masterName: "CONTENT", sectionTitle: "Appendix" });
   s.addText("Method 1 (Vector View): Framework", { placeholder: "title" });
   {
@@ -420,49 +463,6 @@ function chip(slide, label, x, y, w, h, fill, ink = C.white, size = 9) {
     text(s, [{ text: "Green labels = safe for Method 1. ", options: { bold: true, color: C.orange } }, { text: "They are ranked by VOS (Vector Opportunity Score) and joined with Method 2's picks at the final gate.", options: { color: C.white } }], KX + 0.14, VY, KW - 0.28, YB + BH - VY, { fontSize: 10, valign: "middle" });
   }
   s.addNotes(`Method 1 decision map: every competitor product gets one label. First EXCLUDE (identical to a Staples product), then OFF-BRAND (AAS below T_low: poor fit with Staples' catalog and customers), then the CRS band decides. Low CRS (< ${F.m1.crs_low}): CURATE if AAS ≥ T_high (true whitespace), else EDGE (hold for phase 2). Middle CRS: LEAN-APPROVE if the look is clearly different (AD ≥ ${F.m1.ad_threshold}) and the fit is strong, else REVIEW (merchant calibration queue). High CRS (≥ ${F.m1.crs_high}), top-down: UNDERCUT (PPR < ${F.m1.ppr_undercut}×, hard reject), TRADE-UP (PPR ≥ ${F.m1.ppr_tradeup}× with a design or material upgrade), STYLE-EXTENSION (AD ≥ ${F.m1.ad_threshold}), otherwise SUBSTITUTE (same job, same look, reject).\nT_low / T_high are set from Staples' own AAS per L2 group (ranges ${F.m1.t_low} and ${F.m1.t_high}); all cut-offs are provisional until the merchant calibration session (slide 5, step 2 Protect).`);
-
-  // ======================= 7. SOLUTION ARCHITECTURE =======================
-  s = pres.addSlide({ masterName: "CONTENT", sectionTitle: "Appendix" });
-  s.addText("Solution Architecture: From Listings to Safe Recommendations", { placeholder: "title" });
-  const stages = [
-    { t: "Data Acquisition", w: 1.9, items: [["dbS", "Staples.com", `${SKUS.staples} SKUs · 12 nodes`], ["dbA", "Amazon", `${SKUS.amazon} SKUs · 7 nodes`], ["dbW", "Wayfair", `${SKUS.wayfair} SKUs · 5 nodes`]] },
-    { t: "Prep & Mapping", sub: "S0–S2", w: 2.05, items: [["filter", "Clean & de-identify", "prices, text fixes, PII removed"], ["layer", "Product families", "colour / size variants merged"], ["sitemap", "Node mapping", "k-NN classifier"]] },
-    { t: "Attributes & Archetypes", sub: "S3–S4", w: 2.3, items: [["tags", "3-tier attributes", "function · look · lifestyle, same extractor on both sides"], ["proj", "Neutral product embeddings", "extracted attributes only (no title, price or brand), bge-base"], ["puzzle", "Archetypes", "4–6-attribute combinations, up to 3 sets per node"]] },
-    { t: "Two Scoring Methods", sub: "S5–S6", w: 2.76, methods: true },
-    { t: "Gates & Picks", sub: "S7–S8", w: 1.9, items: [["shield", "Safety gates", "common → per method → final"], ["check", "Final list", "union of both methods, 3–10 per node"], ["storeB", "Products & sellers", "each beside its nearest Staples item"]] },
-  ];
-  const AGs = 0.38, by = 2.05, bh = 4.65;
-  let sx = 0.45;
-  stages.forEach((st, i) => {
-    const w = st.w, last = i === stages.length - 1;
-    const cw = last ? w : w + AGs - 0.02;
-    s.addShape(i === 0 ? "homePlate" : "chevron", { x: sx - (i ? 0.1 : 0), y: 1.28, w: cw + (i ? 0.1 : 0), h: 0.6, fill: { color: [C.pale, "CFDDF5", C.head, "A9C3EE", "97B6EA"][i] }, line: { color: C.white, width: 1 } });
-    text(s, [{ text: st.t, options: { bold: true, breakLine: !!st.sub } }, ...(st.sub ? [{ text: st.sub, options: { fontSize: 9.5, color: C.muted } }] : [])], sx + (i ? 0.25 : 0.1), 1.28, cw - (i ? 0.45 : 0.4), 0.6, { fontSize: 12.5, color: C.navy, align: "center", valign: "middle" });
-    box(s, sx, by, w, bh, C.white, { r: 0.08, line: "D3DDEE", lineW: 0.5 });
-    if (st.methods) {
-      const mm = [
-        { h: "Method 1 · Vector view", f: C.paler, lines: ["VW (Vector Whitespace)", "AAS (Adjacency Affinity Score)", "CRS (Cannibalisation Risk Score)", "AD (Aesthetic Delta)", "PPR (Price Position Ratio)"], out: "→ VOS (Vector Opportunity Score)" },
-        { h: "Method 2 · Attribute view", f: "F3F0FA", lines: ["LSR (Log Share Ratio)", "PPG (Price Position Gap)", "CG (Colour Gap) · MSG (Material/Style Gap)", "DFG (Design-Forward Gap)", "ACR (Attribute Cannibalisation Risk)"], out: "→ TG (Total Gap)" },
-      ];
-      mm.forEach((m, j) => {
-        const mh = (bh - 0.3) / 2, my = by + 0.1 + j * (mh + 0.1);
-        box(s, sx + 0.1, my, w - 0.2, mh, m.f, { r: 0.08 });
-        text(s, m.h, sx + 0.2, my + 0.08, w - 0.4, 0.28, { fontSize: 12, bold: true, color: C.blue });
-        text(s, m.lines.map((l, k) => ({ text: l, options: { breakLine: k < m.lines.length - 1 } })), sx + 0.2, my + 0.45, w - 0.35, 1.1, { fontSize: 9.5, color: C.text, paraSpaceAfter: 2 });
-        text(s, m.out, sx + 0.2, my + mh - 0.4, w - 0.4, 0.3, { fontSize: 11, bold: true, color: C.navy });
-      });
-    } else {
-      st.items.forEach(([ic, h, d], j) => {
-        const iy = by + 0.3 + j * 1.48;
-        s.addImage({ data: ICON[ic], x: sx + w / 2 - 0.25, y: iy, w: 0.5, h: 0.5 });
-        text(s, h, sx + 0.08, iy + 0.56, w - 0.16, 0.24, { fontSize: 11.5, bold: true, color: C.navy, align: "center" });
-        text(s, d, sx + 0.08, iy + 0.8, w - 0.16, 0.5, { fontSize: 9.5, color: C.muted, align: "center" });
-      });
-    }
-    if (!last) arrow(s, sx + w + 0.08, by + bh / 2 - 0.15, 0.22, 0.3);
-    sx += w + AGs;
-  });
-  s.addNotes("End-to-end flow. S0–S2: ingest and clean the three sources (PII from Wayfair reviews removed), merge colour/size variants into product families, map each competitor product to the right Staples node with a k-NN classifier over all Staples nodes. S3–S4: read every product's full text with the same extractor on both sides into 3 tiers of attributes; build archetypes as combinations of 4–6 attributes (no price). Neutral product embeddings: each product becomes a card of its extracted attributes only (same template on both sides, no title, price or brand, so neither retailer's copy style separates them), embedded with bge-base; it powers Method 1, the clustering cross-check and the nearest-Staples match for every example product. S5: Method 1 in embedding space (whitespace, fit with Staples, aesthetic difference, cannibalisation risk, price position) gives VOS. S6: Method 2 on attribute shares (share gap, price, colour, material/style, design) gives TG, with its own attribute cannibalisation check (ACR). S7: each method has its own safety gate; the final gate takes the union and tiers it. S8: example products safe under the recommending method, each shown next to the nearest Staples product, plus brand and seller notes.");
 
   // ======================= 8. THANK YOU =======================
   pres.addSection({ title: "Close" });
