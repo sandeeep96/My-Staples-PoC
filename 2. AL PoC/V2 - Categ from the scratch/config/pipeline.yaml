@@ -153,6 +153,9 @@ gates:
     max_per_node: 10
     max_per_lens: 4                 # one attribute set cannot fill the node's list (Sai, 2026-10-04)
     max_overlap: 0.5                # a pick sharing > 50% of its competitor families with a higher-ranked pick is dropped
+    merge_one_apart: true           # picks of one attribute set differing in a single value fold into one (Sai, 2026-10-06)
+    all_label: All                  # shown when a folded variant leaves the attribute unstated (e.g. audience general)
+    any_label: Any                  # same for a yes/no attribute
 
 sensitivity:
   draws: 1000

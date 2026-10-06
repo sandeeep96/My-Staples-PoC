@@ -8,10 +8,14 @@ VOS (Method 1) and TG (Method 2) stay separate scores, and each method has alrea
     that hold at least one product safe under either method);
   * several attribute sets per node (Sai 2026-10-04): at most max(max_per_lens, ceil(max_per_node / sets)) picks
     per set, and a pick sharing more than max_overlap of its competitor families (Jaccard) with a higher-ranked pick
-    is skipped, so the same products are not recommended twice.
+    is skipped, so the same products are not recommended twice;
+  * picks of one attribute set that differ in a single attribute value are folded into the higher-ranked pick
+    (Sai 2026-10-06): one recommendation listing the values ("wood/bamboo or metal/wire"), or "All" / "Any" when
+    one variant leaves the attribute unstated (audience general, a yes/no attribute at "no").
 Also the Dirichlet weight-sensitivity analysis for both scores (G7)."""
 from __future__ import annotations
 
+import json
 import math
 
 import numpy as np
@@ -19,6 +23,7 @@ import pandas as pd
 from scipy.stats import spearmanr
 
 from .common import cfg, load, log, pct_rank, save, save_json
+from .s4_archetypes import _stated, _word, archetype_name, facet_label, pretty_value
 
 TIER_ORDER = ["Strong", "Vector-led", "Gap-led", "Conditional", "Not listed"]
 
@@ -69,6 +74,46 @@ def _exclusion_reason(r) -> str:
     return f"Method 1: {_m1_reason(r)} · Method 2: {_m2_reason(r)}"
 
 
+def fold_one_apart(a: pd.DataFrame, nid: str, picked: list, gf: dict) -> tuple[list, dict]:
+    """Fold picks (rank order) that share a lead's attributes and differ from it in exactly one value; a lead folds
+    along one attribute only. -> (leads, {lead: [folded picks]}). Updates the lead's name, combos, family counts."""
+    fv = {i: json.loads(a.at[i, "facets"]) for i in picked}
+    leads, axis, groups = [], {}, {}
+    for i in picked:
+        f = fv[i]
+        for j in leads:
+            g = fv[j]
+            if a.at[j, "lens"] != a.at[i, "lens"] or set(g) != set(f):
+                continue
+            diff = [k for k in f if f[k] != g[k]]
+            if len(diff) == 1 and axis.get(j, diff[0]) == diff[0]:
+                axis[j] = diff[0]
+                groups[j].append(i)
+                break
+        else:
+            leads.append(i)
+            groups[i] = []
+    for j, mem in groups.items():
+        if not mem:
+            continue
+        f = axis[j]
+        vals = list(dict.fromkeys([fv[j][f]] + [fv[i][f] for i in mem]))
+        if any(not _stated(nid, f, v) for v in vals):
+            shown = gf.get("any_label", "Any") if set(vals) <= {"yes", "no"} else gf.get("all_label", "All")
+            word = ""
+        else:
+            shown = " or ".join(pretty_value(v) for v in vals)
+            word = " or ".join(w for w in (_word(nid, f, v) for v in vals) if w)
+        name, combo, full = archetype_name(nid, list(fv[j].items()), {f: (word, shown)})
+        a.at[j, "name"], a.at[j, "combo"], a.at[j, "combo_full"] = name, combo, full
+        a.at[j, "merged_ids"] = "|".join(a.at[i, "archetype_id"] for i in mem)
+        a.at[j, "merged_attr"] = facet_label(nid, f)
+        a.at[j, "merged_values"] = shown
+        for c in ("n_staples", "n_competitor"):
+            a.at[j, c] = int(a.at[j, c] + sum(a.at[i, c] for i in mem))
+    return leads, groups
+
+
 def topn_stability(a: pd.DataFrame, score_fn, draws, alpha, n, rng) -> pd.Series:
     """Share of weight draws in which each archetype stays in its node's top-n (eligible only)."""
     base = a.assign(s=score_fn(None))
@@ -105,6 +150,8 @@ def run() -> dict:
     a["shortlisted"] = False
     a["final_rank"] = np.nan
     a["final_block"] = ""
+    for c in ("merged_ids", "merged_attr", "merged_values", "merged_into"):
+        a[c] = ""
     mem = load("archetype_members.parquet").merge(load("family_table.parquet")[["family_id", "retailer"]], on="family_id")
     comp_sets = mem[mem["retailer"] != "staples"].groupby("archetype_id")["family_id"].agg(set).to_dict()
     if "lens" not in a.columns:
@@ -149,9 +196,16 @@ def run() -> dict:
             n0 = len(picked)
             take(fill.index, gf["min_per_node"])
             a.loc[picked[n0:], "tier"] = "Conditional"
+        if gf.get("merge_one_apart"):
+            picked, groups = fold_one_apart(a, nid, picked, gf)
         a.loc[picked, "shortlisted"] = True
         a.loc[picked, "final_rank"] = range(1, len(picked) + 1)
         a.loc[picked, "final_block"] = ""
+        if gf.get("merge_one_apart"):
+            for rank, j in enumerate(picked, start=1):
+                for i in groups[j]:
+                    a.at[i, "merged_into"] = a.at[j, "archetype_id"]
+                    a.at[i, "final_block"] = f"merged into pick #{rank} (differs only in {a.at[j, 'merged_attr']})"
     a["exclusion_reason"] = a.apply(_exclusion_reason, axis=1)
     a["m1_reason"] = a.apply(_m1_reason, axis=1)
     a["m2_reason"] = a.apply(_m2_reason, axis=1)
@@ -188,6 +242,7 @@ def run() -> dict:
     qa = {"sensitivity": stab, "spearman_vos_tg": agree,
           "n_eligible": int(el.sum()), "n_shortlisted": int(a["shortlisted"].sum()),
           "tier_counts": a.loc[a["shortlisted"], "tier"].value_counts().to_dict(),
+          "n_merged_away": int((a["merged_into"] != "").sum()),
           "m1_gate_pass": int(a["m1_gate"].sum()), "m2_gate_pass": int(a["m2_gate"].sum()),
           "m1_listed": int(a["m1_list"].sum()), "m2_listed": int(a["m2_list"].sum()),
           "n_valid": int(a["valid"].sum()), "n_archetypes": int((a["depth"] > 0).sum())}

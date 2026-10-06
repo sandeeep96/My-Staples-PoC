@@ -431,9 +431,11 @@ def _stated(nid: str, f: str, v: str) -> bool:
     return ((node_config(nid).get("labels") or {}).get(f) or {}).get(v, None) != ""
 
 
-def archetype_name(nid: str, fv: list[tuple]) -> tuple[str, str, str]:
+def archetype_name(nid: str, fv: list[tuple], merged: dict | None = None) -> tuple[str, str, str]:
     """-> (short merchant name, stated attribute combo, full attribute combo). The report shows 'Name (combo)'; the
-    full combo (with "not stated" values) is in the tooltip and the method tables (Sai 2026-10-04)."""
+    full combo (with "not stated" values) is in the tooltip and the method tables (Sai 2026-10-04).
+    merged = {facet: (name word, shown value)} for a final pick that folds variants one attribute apart (S7)."""
+    merged = merged or {}
     nc = node_config(nid)
     d = dict(fv)
     order = [f for f, _ in fv if is_gap_facet(f)] + (nc.get("name_order") or [f for f, _ in fv if not is_gap_facet(f)])
@@ -441,7 +443,7 @@ def archetype_name(nid: str, fv: list[tuple]) -> tuple[str, str, str]:
     for f in dict.fromkeys(order):                 # a facet once, a word once (no "Women women ... backpack")
         if f not in d:
             continue
-        w = _word(nid, f, d[f])
+        w = merged[f][0] if f in merged else _word(nid, f, d[f])
         toks = set(re.findall(r"[a-z0-9]+", w.lower()))
         if not w or (toks and toks <= seen):
             continue
@@ -461,8 +463,9 @@ def archetype_name(nid: str, fv: list[tuple]) -> tuple[str, str, str]:
         words.append(noun)
     name = " ".join(words).strip() or noun or "Archetype"
     name = name[0].upper() + name[1:]
-    full = " · ".join(f"{facet_label(nid, f)}: {pretty_value(v)}" for f, v in fv)
-    combo = " · ".join(f"{facet_label(nid, f)}: {pretty_value(v)}" for f, v in fv if _stated(nid, f, v))
+    shown = lambda f, v: merged[f][1] if f in merged else pretty_value(v)
+    full = " · ".join(f"{facet_label(nid, f)}: {shown(f, v)}" for f, v in fv)
+    combo = " · ".join(f"{facet_label(nid, f)}: {shown(f, v)}" for f, v in fv if f in merged or _stated(nid, f, v))
     return name, combo, full
 
 

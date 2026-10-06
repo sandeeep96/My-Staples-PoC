@@ -72,10 +72,10 @@ PICKS = {
         dict(rank=1, label="Hiking / outdoor daypack (unisex)", framing="add", exemplar=3,
              attr=[("pack_type", "hiking")],
              staples_kw=r"hiking|outdoor|daypack|trail", comp_kw=r"hiking|outdoor|daypack|trail"),
-        dict(rank=3, label="Travel / carry-on backpack (40L)", framing="deepen", exemplar=3,
+        dict(rank=4, label="Travel / carry-on backpack (40L)", framing="deepen", exemplar=3,
              attr=[("pack_type", "travel")],
              staples_kw=r"travel|carry.on|flight", comp_kw=r"travel|carry.on|flight",
-             skipped="R2 hiking or travel backpack (professional look): overlaps R1 and R3"),
+             skipped="R2-R3 hiking/outdoor backpacks: same idea as R1"),
     ],
     "Office Desks": [
         dict(rank=1, label="Design-led (luxe) computer desk", framing="deepen",
@@ -89,20 +89,20 @@ PICKS = {
         dict(rank=1, label="Warm-tone leather / fabric armchair", framing="deepen", exemplar=2,
              attr=[("form_factor", "armchair")],
              staples_kw=r"armchair|arm chair", comp_kw=r"armchair|arm chair"),
-        dict(rank=2, label="Light-neutral swivel barrel chair", framing="add", exemplar=2,
+        dict(rank=3, label="Light-neutral swivel barrel chair", framing="add", exemplar=2,
              attr=[("form_factor", "barrel")],
              staples_kw=r"barrel", comp_kw=r"barrel",
-             note="R1 folds in the lounge/club chair variant (one attribute apart)"),
+             skipped="R2 lounge/club chair: Staples already lists 12 lounge chairs (commercial vinyl / faux leather)"),
     ],
     "Desk Lamps": [
         dict(rank=1, label="Decor-grade shaded table lamp ($150+)", framing="trade-up",
              staples_kw=r"shade", comp_kw=r"shade",
              attr=[("lamp_form", "shaded")], price_min=150,
              note="Staples already has 55 shaded lamps (mostly under $100), so this is a price/design trade-up"),
-        dict(rank=5, label="Glass / Tiffany-style statement lamp", framing="add",
+        dict(rank=6, label="Glass / Tiffany-style statement lamp", framing="add",
              staples_kw=r"tiffany|stained|glass", comp_kw=r"tiffany|stained|glass",
              attr=[("material_class", "glass")],
-             skipped=("R2/R4 residential luxe shaded lamps: same idea as R1; R3 wood-base shaded lamps: "
+             skipped=("R2/R4 residential luxe shaded lamps: same idea as R1; R3/R5 wood-base shaded lamps: "
                       "Staples already sells 5 (Adesso Elmore, Roman)")),
     ],
     "Lunch Bags & Boxes": [
@@ -121,7 +121,7 @@ PICKS = {
         dict(rank=4, label="Wood pendulum wall clock", framing="add",
              attr=[("clock_type", "pendulum")],
              staples_kw=r"pendulum", comp_kw=r"pendulum",
-             skipped="R2 patterned / warm-tone wall clocks: same idea as R1"),
+             skipped="R2-R3 patterned / floral wall clocks: same idea as R1"),
     ],
     "Office Partitions & Dividers": [
         dict(rank=1, label="Decorative folding screen (under $150)", framing="add", exemplar=1,
@@ -136,11 +136,12 @@ PICKS = {
         dict(rank=1, label="Bamboo / wood K-Cup pod drawer", framing="add",
              attr=[("organizer_type", "drawer"), ("material_class", "wood")],
              staples_kw=r"bamboo|wood", comp_kw=r"bamboo|wood"),
-        dict(rank=3, label="Bamboo Nespresso pod drawer", framing="add", exemplar=1,
+        dict(rank=4, label="Bamboo Nespresso pod drawer", framing="add", exemplar=1,
              attr=[("organizer_type", "drawer"), ("pod_system", "nespresso")],
              staples_kw=r"nespresso|vertuo", comp_kw=r"nespresso|vertuo",
-             skipped=("R2 K-Cup station organizer: Staples carries station organizers; R1 folds in the metal "
-                      "K-Cup pod drawer (Staples already sells a Keurig metal pod drawer)")),
+             skipped=("R2 metal K-Cup pod drawer: Staples already sells a Keurig metal pod drawer; "
+                      "R3 K-Cup station organizer: priced at 0.36x Staples' nearest item (undercut risk) "
+                      "and Staples carries station organizers")),
     ],
 }
 

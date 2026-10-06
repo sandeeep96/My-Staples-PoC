@@ -1,6 +1,6 @@
 # Staples Assortment PoC: Node-Level Assortment Gap and Recommendation Methodology
 
-**Status:** v1.4 (Phase 2) · 2026-10-06 · Owner: Sai (LatentView). The body describes the pipeline **as built and run in Phase 2**: 12 focus nodes against their Primary 1 competitor, stages S0–S9, full text on both sides, archetypes of 4–6 attributes built on up to 3 attribute sets per node that prefer the attributes where the retailers differ, a separate price view, and **two-method safety gates** (common gates → one gate per method → final gate). History: v1.1 (2026-09-27) Sai's §11 answers and data-driven scope; v1.2 separate VOS/TG scores and the code + PNG + static-HTML output; v1.3 Phase 2 (2026-10-01); v1.4 full text, gap-aligned archetypes, attribute sets (2026-10-03/04). §13 (Phase 1 build) and §14 (Phase 2) are the dated change logs with the evidence behind each decision; where an older paragraph and §14 disagree, §14 wins.
+**Status:** v1.4 (Phase 2) · 2026-10-06 · Owner: Sai (LatentView). The body describes the pipeline **as built and run in Phase 2**: 12 focus nodes against their Primary 1 competitor, stages S0–S9, full text on both sides, archetypes of 4–6 attributes built on up to 3 attribute sets per node that prefer the attributes where the retailers differ, a separate price view, and **two-method safety gates** (common gates → one gate per method → final gate). History: v1.1 (2026-09-27) Sai's §11 answers and data-driven scope; v1.2 separate VOS/TG scores and the code + PNG + static-HTML output; v1.3 Phase 2 (2026-10-01); v1.4 full text, gap-aligned archetypes, attribute sets (2026-10-03/04); one-attribute-apart picks merged (2026-10-06, §14.10). §13 (Phase 1 build) and §14 (Phase 2) are the dated change logs with the evidence behind each decision; where an older paragraph and §14 disagree, §14 wins.
 **Supersedes:** Track B/C in `Documents/Staples PoC - Approach & Methodolgy -Initial Exploration.docx`, and the 6-step method shared in chat.
 **Scope of this document:** the method and the reasoning behind every rule. Thresholds live in `config/pipeline.yaml`; the latest run's numbers are in §14.9 and the HTML report (`Staples_Assortment_Report_v33.html`).
 
@@ -473,7 +473,7 @@ The two methods keep their own final scores, **VOS** (Method 1, §6.5.6) and **T
 | **M2-c Method 2 list** | S6 | archetypes | top 10 per node by TG among those passing M2-b |
 | **F1 Union & tier** | S7 | archetypes | union of the two lists; **Strong** = on both, **Vector-led** = Method 1 only, **Gap-led** = Method 2 only; ordered Strong first, then by the fused rank `Final = 0.5·pctrank(VOS) + 0.5·pctrank(TG)` among valid archetypes in the node (this order picks the list; the report then lists the picks by final score, §9.2) |
 | **F2 Per-node size** | S7 | archetypes | 3 to 10 per node; below 3, a labelled **Conditional** fill: best remaining valid archetypes holding a product safe under either method (most safe products, then Final) |
-| **F3 No near-duplicates** | S7 | archetypes | with several attribute sets: at most max(4, ⌈10 / sets⌉) picks per set; a pick sharing > 50% of its competitor families (Jaccard) with a higher-ranked pick is skipped, with that reason shown |
+| **F3 No near-duplicates** | S7 | archetypes | with several attribute sets: at most max(4, ⌈10 / sets⌉) picks per set; a pick sharing > 50% of its competitor families (Jaccard) with a higher-ranked pick is skipped, with that reason shown; then picks of one set that differ in **a single attribute value** fold into the higher-ranked pick (one recommendation listing the values, e.g. "Material: wood/bamboo or metal/wire", or **All** / **Any** when a variant leaves the attribute unstated, e.g. audience general, a yes/no attribute at "no"); a lead folds along one attribute only; the lead keeps its tier and scores, its family counts and example products cover all folded variants; folded picks are listed as excluded with "merged into pick #k"; no backfill (§14.10) |
 | **F4 SKU picks** | S8 | products | only products safe under the method(s) that recommended the archetype: Method 1 safe labels for Vector-led; not ATTR-UNDERCUT / ATTR-SUBSTITUTE (and not EXCLUDE) for Gap-led; both for Strong (falling back to either when fewer than 3) |
 
 **Reading the tiers.** Strong = both methods see an opportunity and both cannibalisation checks pass: the most robust. Vector-led = whitespace in the vector view that passes Method 1's checks (e.g. a style extension Method 2 sees as a cheaper twin). Gap-led = a credible attribute gap with few cheaper or same-look Staples twins; Method 2 has no fit-with-Staples check, so read these as "check fit". Conditional = only to reach the per-node minimum.
@@ -892,3 +892,27 @@ S6 node-level shares, gaps and Method 2 labels stay family-level (checked: node 
 - **v29–v31 (Sai, 2026-10-06):** price-gap card reworded (v29); Whitespace and Confidence findings replaced by Missing looks and Picks fit the "White Chair" idea, Sourcing kept last (v31; v30 = same before dropping weak look fields); v32 = shorter Price gap and White Chair cards (one example each, three bullets); v33 = Overview keeps 4 tiles (new-to-Staples and example-product tiles dropped), Node Analysis order final recommendations → vendor / seller view → excluded → VOS vs TG → style extensions (all three collapsed) → key insights.
 - Intermediate builds are kept: v19 (label glitch), v22–v23 (longer finding texts), v25 (two text slips), v27 (style-extension highlight from three fields only, before matching AD's fields).
 - **Archetype count:** 885 archetypes; the 897 quoted earlier (and in decks V4–V5) included the 12 long-tail groups.
+
+### 14.10 Picks one attribute apart merged into one recommendation (Sai, 2026-10-06; run from S7, report v34, deck V7)
+**Why.** In v33, 41 pairs of final picks in the same attribute set differed in only one value, e.g. three backpack picks "Type: hiking/outdoor · Vibe: plain · Outdoor: yes" with Audience general / women & men / women. The overlap rule (§7 F3, > 50% shared competitor families) cannot catch them because each variant holds different families. For Staples the deliverable is "fill this attribute combination", so variants of one combination are one recommendation.
+
+**Rule (S7, after the final gate's pick list; `pipeline.yaml` → `gates.final.merge_one_apart`, `all_label`, `any_label`):** walk the picks in rank order; a pick with the same attributes as a higher-ranked lead in the same set and exactly one different value folds into that lead. A lead folds along one attribute only (a pick that differs from the lead in another attribute stays separate, so a merged row never claims a combination no pick holds). The merged attribute shows the values joined with "or", or "All" ("Any" for yes/no attributes) when a variant leaves it unstated. The lead keeps its tier, VOS, TG and final score; its family counts are the sum over the variants (families are disjoint within a set); S8 draws example products from all variants. Folded picks appear under Excluded with "merged into pick #k (differs only in <attribute>)". Freed slots are **not** backfilled (Sai): weaker picks would replace a duplicate.
+
+**Result:** 99 → **73 recommendations (21 Strong, 20 Vector-led, 31 Gap-led, 1 Conditional)**; 26 picks folded into 24 leads (most often Type, Material, Audience, Residential living). Every node keeps ≥ 3. Two same-set pairs one value apart remain because each differs from its lead on a second axis (coffee organizers #1 vs #3: material vs pod system; desks #1 vs #3: type vs drawers).
+
+| Node | Strong | Vector-led | Gap-led | Conditional | Total | v33 |
+|---|---|---|---|---|---|---|
+| Accent & Waiting Room Chairs | 1 | 3 | 3 | 0 | 7 | 10 |
+| Backpacks | 0 | 0 | 5 | 0 | 5 | 10 |
+| Clocks & Timers | 1 | 4 | 3 | 0 | 8 | 10 |
+| Desk Lamps | 4 | 1 | 2 | 0 | 7 | 10 |
+| Lunch Bags & Boxes | 3 | 2 | 3 | 0 | 8 | 10 |
+| Office Desks | 0 | 3 | 4 | 0 | 7 | 10 |
+| Office Partitions & Dividers | 3 | 2 | 2 | 0 | 7 | 10 |
+| Planners & Personal Organizers | 2 | 3 | 4 | 0 | 9 | 10 |
+| Coffee Organizers & Dispensers | 1 | 1 | 2 | 0 | 4 | 7 |
+| Water Bottles, Tumblers & Travel Mugs | 2 | 0 | 3 | 0 | 5 | 5 |
+| Desk Organizers | 2 | 1 | 0 | 0 | 3 | 4 |
+| Desk Pads | 2 | 0 | 0 | 1 | 3 | 3 |
+
+**Caveats.** The scores shown on a merged row are the lead variant's, not re-computed for the merged group. Some merges join values that are different products ("bento box or electric heated", "journal/guided or address book"): read them as one attribute combination where several types are missing. Strong fell from 23 to 21 because Strong picks folded into Strong leads.

@@ -55,7 +55,9 @@ def run() -> dict:
     fa = load("final_archetypes.parquet")
     recs, pools = [], []
     for _, a in fa[fa["shortlisted"]].iterrows():
-        m = allowed(cand[cand["archetype_id"] == a["archetype_id"]], a["tier"], sk["n_exemplars"])
+        ids = [a["archetype_id"]] + [x for x in str(a.get("merged_ids") or "").split("|") if x]   # + folded variants
+        m = allowed(cand[cand["archetype_id"].isin(ids)].assign(archetype_id=a["archetype_id"]), a["tier"],
+                    sk["n_exemplars"])
         pools.append(m)
         if m.empty:
             continue
