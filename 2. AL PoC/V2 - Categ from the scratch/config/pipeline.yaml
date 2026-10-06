@@ -101,6 +101,7 @@ vector:
   k_whitespace: 15
   aas_top: 50
   crs_top: 3
+  nearest: full_card_same_type      # nearest Staples product: full-card match of the same type (Sai, 2026-10-07); old: functional_min_ad
   identical_cos: 0.95
   identical_log_price: 0.15
   crs_high: 70

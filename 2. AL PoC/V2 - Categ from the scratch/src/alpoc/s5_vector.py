@@ -15,7 +15,7 @@ from sklearn.metrics import roc_auc_score
 from sklearn.model_selection import cross_val_score
 
 from . import embed
-from .cards import full_card, functional_core, neutral_card, neutral_functional_card, tier2_attrs
+from .cards import _tx, full_card, functional_core, neutral_card, neutral_functional_card, tier2_attrs, type_attrs
 from .common import cfg, load, log, node_config, pct_of, pct_rank, save, save_json, split_multi
 
 APPROVE = ["CURATE", "STYLE-EXTENSION", "TRADE-UP", "LEAN-APPROVE"]   # LEAN-APPROVE = REVIEW leaning approve (§6.6)
@@ -197,7 +197,10 @@ def run() -> dict:
             fs = Eu[ci] @ Eu[si].T
             s_max = topk_mean(fs, v["crs_top"])
             p_sub = cal_prob(s_max, cal, np.array(ref))
-            full_t = Et[ci] @ Et[si].T                                  # title-bearing card: identity check only
+            full_t = Et[ci] @ Et[si].T                  # title-bearing card: identity check and nearest Staples product
+            ta = type_attrs(nid)
+            typ = lambda row: tuple(_tx(row, a) for a in ta)
+            st_typ = [typ(g.iloc[j]) for j in si]
             for r_i, i in enumerate(ci):
                 c_row = g.iloc[i]
                 # functional peers = every Staples family within 0.02 of the best functional match (ties are common)
@@ -205,9 +208,24 @@ def run() -> dict:
                 peers = si[order[fs[r_i, order] >= fs[r_i, order[0]] - 0.02][:15]]
                 if len(peers) < v["crs_top"]:
                     peers = si[order[: v["crs_top"]]]
-                # nearest = the best-looking peer (smallest aesthetic delta): conservative for STYLE-EXTENSION
-                ads = [aesthetic_delta(c_row, g.iloc[j]) for j in peers]
-                j = peers[int(np.argmin(ads))]
+                if v.get("nearest", "functional_min_ad") == "full_card_same_type":
+                    # nearest = the most similar Staples product on the full card (title + look + features), among
+                    # those of the same type when any exist (Sai 2026-10-07, §14.11); AD is measured against it
+                    # match on the type values the competitor states; drop the later ones if no Staples product has them all
+                    ct = typ(c_row)
+                    pool = np.arange(len(si))
+                    for n_t in range(len(ct), 0, -1):
+                        keys = [(q, x) for q, x in enumerate(ct[:n_t]) if x]
+                        same = np.array([bool(keys) and all(t[q] == x for q, x in keys) for t in st_typ])
+                        if same.any():
+                            pool = np.where(same)[0]
+                            break
+                    j = si[pool[int(np.argmax(full_t[r_i, pool]))]]
+                    ads = [aesthetic_delta(c_row, g.iloc[j])]
+                else:
+                    # nearest = the best-looking functional peer (smallest aesthetic delta)
+                    ads = [aesthetic_delta(c_row, g.iloc[j]) for j in peers]
+                    j = peers[int(np.argmin(ads))]
                 s_row = g.iloc[j]
                 fi, n_fi = functional_identity(c_row, s_row, core)
                 crs = 100 * (0.6 * p_sub[r_i] + 0.4 * fi) if n_fi else 100 * p_sub[r_i]

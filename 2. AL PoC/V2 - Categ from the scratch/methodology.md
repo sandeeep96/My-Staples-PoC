@@ -359,6 +359,7 @@ Within an existing node, adjacency is partly given. AAS now measures **fit with 
 - **Excluded by design:** price (carried by PPR) and aesthetics (carried by AD below). This is what makes STYLE-EXTENSION and TRADE-UP reachable.
 
 #### 6.5.4 Aesthetic Delta (AD): is it visibly different?
+- **Nearest Staples family** (since 2026-10-07, §14.11; `vector.nearest`): the Staples family of the same node with the highest similarity on the title-bearing full card (title + colour + material + style + features + use), among those with the same type value(s) the competitor product states (later type fields are dropped if no Staples family matches them all; all node families if none matches). CRS keeps its functional similarity; PPR keeps the functional-peer median price.
 - `AD(c) = 1 − cos_aesthetic(c, nearest Staples family)`, on an aesthetic view (colour family, tone, material_class, style_family, aesthetic tags, DFI).
 - Report also `ΔDFI = DFI(c) − DFI(nearest Staples)`.
 
@@ -487,7 +488,9 @@ The two methods keep their own final scores, **VOS** (Method 1, §6.5.6) and **T
 ## 8. S8 SKU stage: exemplars and sellers
 
 ### 8.1 Exemplar selection (up to 3 per recommended archetype)
-- Candidates are the archetype's products that are safe under the method(s) that recommended it (gate F4, §7). A product can appear under two recommendations from different attribute sets; F3 keeps such overlap below 50%.
+- Candidates are the archetype's products (and those of variants folded into it, §14.10) that are safe under the method(s) that recommended it (gate F4, §7).
+- **Title check (§14.11):** a candidate whose title names another value of one of the pick's attributes and none of the pick's own values (node vocabulary, plurals allowed) is not shown.
+- **Shown once per node (§14.11):** picks are filled in rank order; a product already shown under a higher pick is skipped.
 - Rank by `0.5·(1 − CRS/100) + 0.3·centroid proximity + 0.2·DFI` and pick with MMR diversity (λ = 0.7), so the exemplars are not near-identical. Each card says which method it is safe under.
 - **Style extensions:** per node, the 5 STYLE-EXTENSION products with the largest AD, independent of the recommendations.
 
@@ -916,3 +919,38 @@ S6 node-level shares, gaps and Method 2 labels stay family-level (checked: node 
 | Desk Pads | 2 | 0 | 0 | 1 | 3 | 3 |
 
 **Caveats.** The scores shown on a merged row are the lead variant's, not re-computed for the merged group. Some merges join values that are different products ("bento box or electric heated", "journal/guided or address book"): read them as one attribute combination where several types are missing. Strong fell from 23 to 21 because Strong picks folded into Strong leads.
+
+### 14.11 Example products: closest Staples product, title check, no repeats (Sai, 2026-10-07; run from S5, report v36, deck V8)
+**Why.** Reviewing v34, the example products under some picks did not look like the archetype, some appeared under two picks, and the "nearest Staples product" beside them was often not the closest one Staples sells.
+
+**Evidence (v34, 214 example products).**
+- **Nearest Staples product:** it came from the functional card only (type + core features + size), taking every Staples family within 0.02 of the best match and then the one with the smallest AD. It agreed with a title-similarity nearest in 4% of cases. The same few items repeated: partitions 21 examples → 5 Staples items, coffee organizers 12 → 3, desk organizers 8 → 3, backpacks 15 → 8. Examples: a CamelBak bottle next to a Swig straw-topper set, a gold pod holder next to the Keurig recycling programme.
+- **Title contradictions:** about 10 examples whose title names a different type than the pick (a travel laptop backpack under hiking, a "Swivel Accent Chair" under barrel, "Room Dividers" under folding screen). S3 type attributes use `mode: priority` over the full text, so a description word can beat the title. Most were later absorbed by the merged picks of §14.10; 3 remained.
+- **Repeats:** 19 products shown under two picks (a family sits in one archetype per attribute set).
+
+**Changes.**
+
+| # | Change | Where |
+|---|---|---|
+| 1 | Nearest Staples family = best full-card (title-bearing) match among Staples families of the same stated type; AD, ΔDFI, material upgrade and functional identity use it; CRS similarity and PPR peers unchanged | `s5_vector.py`, `pipeline.yaml` → `vector.nearest` (`functional_min_ad` = old rule) |
+| 2 | Example products must not contradict the pick in their title (node vocabulary, plurals allowed; values of folded variants allowed); count kept as `n_title_conflict` | `s8_skus.py` |
+| 3 | An example product is shown once per node (picks filled in rank order) | `s8_skus.py` |
+
+**Result (S5–S9 re-run).** Median rank of the shown Staples product in a title-similarity match: e.g. backpacks 224 → 25, lunch bags 108 → 30, desks 146 → 12.5, chairs 15 → 3, clocks 99 → 14, coffee organizers 18.5 → 6.5. Distinct Staples items per examples: partitions 5/21 → 12/21, clocks 8/24 → 20/23, coffee organizers 3/12 → 6/12. Repeated examples 19 → 0; title-contradicting examples removed: 9 (counted before selection). Method 1 labels moved (families, de-duplicated): STYLE-EXTENSION 1,577 → 1,944, LEAN-APPROVE 594 → 1,175, SUBSTITUTE 1,609 → 1,194, UNDERCUT 3,299 → 2,909, CURATE 152 → 79; Method 1 gate 380 → 444 pass. **Final: 74 recommendations (22 Strong, 23 Vector-led, 28 Gap-led, 1 Conditional)** vs 73 in v34; deck pick ranks remapped by attribute combination.
+
+| Node | Strong | Vector-led | Gap-led | Conditional | Total | v34 |
+|---|---|---|---|---|---|---|
+| Accent & Waiting Room Chairs | 1 | 2 | 4 | 0 | 7 | 7 |
+| Backpacks | 1 | 1 | 3 | 0 | 5 | 5 |
+| Clocks & Timers | 1 | 4 | 3 | 0 | 8 | 8 |
+| Coffee Organizers & Dispensers | 1 | 1 | 2 | 0 | 4 | 4 |
+| Desk Lamps | 4 | 2 | 2 | 0 | 8 | 7 |
+| Desk Organizers | 2 | 2 | 0 | 0 | 4 | 3 |
+| Desk Pads | 2 | 0 | 0 | 1 | 3 | 3 |
+| Lunch Bags & Boxes | 1 | 2 | 4 | 0 | 7 | 8 |
+| Office Desks | 2 | 2 | 3 | 0 | 7 | 7 |
+| Office Partitions & Dividers | 2 | 4 | 1 | 0 | 7 | 7 |
+| Planners & Personal Organizers | 2 | 1 | 4 | 0 | 7 | 9 |
+| Water Bottles, Tumblers & Travel Mugs | 3 | 2 | 2 | 0 | 7 | 5 |
+
+**Caveats.** When Staples has no product of the competitor's type (barrel chairs, pendulum clocks, guided journals), the nearest is the best match of another type, and this is correct: Staples lacks the type. Wayfair titles that are only a model name ("Aloysius", "Kanessa") still match weakly. Some competitor products are out of scope for the node (e.g. a bottled-water product on Amazon's water-bottle page appears as an example). This is an S2 scope issue, not fixed here. The S3 root cause of title contradictions (full-text priority for type attributes) is unchanged: the title check is a display safeguard.
