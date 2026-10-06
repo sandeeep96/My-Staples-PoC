@@ -102,3 +102,8 @@ dfi_anchors:
   utility:
     - "a basic black appointment book for office scheduling"
     - "a plain plastic-cover weekly planner for business use, functional and simple"
+
+# Example products (S8, Sai 2026-10-07, methodology §14.12): titles matching a pattern are not shown as examples;
+# with "when", only under picks that have those attribute values
+exemplar_exclude:
+  - {pattern: 'refills?|wedding'}

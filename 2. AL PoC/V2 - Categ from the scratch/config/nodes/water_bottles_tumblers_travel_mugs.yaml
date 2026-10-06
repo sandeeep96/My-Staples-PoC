@@ -89,3 +89,9 @@ dfi_anchors:
   utility:
     - "a basic plastic water bottle, functional and plain"
     - "a standard stainless travel mug with a black lid for commuting, utilitarian"
+
+# Example products (S8, Sai 2026-10-07, methodology §14.12): titles matching a pattern are not shown as examples;
+# with "when", only under picks that have those attribute values
+exemplar_exclude:
+  - {pattern: 'purified water|electrolytes|spring water'}
+  - {pattern: '\d{2,}\s*-?\s*pack|\bbulk\b'}

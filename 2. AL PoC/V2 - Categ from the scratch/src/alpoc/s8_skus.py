@@ -87,6 +87,20 @@ def title_conflict(title: str, nid: str, allowed: dict) -> str:
     return ""
 
 
+def excluded_title(title: str, nid: str, facets: dict) -> bool:
+    """The node's exemplar_exclude patterns (off-target products such as refills or kids' items under an adult pick);
+    a rule with "when" applies only to picks with those attribute values (§14.12)."""
+    for rule in node_config(nid).get("exemplar_exclude") or []:
+        if all(facets.get(f) == v for f, v in (rule.get("when") or {}).items()) and \
+                re.search(rf"\b(?:{rule['pattern']})\b", str(title), re.I):
+            return True
+    return False
+
+
+def norm_title(t) -> str:
+    return re.sub(r"[^a-z0-9]+", " ", str(t).lower()).strip()[:40]
+
+
 def run() -> dict:
     sk = cfg()["skus"]
     ft = load("family_table.parquet")
@@ -94,19 +108,34 @@ def run() -> dict:
     fa = load("final_archetypes.parquet")
     recs, pools = [], []
     fa["n_title_conflict"] = 0
+    fa["n_excluded_title"] = 0
     fx = fa.set_index("archetype_id")["facets"]
-    used = {}                                       # node -> families already shown under a higher-ranked pick
+    tt = ft.set_index("family_id")["title"]
+    pr = ft.set_index("family_id")["price"]
+    used, used_t = {}, {}                           # node -> families / titles already shown under a higher pick
     for k, a in fa[fa["shortlisted"]].sort_values(["node_id", "final_rank"]).iterrows():
         ids = [a["archetype_id"]] + [x for x in str(a.get("merged_ids") or "").split("|") if x]   # + folded variants
         m = allowed(cand[cand["archetype_id"].isin(ids)].assign(archetype_id=a["archetype_id"]), a["tier"],
                     sk["n_exemplars"])
-        pools.append(m)
         # examples must not contradict the pick in their own title (Sai 2026-10-07, §14.11) and are shown once per node
         ok = allowed_values(a["node_id"], [json.loads(fx[i]) for i in ids])
-        tc = m["family_id"].map(ft.set_index("family_id")["title"]).map(lambda t: title_conflict(t, a["node_id"], ok))
+        titles = m["family_id"].map(tt)
+        tc = titles.map(lambda t: title_conflict(t, a["node_id"], ok))
         fa.at[k, "n_title_conflict"] = int((tc != "").sum())
+        # off-target titles from the node config, and the same title shown once per node (§14.12)
+        ex = titles.map(lambda t: excluded_title(t, a["node_id"], json.loads(a["facets"])))
+        fa.at[k, "n_excluded_title"] = int(ex.sum())
+        pools.append(m[~ex.values])                 # seller view: off-target products are not sellers to recruit
         seen = used.setdefault(a["node_id"], set())
-        m = m[(tc == "").values & ~m["family_id"].isin(seen).values]
+        seen_t = used_t.setdefault(a["node_id"], set())
+        m = m[(tc == "").values & ~ex.values & ~m["family_id"].isin(seen).values
+              & ~titles.map(norm_title).isin(seen_t).values]
+        m = m.drop_duplicates("family_id")
+        m = m[~m["family_id"].map(tt).map(norm_title).duplicated().values]
+        # prefer products with a price and a descriptive title (3+ words); others only if too few remain
+        good = (m["family_id"].map(pr).notna() & (m["family_id"].map(tt).str.split().str.len() >= 3)).values
+        if good.sum() >= sk["n_exemplars"]:
+            m = m[good]
         if m.empty:
             continue
         rows = ft.set_index("family_id").loc[m["family_id"]].reset_index()
@@ -118,6 +147,7 @@ def run() -> dict:
         sel = m.iloc[pick].assign(exemplar_rank=range(1, len(pick) + 1), exemplar_score=score[pick])
         recs.append(sel)
         seen.update(sel["family_id"])
+        seen_t.update(sel["family_id"].map(tt).map(norm_title))
     recs = evidence(pd.concat(recs, ignore_index=True), ft) if recs else pd.DataFrame()
     # STYLE-EXTENSION list: colour/material/style variants of existing Staples families
     se = cand[cand["label"] == "STYLE-EXTENSION"].sort_values(["node_id", "ad", "aas"], ascending=[True, False, False])

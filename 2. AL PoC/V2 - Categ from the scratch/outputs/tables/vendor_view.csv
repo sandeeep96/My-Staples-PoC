@@ -70,7 +70,7 @@ node_id,brand,products,archetypes,house_brand,brand_on_staples,recruit_path
 "Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",YOUMIAN,1,1,False,False,Independent brand: recruit as a marketplace seller
 "Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",Z-MGKISS,1,1,False,False,Independent brand: recruit as a marketplace seller
 "Bags, Backpacks & Luggage > Backpacks & Laptop Bags > Backpacks",ZOMFELT,1,1,False,False,Independent brand: recruit as a marketplace seller
-"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",,404,7,False,False,Independent brand: recruit as a marketplace seller
+"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",,396,7,False,False,Independent brand: recruit as a marketplace seller
 "Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",Bentgo,6,4,False,True,Quick win: already a Staples supplier
 "Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",EAST,4,3,False,False,Independent brand: recruit as a marketplace seller
 "Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",QQKO,4,2,False,False,Independent brand: recruit as a marketplace seller
@@ -101,7 +101,6 @@ node_id,brand,products,archetypes,house_brand,brand_on_staples,recruit_path
 "Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",80W,1,2,False,False,Independent brand: recruit as a marketplace seller
 "Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",AMZCHEF,1,1,False,False,Independent brand: recruit as a marketplace seller
 "Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",AORAKI,1,1,False,False,Independent brand: recruit as a marketplace seller
-"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",BABHAMNESS,1,1,False,False,Independent brand: recruit as a marketplace seller
 "Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",CHAREADA,1,2,False,False,Independent brand: recruit as a marketplace seller
 "Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",CHARMDOO,1,2,False,False,Independent brand: recruit as a marketplace seller
 "Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",COZYEXPERT,1,2,False,False,Independent brand: recruit as a marketplace seller
@@ -131,12 +130,11 @@ node_id,brand,products,archetypes,house_brand,brand_on_staples,recruit_path
 "Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",SNIFITAR,1,2,False,False,Independent brand: recruit as a marketplace seller
 "Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",SOUOA,1,2,False,False,Independent brand: recruit as a marketplace seller
 "Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",STANLEY,1,1,False,True,Quick win: already a Staples supplier
-"Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",TAVVA,1,1,False,False,Independent brand: recruit as a marketplace seller
 "Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",TOUWMX,1,2,False,False,Independent brand: recruit as a marketplace seller
 "Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",UPTRUST,1,1,False,False,Independent brand: recruit as a marketplace seller
 "Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",VVU&CCO,1,1,False,False,Independent brand: recruit as a marketplace seller
 "Bags, Backpacks & Luggage > Totes & Handbags > Lunch Bags & Boxes",XANGNIER,1,2,False,False,Independent brand: recruit as a marketplace seller
-"Coffee, Water & Snacks > Coffee, Coffee Makers & Supplies > Coffee Organizers & Dispensers",,91,4,False,False,Independent brand: recruit as a marketplace seller
+"Coffee, Water & Snacks > Coffee, Coffee Makers & Supplies > Coffee Organizers & Dispensers",,87,4,False,False,Independent brand: recruit as a marketplace seller
 "Coffee, Water & Snacks > Coffee, Coffee Makers & Supplies > Coffee Organizers & Dispensers",INSAGO,2,1,False,False,Independent brand: recruit as a marketplace seller
 "Coffee, Water & Snacks > Coffee, Coffee Makers & Supplies > Coffee Organizers & Dispensers",3Pcs,1,1,False,False,Independent brand: recruit as a marketplace seller
 "Coffee, Water & Snacks > Coffee, Coffee Makers & Supplies > Coffee Organizers & Dispensers",ALELION,1,1,False,False,Independent brand: recruit as a marketplace seller
@@ -152,18 +150,15 @@ node_id,brand,products,archetypes,house_brand,brand_on_staples,recruit_path
 "Coffee, Water & Snacks > Coffee, Coffee Makers & Supplies > Coffee Organizers & Dispensers",SOUJOY,1,1,False,False,Independent brand: recruit as a marketplace seller
 "Coffee, Water & Snacks > Coffee, Coffee Makers & Supplies > Coffee Organizers & Dispensers",WADORN,1,1,False,False,Independent brand: recruit as a marketplace seller
 "Coffee, Water & Snacks > Coffee, Coffee Makers & Supplies > Coffee Organizers & Dispensers",YINMIT,1,1,False,False,Independent brand: recruit as a marketplace seller
-"Coffee, Water & Snacks > Water & Beverages > Water Bottles, Tumblers & Travel Mugs",,22,7,False,False,Independent brand: recruit as a marketplace seller
-"Coffee, Water & Snacks > Water & Beverages > Water Bottles, Tumblers & Travel Mugs",HASLE,4,3,False,False,Independent brand: recruit as a marketplace seller
+"Coffee, Water & Snacks > Water & Beverages > Water Bottles, Tumblers & Travel Mugs",,20,6,False,False,Independent brand: recruit as a marketplace seller
 "Coffee, Water & Snacks > Water & Beverages > Water Bottles, Tumblers & Travel Mugs",DYSANKY,2,2,False,False,Independent brand: recruit as a marketplace seller
-"Coffee, Water & Snacks > Water & Beverages > Water Bottles, Tumblers & Travel Mugs",LIFEWTR,2,1,False,False,Independent brand: recruit as a marketplace seller
+"Coffee, Water & Snacks > Water & Beverages > Water Bottles, Tumblers & Travel Mugs",HASLE,2,3,False,False,Independent brand: recruit as a marketplace seller
 "Coffee, Water & Snacks > Water & Beverages > Water Bottles, Tumblers & Travel Mugs",CUSTOM,1,1,False,False,Independent brand: recruit as a marketplace seller
 "Coffee, Water & Snacks > Water & Beverages > Water Bottles, Tumblers & Travel Mugs",CamelBak,1,1,False,True,Quick win: already a Staples supplier
 "Coffee, Water & Snacks > Water & Beverages > Water Bottles, Tumblers & Travel Mugs",GSI,1,1,False,False,Independent brand: recruit as a marketplace seller
-"Coffee, Water & Snacks > Water & Beverages > Water Bottles, Tumblers & Travel Mugs",MEWAY,1,1,False,False,Independent brand: recruit as a marketplace seller
 "Coffee, Water & Snacks > Water & Beverages > Water Bottles, Tumblers & Travel Mugs",RAYMYLO,1,1,False,False,Independent brand: recruit as a marketplace seller
 "Coffee, Water & Snacks > Water & Beverages > Water Bottles, Tumblers & Travel Mugs",SENDESTAR,1,1,False,False,Independent brand: recruit as a marketplace seller
 "Coffee, Water & Snacks > Water & Beverages > Water Bottles, Tumblers & Travel Mugs",YETI,1,1,False,False,Independent brand: recruit as a marketplace seller
-"Coffee, Water & Snacks > Water & Beverages > Water Bottles, Tumblers & Travel Mugs",YOUKE,1,1,False,False,Independent brand: recruit as a marketplace seller
 Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Latitude Run,38,6,True,False,"Competitor house brand: source the archetype, not the SKU"
 Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Wade Logan,13,3,True,False,"Competitor house brand: source the archetype, not the SKU"
 Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Hokku Designs,12,7,True,False,"Competitor house brand: source the archetype, not the SKU"
@@ -195,7 +190,6 @@ Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Benjara,1,1,False,Fa
 Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Caracole,1,1,False,False,Independent brand: recruit as a marketplace seller
 Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Container,1,1,False,False,Independent brand: recruit as a marketplace seller
 Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Dovetail Furniture,1,2,False,False,Independent brand: recruit as a marketplace seller
-Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Dreamsidea,1,2,False,False,Independent brand: recruit as a marketplace seller
 Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Greyleigh,1,2,True,False,"Competitor house brand: source the archetype, not the SKU"
 Furniture > Chairs & Seating > Accent & Waiting Room Chairs,HYDELINE,1,2,False,False,Independent brand: recruit as a marketplace seller
 Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Hooker Furniture,1,2,False,False,Independent brand: recruit as a marketplace seller
@@ -205,7 +199,6 @@ Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Kingstown Home,1,1,F
 Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Madison Park Signature,1,1,False,False,Independent brand: recruit as a marketplace seller
 Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Modway,1,1,False,False,Independent brand: recruit as a marketplace seller
 Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Ophelia & Co.,1,2,True,False,"Competitor house brand: source the archetype, not the SKU"
-Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Rosalind Wheeler,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
 Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Rosdorf Park,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
 Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Rosecliff Heights,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
 Furniture > Chairs & Seating > Accent & Waiting Room Chairs,Safavieh,1,1,False,False,Independent brand: recruit as a marketplace seller
@@ -361,15 +354,14 @@ Furniture > Lamps & Lighting > Desk Lamps,Nova of California,1,1,False,False,Ind
 Furniture > Lamps & Lighting > Desk Lamps,Pasargad,1,1,False,False,Independent brand: recruit as a marketplace seller
 Furniture > Lamps & Lighting > Desk Lamps,Union Rustic,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
 Furniture > Lamps & Lighting > Desk Lamps,Williston Forge,1,1,True,False,"Competitor house brand: source the archetype, not the SKU"
-Office Supplies > Calendars & Planners > Planners & Personal Organizers,,127,7,False,False,Independent brand: recruit as a marketplace seller
+Office Supplies > Calendars & Planners > Planners & Personal Organizers,,119,7,False,False,Independent brand: recruit as a marketplace seller
 Office Supplies > Calendars & Planners > Planners & Personal Organizers,Peter Pauper Press,4,1,False,False,Independent brand: recruit as a marketplace seller
 Office Supplies > Calendars & Planners > Planners & Personal Organizers,AT-A-GLANCE,3,2,False,True,Quick win: already a Staples supplier
 Office Supplies > Calendars & Planners > Planners & Personal Organizers,Moleskine,3,2,False,False,Independent brand: recruit as a marketplace seller
-Office Supplies > Calendars & Planners > Planners & Personal Organizers,WANDERINGS,3,1,False,False,Independent brand: recruit as a marketplace seller
 Office Supplies > Calendars & Planners > Planners & Personal Organizers,BEZEND,2,1,False,False,Independent brand: recruit as a marketplace seller
+Office Supplies > Calendars & Planners > Planners & Personal Organizers,WANDERINGS,2,1,False,False,Independent brand: recruit as a marketplace seller
 Office Supplies > Calendars & Planners > Planners & Personal Organizers,AKONEGE,1,1,False,False,Independent brand: recruit as a marketplace seller
 Office Supplies > Calendars & Planners > Planners & Personal Organizers,AT-A-Glance,1,1,False,True,Quick win: already a Staples supplier
-Office Supplies > Calendars & Planners > Planners & Personal Organizers,BIROYAL,1,1,False,False,Independent brand: recruit as a marketplace seller
 Office Supplies > Calendars & Planners > Planners & Personal Organizers,Blue Flowers N,1,1,False,False,Independent brand: recruit as a marketplace seller
 Office Supplies > Calendars & Planners > Planners & Personal Organizers,CAGIE,1,2,False,False,Independent brand: recruit as a marketplace seller
 Office Supplies > Calendars & Planners > Planners & Personal Organizers,Comix,1,1,False,False,Independent brand: recruit as a marketplace seller

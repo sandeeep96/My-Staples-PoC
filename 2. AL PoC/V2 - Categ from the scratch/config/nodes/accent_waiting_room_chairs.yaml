@@ -91,3 +91,8 @@ dfi_anchors:
     - "a black vinyl guest chair for corporate waiting rooms"
     - "a basic stacking chair for training rooms with a plastic seat and steel frame"
     - "a heavy-duty commercial reception chair with a vinyl seat and utilitarian design"
+
+# Example products (S8, Sai 2026-10-07, methodology §14.12): titles matching a pattern are not shown as examples;
+# with "when", only under picks that have those attribute values
+exemplar_exclude:
+  - {pattern: 'counter height|bar stools?|bar height|dining chairs?'}

@@ -1,8 +1,8 @@
 # Staples Assortment PoC: Node-Level Assortment Gap and Recommendation Methodology
 
-**Status:** v1.4 (Phase 2) · 2026-10-06 · Owner: Sai (LatentView). The body describes the pipeline **as built and run in Phase 2**: 12 focus nodes against their Primary 1 competitor, stages S0–S9, full text on both sides, archetypes of 4–6 attributes built on up to 3 attribute sets per node that prefer the attributes where the retailers differ, a separate price view, and **two-method safety gates** (common gates → one gate per method → final gate). History: v1.1 (2026-09-27) Sai's §11 answers and data-driven scope; v1.2 separate VOS/TG scores and the code + PNG + static-HTML output; v1.3 Phase 2 (2026-10-01); v1.4 full text, gap-aligned archetypes, attribute sets (2026-10-03/04); one-attribute-apart picks merged (2026-10-06, §14.10). §13 (Phase 1 build) and §14 (Phase 2) are the dated change logs with the evidence behind each decision; where an older paragraph and §14 disagree, §14 wins.
+**Status:** v1.4 (Phase 2) · 2026-10-07 · Owner: Sai (LatentView). The body describes the pipeline **as built and run in Phase 2**: 12 focus nodes against their Primary 1 competitor, stages S0–S9, full text on both sides, archetypes of 4–6 attributes built on up to 3 attribute sets per node that prefer the attributes where the retailers differ, a separate price view, and **two-method safety gates** (common gates → one gate per method → final gate). History: v1.1 (2026-09-27) Sai's §11 answers and data-driven scope; v1.2 separate VOS/TG scores and the code + PNG + static-HTML output; v1.3 Phase 2 (2026-10-01); v1.4 full text, gap-aligned archetypes, attribute sets (2026-10-03/04); one-attribute-apart picks merged (2026-10-06, §14.10); nearest Staples product by full-card match, example products title-checked, shown once and filtered for off-target titles (2026-10-07, §14.11–§14.12). §13 (Phase 1 build) and §14 (Phase 2) are the dated change logs with the evidence behind each decision; where an older paragraph and §14 disagree, §14 wins.
 **Supersedes:** Track B/C in `Documents/Staples PoC - Approach & Methodolgy -Initial Exploration.docx`, and the 6-step method shared in chat.
-**Scope of this document:** the method and the reasoning behind every rule. Thresholds live in `config/pipeline.yaml`; the latest run's numbers are in §14.9 and the HTML report (`Staples_Assortment_Report_v33.html`).
+**Scope of this document:** the method and the reasoning behind every rule. Thresholds live in `config/pipeline.yaml`; the latest run's numbers are in §14.11–§14.12 and the HTML report (`Staples_Assortment_Report_v38.html`).
 
 ---
 
@@ -13,7 +13,7 @@
 **Answer shape:** for each analysis node we produce:
 1. a gap profile at attribute level (which attribute values are under-represented),
 2. a ranked list of archetypes with a decision label (CURATE, TRADE-UP, STYLE-EXTENSION, and so on),
-3. 3–5 exemplar competitor SKUs per shortlisted archetype, shown next to the nearest Staples SKU, with brand and seller notes.
+3. up to 3 exemplar competitor products per shortlisted archetype, shown next to the nearest Staples SKU, with brand and seller notes.
 
 **What changed from the earlier versions.** Each change is traced to evidence in §2 and §3.
 
@@ -490,7 +490,9 @@ The two methods keep their own final scores, **VOS** (Method 1, §6.5.6) and **T
 ### 8.1 Exemplar selection (up to 3 per recommended archetype)
 - Candidates are the archetype's products (and those of variants folded into it, §14.10) that are safe under the method(s) that recommended it (gate F4, §7).
 - **Title check (§14.11):** a candidate whose title names another value of one of the pick's attributes and none of the pick's own values (node vocabulary, plurals allowed) is not shown.
-- **Shown once per node (§14.11):** picks are filled in rank order; a product already shown under a higher pick is skipped.
+- **Shown once per node (§14.11):** picks are filled in rank order; a product already shown under a higher pick is skipped, and so is a product with the same title (§14.12).
+- **Off-target titles (§14.12):** a product whose title matches the node's `exemplar_exclude` patterns (e.g. refills, bottled water, bar stools; a rule with `when` applies only to picks with those attribute values, e.g. kids' items under a travel/commute bento pick) is not shown and is left out of the seller view.
+- **Readable examples first (§14.12):** products with a price and a title of 3+ words are preferred; others fill in only when fewer than `skus.n_exemplars` remain.
 - Rank by `0.5·(1 − CRS/100) + 0.3·centroid proximity + 0.2·DFI` and pick with MMR diversity (λ = 0.7), so the exemplars are not near-identical. Each card says which method it is safe under.
 - **Style extensions:** per node, the 5 STYLE-EXTENSION products with the largest AD, independent of the recommendations.
 
@@ -619,7 +621,7 @@ Quality gates check how far each step can be trusted. In the PoC they are comput
 
 Each phase runs on the vertical slice before any bulk LLM spend. The bulk extraction run happens only after the P2 prompts pass validation on the slice.
 
-**Status (2026-10-06):** P0–P7 are built and run for all 12 Phase-2 focus nodes (report v33: 99 recommendations; §14.9). Open: Pat's calibration session (CRS bands, PPR thresholds, AAS thresholds, the gate parameters), human gold sets (G1, G3, G4), the Claude extraction / adjudication backend (needs an API key), review of the drafted node vocabularies and crosswalks, and optionally freezing τ / the G2 field set per run (§14.7).
+**Status (2026-10-07):** P0–P7 are built and run for all 12 Phase-2 focus nodes (report v38: 74 recommendations; §14.10–§14.12). Open: Pat's calibration session (CRS bands, PPR thresholds, AAS thresholds, the gate parameters), human gold sets (G1, G3, G4), the Claude extraction / adjudication backend (needs an API key), review of the drafted node vocabularies and crosswalks, and optionally freezing τ / the G2 field set per run (§14.7).
 
 **Re-run on new data:** when enriched or new-category samples arrive, the same pipeline runs from S0. New L2s get their generated artefacts (§1.4) drafted automatically and flagged *provisional* until reviewed. Existing reviewed artefacts are reused.
 
@@ -678,7 +680,6 @@ These decisions were made while building the pipeline. Each one either tightens 
 ### 14.3 Price view (separate from archetypes)
 Per node: price-band coverage (node quartiles, rounded) with credibility, and a **price ladder**: each archetype's median price on both sides, the ratio, and a reading (premium ≥ 1.5×, cheaper < 0.85×, parity).
 ### 14.4 Report, 2026-10-01 layout (superseded; the current layout is §9.2, changes in §14.9)
-### 14.4 Report (the current layout is §9.2)
 "Node" replaces "shelf" everywhere. Every metric abbreviation is shown with its full name, e.g. "TG (Total Gap)". Tab 2 order: header → key insights → coverage → attribute-level gaps → price insights → final recommendations → SKU recommendations and style extensions → sellers → excluded → Method 1 and Method 2 detail (bottom). Tab 1 lists the 12 nodes with segment · play and data status, without naming retailers.
 
 ### 14.5 Build decisions (Phase 2 run, 2026-10-01)
@@ -954,3 +955,16 @@ S6 node-level shares, gaps and Method 2 labels stay family-level (checked: node 
 | Water Bottles, Tumblers & Travel Mugs | 3 | 2 | 2 | 0 | 7 | 5 |
 
 **Caveats.** When Staples has no product of the competitor's type (barrel chairs, pendulum clocks, guided journals), the nearest is the best match of another type, and this is correct: Staples lacks the type. Wayfair titles that are only a model name ("Aloysius", "Kanessa") still match weakly. Some competitor products are out of scope for the node (e.g. a bottled-water product on Amazon's water-bottle page appears as an example). This is an S2 scope issue, not fixed here. The S3 root cause of title contradictions (full-text priority for type attributes) is unchanged: the title check is a display safeguard.
+
+### 14.12 Example products: off-target titles and repeated titles (Sai, 2026-10-07; S8–S9 re-run, report v38, deck V10)
+**Why.** A pre-presentation check of v36's example products found kids' bento boxes ("… for Kids Girls … Toddler Daycare") under the travel/commute bento pick (the "adult commuter bento" headline), and other off-target products: bottled water (LIFEWTR) under water bottles, a notebook refill and a wedding planner under planners, counter-height chairs under accent chairs, fruit baskets under coffee organizers, a 20-pack of bulk bottles. Two families with the same title appeared under two barrel-chair picks, and 11 examples had no price.
+
+**Changes.**
+
+| # | Change | Where |
+|---|---|---|
+| 1 | Per-node `exemplar_exclude` patterns (with optional `when` = pick attribute values); matching products are not shown and not counted as sellers; count kept as `n_excluded_title` | `config/nodes/<node>.yaml` (lunch bags, water bottles, planners, accent chairs, coffee organizers), `s8_skus.py` |
+| 2 | Shown once per node by normalised title (first 40 characters) as well as by family | `s8_skus.py` |
+| 3 | Products with a price and a 3+-word title preferred | `s8_skus.py` |
+
+**Result.** Picks, tiers and ranks unchanged (74). Example products 216 → 213; 52 candidate products excluded across picks; repeated titles 0; examples without a price 11 → 5; seller rows 406 → 398. Deck examples unchanged; deck V10 differs from V9 only in the speaker-note count of example products. Report v37 is the same run before change 1 reached the seller view.

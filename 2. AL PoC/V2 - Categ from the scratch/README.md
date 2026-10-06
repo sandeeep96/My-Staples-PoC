@@ -5,8 +5,9 @@ attribute variants the node's Primary 1 competitor (Amazon for 7 nodes, Wayfair 
 checks whether Staples could add them through its marketplace without cannibalising its own assortment. The method is
 in [methodology.md](methodology.md); Phase-2 changes, with evidence, are in §14.
 
-**Current report:** `outputs/report/Staples_Assortment_Report_v33.html` (2026-10-06). All 12 nodes are scored, giving
-99 recommended archetypes (23 Strong, 30 Vector-led, 45 Gap-led, 1 Conditional). Details: methodology §14.9.
+**Current report:** `outputs/report/Staples_Assortment_Report_v38.html` (2026-10-07). All 12 nodes are scored, giving
+74 recommended archetypes (22 Strong, 23 Vector-led, 28 Gap-led, 1 Conditional) after picks one attribute apart
+were merged. Details: methodology §14.10–§14.12. Deck: `outputs/ppt/Staples_Assortment_PoC_Deck_V10.pptx`.
 
 ## Run
 
@@ -44,7 +45,7 @@ for nodes that end with fewer than 3 gate-passing recommendations, using a small
 | S5 Method 1 (VOS) | `s5_vector.py` | `candidates.parquet` (product labels), `archetype_m1.parquet` (Method 1 gate + list) |
 | S6 Method 2 (TG) | `s6_gaps.py` | `archetype_m2.parquet` (ACR, Method 2 gate + list), `m2_labels.parquet`, `attr_gaps.parquet`, `price_bands.parquet` |
 | S7 Final gate | `s7_integrate.py` | `final_archetypes.parquet` (union of method lists, tiers, ≤ 4 per attribute set, no near-duplicate picks, 3–10 per node, sensitivity) |
-| S8 SKUs & sellers | `s8_skus.py` | `sku_recs.parquet`, `style_extensions.parquet`, `vendor_view.parquet` |
+| S8 SKUs & sellers | `s8_skus.py` | `sku_recs.parquet` (up to 3 example products per pick: title-checked, shown once per node, off-target titles excluded via `exemplar_exclude` in the node config), `style_extensions.parquet`, `vendor_view.parquet` |
 | S9 Report | `s9_report.py`, `figures.py`, `templates/` | HTML, PNG, CSV |
 
 ## Adding data

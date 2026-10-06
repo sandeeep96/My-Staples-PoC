@@ -64,3 +64,8 @@ dfi_anchors:
   utility:
     - "a basic black plastic coffee pod drawer for an office breakroom"
     - "a plain plastic condiment organizer for a breakroom counter, functional"
+
+# Example products (S8, Sai 2026-10-07, methodology §14.12): titles matching a pattern are not shown as examples;
+# with "when", only under picks that have those attribute values
+exemplar_exclude:
+  - {pattern: 'fruit baskets?|fruit bowls?'}
