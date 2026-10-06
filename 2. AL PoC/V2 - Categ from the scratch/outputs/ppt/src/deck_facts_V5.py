@@ -264,15 +264,6 @@ def main():
     cnt = lambda col, name: int(tree.loc[tree[col] == name, "Count"].dropna().iloc[0])  # noqa: E731
     facts["attach"] = dict(single_serve=cnt("L2", "Single Serve Coffee, Tea & Cocoa"),
                            coffee_makers=cnt("L3", "Coffee Makers & Espresso Machines"))
-    # Method 1 decision map thresholds (config) + AAS T_low / T_high ranges across L2 peer groups (qa_vector)
-    import yaml
-    vcfg = yaml.safe_load((ROOT / "config" / "pipeline.yaml").read_text(encoding="utf-8"))["vector"]
-    qv = json.loads((INTERIM / "qa_vector.json").read_text(encoding="utf-8"))
-    TT = [q["thresholds"] for q in qv.values() if isinstance(q, dict) and "thresholds" in q]
-    rng = lambda k: (lambda lo, hi: f"{lo:.0f}" if round(lo) == round(hi) else f"{lo:.0f}–{hi:.0f}")(  # noqa: E731
-        min(t[k] for t in TT), max(t[k] for t in TT))
-    facts["m1"] = {k: vcfg[k] for k in ("crs_low", "crs_high", "ad_threshold", "ppr_undercut", "ppr_tradeup")}
-    facts["m1"].update(t_low=rng("aas_low"), t_high=rng("aas_high"))
 
     N = {SHORT[leaf(n)]: n for n in ALL_NODES}
     G = lambda k, a, v: gap(N[k], a, v)  # noqa: E731
