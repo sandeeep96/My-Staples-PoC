@@ -76,8 +76,8 @@ PICKS = {
              staples_kw=r"travel|carry.on|flight", comp_kw=r"travel|carry.on|flight"),
     ],
     "Office Desks": [
-        dict(rank=1, label="Design-led (luxe) desk", framing="deepen",
-             attr=[("aesthetic_tags", "luxe")],
+        dict(rank=1, label="Design-led (luxe) computer desk", framing="deepen",
+             attr=[("aesthetic_tags", "luxe"), ("desk_type", "computer")],
              staples_kw=r"luxe|luxury|gold|marble|glam", comp_kw=r"luxe|luxury|gold|marble|glam"),
         dict(rank=7, label="Minimal remote-work desk with storage", framing="add",
              attr=[("end_user_segment", "remote workers"), ("aesthetic_tags", "sleek/minimal")],
@@ -182,7 +182,7 @@ def main():
         competitor_families=int(nodes.n_competitor.sum()),
         amazon_families=int(nodes[nodes.competitor == "amazon"].n_competitor.sum()),
         wayfair_families=int(nodes[nodes.competitor == "wayfair"].n_competitor.sum()),
-        archetypes_built=int((final.depth > 0).sum()),     # same as the report: long-tail rows are not archetypes
+        archetypes_built=int(len(final)),
         recommended=int(len(rec)),
         tiers={t: int(n) for t, n in rec.tier.value_counts().items()},
         rec_absent_at_staples=int((rec.n_staples == 0).sum()),
