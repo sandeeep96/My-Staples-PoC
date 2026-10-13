@@ -372,19 +372,19 @@ function chip(slide, label, x, y, w, h, fill, ink = C.white, size = 9) {
   s.addText("A Curated Growth Plan for the Staples Marketplace", { placeholder: "title" });
   {
     box(s, 0.45, 1.18, 12.43, 0.38, C.paler, { r: 0.08 });
-    text(s, runs("Everything on slides 5–6, sequenced: **product first**, **adjacent first**, **scale on evidence**.", { fontSize: 11.5, color: C.text }, C.navy), 0.6, 1.18, 12.13, 0.38, { align: "center", valign: "middle" });
+    text(s, runs("Everything on slides 5–6, sequenced: **size the prize first**, **adjacent first**, **scale on evidence**.", { fontSize: 11.5, color: C.text }, C.navy), 0.6, 1.18, 12.13, 0.38, { align: "center", valign: "middle" });
     const PH = [
-      { n: "LAUNCH", ic: "rocket", fill: C.blue, aim: "Load a confident first assortment",
+      { n: "SIZE & LAUNCH", ic: "dollar", fill: C.blue, aim: "Size the prize, load with confidence",
         chips: ["Adjacent first", "Existing customers", "Staples.com"],
-        b: [[`Start from the PoC's ${T.recommended} safe picks`, "PoC"], ["Tune cannibalisation & relax adjacency thresholds with merchants", "5 · Protect, Expand"], ["Test toys, hydration, luggage, tech", "5 · Expand"], [`Vet listings; recruit from the ${SRC.brands_on_staples_12_n} brands on Staples`, "5 · Curate"], ["Basket building: 1–2 attach items per order", "6"]],
-        o: "A curated launch assortment, one story per category owner" },
-      { n: "SIZE & SCALE", ic: "dollar", fill: C.mid, aim: "Size the prize, scale what works",
+        b: [[`Start from the PoC's ${T.recommended} safe picks`, "PoC"], ["Tune cannibalisation & relax adjacency thresholds on internal data", "5 · Protect, Expand"], ["Opportunity $ by customer segment; top ~20%", "5 · Prioritise"], [`Vet listings; recruit from the ${SRC.brands_on_staples_12_n} brands on Staples`, "5 · Curate"], ["Test toys, hydration, luggage, tech", "5 · Expand"]],
+        o: "A $-ranked launch shortlist, one story per category owner" },
+      { n: "LEARN & SCALE", ic: "chart", fill: C.mid, aim: "Learn from launch, scale what works",
         chips: ["Adjacent + near-core", "Existing customers", "Staples.com"],
-        b: [["Opportunity $ by customer segment; top ~20%", "5 · Prioritise"], ["Search & funnel gaps, demand forecasting", "6"], ["Best-seller & seller intelligence", "6"], ["Signals pick the subcategories to grow", "6"], ["Track pilots; quarterly re-crawls", "5 · Monitor"]],
-        o: "A $-ranked opportunity landscape; scale on evidence" },
+        b: [["Track pilots vs forecast; quarterly re-crawls", "5 · Monitor"], ["Signals pick the subcategories to grow", "6"], ["Search & funnel gaps, demand forecasting", "6"], ["Best-seller & seller intelligence", "6"], ["Basket building: 1–2 attach items per order", "6"]],
+        o: "Scale on evidence; sharper $ estimates" },
       { n: "EXTEND", ic: "target", fill: C.navy, aim: "Into core and new customers",
         chips: ["Core gaps", "New customers", "+ Staples Business"],
-        b: [["Core gaps raised with merchants, e.g. smaller or luxe desks, bento", "with merchants"], ["Educate & acquire customers: social, trends, off-site retail media", "6"], ["Validate with market research & surveys", "6"], ["Staples Business: specialist verticals & contract needs", "new channel"]],
+        b: [["Core gaps raised with merchants, e.g. smaller or luxe desks, bento", "with merchants"], ["Educate & acquire customers: social, trends, off-site retail media", "6"], ["Staples Business: specialist verticals & contract needs", "new channel"], ["Validate with market research & surveys", "6"]],
         o: "Core growth merchants sign up to; new customers reached" },
     ];
     const PG = 0.26, PW = (12.43 - 2 * PG) / 3, HY = 1.7;
@@ -422,7 +422,10 @@ function chip(slide, label, x, y, w, h, fill, ink = C.white, size = 9) {
       text(s, [{ text: h, options: { bold: true, color: C.navy, breakLine: true } }, { text: d, options: { color: C.text } }], x + 0.5, BY + 0.06, BW - 0.6, 0.72, { fontSize: 10.5, valign: "middle" });
     });
   }
-  s.addNotes(`A curated growth plan for the Staples Marketplace: everything on slides 5 and 6, put in the order agreed in our first review. Product first, customer next (two workstreams); existing customers before new ones (build the basket); adjacent categories before core (so existing merchants are brought along, not challenged); Staples.com before Staples Business; a confident first load, then scale on evidence (launch and learn).\nPhase 1 Launch: start from the PoC's ${T.recommended} safe picks; tune the cannibalisation thresholds and relax the adjacency thresholds with merchants; test the adjacent categories raised (toys, hydration, travel and luggage, tech accessories); vet seller listings and recruit, starting with the ${SRC.brands_on_staples_12_n} brands already on Staples; add basket attach items for existing customers. Output: a curated launch assortment and one story per category owner.\nPhase 2 Size & scale: join Staples data to size the prize per archetype by customer segment and keep the top ~20%; search-funnel gaps and demand forecasting; competitor best-seller and seller intelligence; signals choose which subcategories to grow after entry; track pilots and re-crawl quarterly.\nPhase 3 Extend: raise core-category gaps with the merchants who own them (e.g. smaller or luxe desks, bento); the customer workstream (education, social, trends, off-site retail media) for new customers; validate with research and surveys; Staples Business as a separate channel for specialist verticals and contract needs.\nHow we would support it (phased): first organise the data and build the stories for the initial launch, then extend into Staples' data, more analyses and stakeholder use cases, using Staples' existing data and tools and adding external data where useful; the plan adapts to Staples' roadmap rather than a fixed path.\nBeyond internal reporting (if asked how this differs from running internal tools): internal data can't show what Staples doesn't carry; we measure both sides with one attribute instrument (${T.archetypes_built} archetypes); cannibalisation is screened by two independent methods.`);
+  s.addNotes(`A curated growth plan for the Staples Marketplace: everything on slides 5 and 6, put in the order agreed in our first review. Size the prize first; product before customer (two workstreams); existing customers before new ones (build the basket); adjacent categories before core (so existing merchants are brought along, not challenged); Staples.com before Staples Business; a confident first load, then scale on evidence (launch and learn).\nPhase 1 Size & launch (in priority order): start from the PoC's ${T.recommended} safe picks; tune the cannibalisation thresholds and relax the adjacency thresholds with merchants, calibrated on Staples' internal data; size the opportunity $ by customer segment (Staples.com: SMB and consumers first) and keep the top ~20%; vet seller listings and recruit, starting with the ${SRC.brands_on_staples_12_n} brands already on Staples; test the adjacent categories raised (toys, hydration, travel and luggage, tech accessories). Output: a $-ranked launch shortlist and one story per category owner.
+Phase 2 Learn & scale: once items are live, track pilots against the forecast and re-crawl quarterly; signals choose which subcategories to grow after entry; search-funnel gaps and demand forecasting; competitor best-seller and seller intelligence sharpens the $ estimates and the recruit list; basket building adds 1–2 attach items per order for existing customers.
+Phase 3 Extend: raise core-category gaps with the merchants who own them (e.g. smaller or luxe desks, bento); the customer workstream (education, social, trends, off-site retail media) for new customers; Staples Business as a separate channel for specialist verticals and contract needs; validate with research and surveys.
+How we would support it (phased): first organise the data and build the stories for the initial launch, then extend into Staples' data, more analyses and stakeholder use cases, using Staples' existing data and tools and adding external data where useful; the plan adapts to Staples' roadmap rather than a fixed path.\nBeyond internal reporting (if asked how this differs from running internal tools): internal data can't show what Staples doesn't carry; we measure both sides with one attribute instrument (${T.archetypes_built} archetypes); cannibalisation is screened by two independent methods.`);
 
   // ======================= 5c. ENGAGEMENT MODEL (governance flowchart) =======================
   s = pres.addSlide({ masterName: "CONTENT", sectionTitle: "Next steps" });
@@ -439,16 +442,18 @@ function chip(slide, label, x, y, w, h, fill, ink = C.white, size = 9) {
     box(s, 9.68, 1.15, 3.2, 0.38, "7E62A8", { rect: true });
     text(s, "LatentView Value Adds & Investments", 9.68, 1.15, 3.2, 0.38, { fontSize: 11, bold: true, color: C.white, align: "center", valign: "middle" });
 
-    // tier labels: name on one line, cadence, forums as bullets (from the communication blueprint)
+    // tier labels: name, cadence, forums (from the communication blueprint), centred on their tier's box
     const TL = [
-      { y: 1.72, n: "Executive Team", c: "Quarterly", f: ["Quarterly business review", "Monthly executive briefing"] },
-      { y: 3.0, n: "Project Team", c: "Monthly / Quarterly", f: ["Monthly business review", "Weekly status newsletter"] },
-      { y: 4.82, n: "Delivery Team", c: "Daily / Weekly", f: ["Daily stand-ups", "Weekly reviews", "Sprint planning"] },
+      { y: 1.62, h: 1.1, n: "Executive Team", c: "Quarterly", f: ["Quarterly business review", "Monthly executive briefing"] },
+      { y: 3.0, h: 1.32, n: "Project Team", c: "Monthly / Quarterly", f: ["Monthly business review", "Weekly status newsletter"] },
+      { y: 4.74, h: 1.84, n: "Delivery Team", c: "Daily / Weekly", f: ["Daily stand-ups", "Weekly reviews", "Sprint planning"] },
     ];
     TL.forEach((t) => {
-      text(s, t.n, 0.3, t.y, 1.85, 0.3, { fontSize: 12.5, bold: true, color: C.blue, align: "center", valign: "middle" });
-      text(s, t.c, 0.3, t.y + 0.3, 1.85, 0.24, { fontSize: 10.5, bold: true, italic: true, color: DR, align: "center", valign: "middle" });
-      text(s, t.f.join(" · "), 0.3, t.y + 0.56, 1.85, 0.42, { fontSize: 8.5, italic: true, color: "7A8599", align: "center", valign: "top" });
+      text(s, [
+        { text: t.n, options: { fontSize: 12.5, bold: true, color: C.blue, breakLine: true } },
+        { text: t.c, options: { fontSize: 10.5, bold: true, italic: true, color: DR, breakLine: true } },
+        { text: t.f.join(" · "), options: { fontSize: 8.5, italic: true, color: "7A8599" } },
+      ], 0.3, t.y, 1.85, t.h, { align: "center", valign: "middle", paraSpaceAfter: 3 });
     });
     ln(0.3, 2.82, 9.05, 0, { dash: "dash", c: C.blue, wd: 1 });
     ln(0.3, 4.6, 9.05, 0, { dash: "dash", c: C.blue, wd: 1 });
