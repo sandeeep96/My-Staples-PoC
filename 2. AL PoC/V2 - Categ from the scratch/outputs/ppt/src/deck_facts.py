@@ -191,6 +191,12 @@ def main():
     )
     qa = json.loads((INTERIM / "qa_integration.json").read_text(encoding="utf-8"))
     facts["totals"]["qa_integration_keys"] = sorted(qa.keys())[:40]
+    # cannibalisation guard, same rule as the report's key-finding card (one row per family)
+    cnd = pd.read_parquet(INTERIM / "candidates.parquet").drop_duplicates("family_id")
+    lc = cnd["label"].value_counts()
+    facts["totals"]["m1_products"] = int(len(cnd))
+    facts["totals"]["m1_sub_undercut"] = int(lc.get("SUBSTITUTE", 0) + lc.get("UNDERCUT", 0))
+    facts["totals"]["m1_sub_undercut_share"] = pct(facts["totals"]["m1_sub_undercut"] / len(cnd))
 
     # ---------- per-node facts ----------
     def gap(node_id, attribute, value):
